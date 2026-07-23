@@ -1,15 +1,15 @@
 # SoulPlayer
 
 [![Release](https://img.shields.io/github/v/release/kelorein7/soulplayer?display_name=tag&sort=semver)](https://github.com/kelorein7/soulplayer/releases/latest)
-[![SPT](https://img.shields.io/badge/SPT-3.9.8-e06c75)](https://www.sp-tarkov.com/)
+[![SPT](https://img.shields.io/badge/SPT-4.0.13-e06c75)](https://www.sp-tarkov.com/)
 [![License](https://img.shields.io/badge/license-MIT-4c9ee8)](LICENSE)
 
-SoulPlayer is an in-game local music player for **SPT 3.9.8**. It adds a persistent, Tarkov-styled music interface to the menus, plays your own local library, supports keyboard media controls, and can switch to separate music after successful or failed raids.
+SoulPlayer is an in-game local music player for **SPT 4.0.13**. It adds a persistent, Tarkov-styled music interface to the menus, plays your own local library, supports keyboard media controls, and can switch to separate music after successful or failed raids.
 
 SoulPlayer does not stream, upload, modify, or redistribute your music. Playback stays on your computer.
 
 > [!IMPORTANT]
-> SoulPlayer 0.6.5 fixes the rhythmic raid-time stutter present in 0.6.4. Do not use an older build.
+> SoulPlayer 0.7.0 fixes the rhythmic raid-time stutter present in 0.6.4. Do not use an older build.
 
 ## Features
 
@@ -28,15 +28,15 @@ SoulPlayer does not stream, upload, modify, or redistribute your music. Playback
 
 | Component | Supported version |
 | --- | --- |
-| SPT | 3.9.8 |
+| SPT | 4.0.13 |
 | Operating system | Windows |
-| SoulPlayer | 0.6.5 |
+| SoulPlayer | 0.7.0 |
 
 Other SPT releases have not been validated. Install only the SoulPlayer version built for your exact SPT release.
 
 ## Installation
 
-1. Download `SoulPlayer-v0.6.5.zip` from the [latest GitHub release](https://github.com/kelorein7/soulplayer/releases/latest).
+1. Download `SoulPlayer-v0.7.0.zip` from the [latest GitHub release](https://github.com/kelorein7/soulplayer/releases/latest).
 2. Close Escape from Tarkov, the SPT Launcher, and the SPT Server.
 3. Open the ZIP and copy its `BepInEx` folder into your SPT installation folder.
 4. Confirm the final plugin path is:
@@ -50,7 +50,7 @@ Other SPT releases have not been validated. Install only the SoulPlayer version 
 At startup, `BepInEx/LogOutput.log` should contain:
 
 ```text
-SoulPlayer 0.6.5 loaded. Library scan started.
+SoulPlayer 0.7.0 loaded. Library scan started.
 ```
 
 ### Updating
@@ -123,7 +123,7 @@ SoulPlayer and Tarkov's built-in menu soundtrack are separate. Set Tarkov's in-g
 ### The MUSIC button or interface is missing
 
 - Confirm `Soulplayer.dll`, `NAudio.Core.dll`, and `NAudio.Flac.dll` are together in `BepInEx/plugins/SoulPlayer`.
-- Confirm you installed SoulPlayer for SPT 3.9.8.
+- Confirm you installed SoulPlayer for SPT 4.0.13.
 - Check `BepInEx/LogOutput.log` for dependency or patch errors.
 
 ### Reporting a bug
@@ -135,7 +135,7 @@ Use the [bug report template](https://github.com/kelorein7/soulplayer/issues/new
 Requirements:
 
 - Visual Studio 2022 or the .NET SDK with .NET Framework 4.7.2 targeting support
-- A local SPT 3.9.8 installation for compile-time references
+- A local SPT 4.0.13 installation for compile-time references
 
 Run:
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SoulPlayer
 {
-    [BepInPlugin("com.kelorein.soulplayer", "SoulPlayer", "0.6.5")]
+    [BepInPlugin("com.kelorein.soulplayer", "SoulPlayer", "0.7.0")]
     public sealed class Plugin : BaseUnityPlugin
     {
         internal static ManualLogSource Log { get; private set; }
@@ -32,7 +32,7 @@ namespace SoulPlayer
             new Patches.PostRaidResultPatch().Enable();
 
             MusicLibrary.BeginScan(Settings.GetScanFolders());
-            Log.LogInfo("SoulPlayer 0.6.5 loaded. Library scan started.");
+            Log.LogInfo("SoulPlayer 0.7.0 loaded. Library scan started.");
         }
     }
 }
