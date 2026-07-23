@@ -1,0 +1,72 @@
+name: Bug report
+description: Report a reproducible SoulPlayer problem
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve SoulPlayer. Please test with the latest release before reporting a bug.
+
+  - type: input
+    id: soulplayer-version
+    attributes:
+      label: SoulPlayer version
+      description: Shown in `BepInEx/LogOutput.log` when the game starts.
+      placeholder: 0.6.5
+    validations:
+      required: true
+
+  - type: input
+    id: spt-version
+    attributes:
+      label: SPT version
+      placeholder: 3.9.8
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the expected result and what happened instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start SPT
+        2. Open MUSIC
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: mods
+    attributes:
+      label: Other installed mods
+      description: List client plugins and server mods that may interact with the issue.
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Attach or paste the relevant section of `BepInEx/LogOutput.log`. Remove personal paths if desired.
+      render: shell
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I closed SPT before installing or updating SoulPlayer.
+          required: true
+        - label: I tested the latest SoulPlayer release.
+          required: true
+        - label: I searched existing issues for the same problem.
+          required: true
+

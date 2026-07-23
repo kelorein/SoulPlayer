@@ -1,0 +1,24 @@
+# Visual Studio and MSBuild
+.vs/
+bin/
+obj/
+dist/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDEs
+.idea/
+.vscode/
+
+# Build and debug output
+*.pdb
+*.cache
+*.log
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
