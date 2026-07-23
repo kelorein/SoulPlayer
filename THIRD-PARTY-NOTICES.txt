@@ -1,0 +1,14 @@
+SoulPlayer includes these runtime libraries:
+
+NAudio.Core 2.3.0
+Copyright Mark Heath and contributors
+License: MIT
+Project: https://github.com/naudio/NAudio
+
+NAudio.Flac 1.0.4
+License: The Unlicense
+Project: https://github.com/VPKSoft/NAudio.Flac
+
+The bundled NAudio.Flac assembly has only its NAudio.Core reference version
+updated from 2.2.1 to 2.3.0 so it can use the bundled compatible NAudio.Core
+runtime already validated with SPT's .NET Framework target.
