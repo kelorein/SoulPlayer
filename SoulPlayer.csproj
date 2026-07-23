@@ -134,7 +134,7 @@
     <Compile Include="Utils\MediaKeyInput.cs" />
   </ItemGroup>
   <Target Name="ValidateSptRoot" BeforeTargets="ResolveAssemblyReferences">
-    <Error Condition="'$(SptRoot)' == ''" Text="Set SptRoot to an SPT 3.9.8 installation, for example: -p:SptRoot=&quot;C:\SPT&quot;" />
+    <Error Condition="'$(SptRoot)' == ''" Text="Set SptRoot to an SPT 4.0.13 installation, for example: -p:SptRoot=&quot;C:\SPT&quot;" />
     <Error Condition="'$(SptRoot)' != '' and !Exists('$(SptRoot)\\SPT\SPT.Server.exe')" Text="SPT.Server.exe was not found under SptRoot: $(SptRoot)" />
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,4 @@
-SoulPlayer v0.2 prototype for SPT 3.9.8
+SoulPlayer v0.2 prototype for SPT 4.0.13
 ========================================
 
 What changed
