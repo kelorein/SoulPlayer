@@ -1,6 +1,6 @@
 # SoulPlayer
 
-[![Release](https://img.shields.io/github/v/release/kelorein7/soulplayer?display_name=tag&sort=semver)](https://github.com/kelorein7/soulplayer/releases/latest)
+[![Release](https://img.shields.io/github/v/release/kelorein/SoulPlayer?display_name=tag&sort=semver)](https://github.com/kelorein/SoulPlayer/releases/latest)
 [![SPT](https://img.shields.io/badge/SPT-4.0.13-e06c75)](https://www.sp-tarkov.com/)
 [![License](https://img.shields.io/badge/license-MIT-4c9ee8)](LICENSE)
 [![Buy me a cookie on Ko-fi](https://img.shields.io/badge/Ko--fi-Buy_me_a_cookie-ff5e5b?logo=ko-fi&logoColor=white)](https://ko-fi.com/kelorein)
@@ -37,7 +37,7 @@ Other SPT releases have not been validated. Install only the SoulPlayer version 
 
 ## Installation
 
-1. Download `SoulPlayer-v0.7.0.zip` from the [latest GitHub release](https://github.com/kelorein7/soulplayer/releases/latest).
+1. Download `SoulPlayer-v0.7.0.zip` from the [latest GitHub release](https://github.com/kelorein/SoulPlayer/releases/latest).
 2. Close Escape from Tarkov, the SPT Launcher, and the SPT Server.
 3. Open the ZIP and copy its `BepInEx` folder into your SPT installation folder.
 4. Confirm the final plugin path is:
@@ -129,7 +129,7 @@ SoulPlayer and Tarkov's built-in menu soundtrack are separate. Set Tarkov's in-g
 
 ### Reporting a bug
 
-Use the [bug report template](https://github.com/kelorein7/soulplayer/issues/new/choose) and include the SoulPlayer version, SPT version, reproduction steps, relevant logs, and installed mod list.
+Use the [bug report template](https://github.com/kelorein/SoulPlayer/issues/new/choose) and include the SoulPlayer version, SPT version, reproduction steps, relevant logs, and installed mod list.
 
 ## Building from source
 
