@@ -3,6 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/kelorein7/soulplayer?display_name=tag&sort=semver)](https://github.com/kelorein7/soulplayer/releases/latest)
 [![SPT](https://img.shields.io/badge/SPT-4.0.13-e06c75)](https://www.sp-tarkov.com/)
 [![License](https://img.shields.io/badge/license-MIT-4c9ee8)](LICENSE)
+[![Buy me a cookie on Ko-fi](https://img.shields.io/badge/Ko--fi-Buy_me_a_cookie-ff5e5b?logo=ko-fi&logoColor=white)](https://ko-fi.com/kelorein)
 
 SoulPlayer is an in-game local music player for **SPT 4.0.13**. It adds a persistent, Tarkov-styled music interface to the menus, plays your own local library, supports keyboard media controls, and can switch to separate music after successful or failed raids.
 
@@ -159,7 +160,6 @@ Escape from Tarkov is a trademark of Battlestate Games. SoulPlayer is an indepen
 
 If SoulPlayer improves your SPT experience, you can support continued maintenance and future compatibility work:
 
-[![Sponsor on GitHub](https://img.shields.io/badge/Sponsor_on_GitHub-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/kelorein7)
-[![Support on Ko-fi](https://img.shields.io/badge/Support_on_Ko--fi-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/kelorein7)
+[![Support on Ko-fi](https://img.shields.io/badge/Support_on_Ko--fi-ff5e5b?logo=ko-fi&logoColor=white)](https://ko-fi.com/kelorein)
 
 Support is always optional. SoulPlayer remains free and open source.
