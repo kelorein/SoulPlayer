@@ -6,9 +6,9 @@ All notable SoulPlayer changes are documented here.
 
 ### Changed
 
-- Started the SPT 4.1.2 compatibility update.
+- Started the SPT 4.1.3 compatibility update.
 - Updated SoulPlayer assembly and plugin metadata to 0.8.0 for the new compatibility line.
-- Updated the local build helper to target the SPT 4.1.2 folder layout.
+- Updated the local build helper to target the SPT 4.1.3 folder layout.
 - Isolated client patch startup so a single incompatible EFT/SPT patch logs its own failure instead of preventing the rest of SoulPlayer from initializing.
 
 ## [0.6.5] - 2026-07-19
