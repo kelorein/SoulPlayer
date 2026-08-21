@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using EFT;
 using EFT.UI.SessionEnd;
-using HarmonyLib;
 using SPT.Reflection.Patching;
 
 namespace SoulPlayer.Patches
@@ -20,12 +19,28 @@ namespace SoulPlayer.Patches
         }
 
         [PatchPostfix]
-        private static void PatchPostfix([HarmonyArgument(3)] ExitStatus outcome)
+        private static void PatchPostfix(object[] __args)
         {
             try
             {
-                Plugin.Log.LogInfo("Raid result detected: " + outcome + ".");
-                Plugin.AudioPlayer.PlayPostRaid(outcome);
+                ExitStatus? outcome = null;
+                foreach (object argument in __args)
+                {
+                    if (argument is ExitStatus)
+                    {
+                        outcome = (ExitStatus)argument;
+                        break;
+                    }
+                }
+
+                if (!outcome.HasValue)
+                {
+                    Plugin.Log.LogWarning("Post-raid result callback did not contain an ExitStatus argument.");
+                    return;
+                }
+
+                Plugin.Log.LogInfo("Raid result signal detected: " + outcome.Value + ".");
+                Plugin.PostRaidCoordinator.Queue(outcome.Value);
             }
             catch (Exception ex)
             {
