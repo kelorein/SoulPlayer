@@ -17,6 +17,7 @@ namespace SoulPlayer
         internal static MusicLibrary MusicLibrary { get; private set; }
         internal static SoulAudioPlayer AudioPlayer { get; private set; }
         internal static TarkovMusicMuter TarkovMusicMuter { get; private set; }
+        internal static PostRaidCoordinator PostRaidCoordinator { get; private set; }
 
         private void Awake()
         {
@@ -36,6 +37,7 @@ namespace SoulPlayer
             AudioPlayer.Initialize(Settings);
             TarkovMusicMuter = gameObject.AddComponent<TarkovMusicMuter>();
             TarkovMusicMuter.Initialize(Settings);
+            PostRaidCoordinator = gameObject.AddComponent<PostRaidCoordinator>();
 
             EnablePatch("menu screen", () => new Patches.MenuScreenPatch().Enable());
             EnablePatch("menu taskbar", () => new Patches.MenuTaskBarPatch().Enable());
