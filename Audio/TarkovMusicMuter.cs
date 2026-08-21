@@ -19,44 +19,20 @@ namespace SoulPlayer.Audio
             new Dictionary<AudioMixer, Dictionary<string, float>>();
 
         private SoulPlayerSettings _settings;
-        private bool _lastMuteSetting;
-        private float _nextApply;
 
         internal void Initialize(SoulPlayerSettings settings)
         {
             _settings = settings;
-            _lastMuteSetting = settings.MuteTarkovMusic;
-            _nextApply = 0f;
+            ApplyNow();
         }
 
-        private void Update()
+        internal void ApplyNow()
         {
-            if (_settings == null)
+            if (_settings == null || !_settings.MuteTarkovMusic)
             {
                 return;
             }
 
-            bool shouldMute = _settings.MuteTarkovMusic;
-            if (shouldMute != _lastMuteSetting)
-            {
-                _lastMuteSetting = shouldMute;
-                if (!shouldMute)
-                {
-                    RestoreTarkovMusic();
-                }
-
-                _nextApply = 0f;
-            }
-
-            if (shouldMute && Time.unscaledTime >= _nextApply)
-            {
-                _nextApply = Time.unscaledTime + 3f;
-                TryMuteTarkovMusic();
-            }
-        }
-
-        private void TryMuteTarkovMusic()
-        {
             AudioMixer[] mixers = Resources.FindObjectsOfTypeAll<AudioMixer>();
 
             foreach (AudioMixer mixer in mixers)
@@ -97,7 +73,7 @@ namespace SoulPlayer.Audio
             }
         }
 
-        private void RestoreTarkovMusic()
+        internal void RestoreTarkovMusic()
         {
             if (_savedValues.Count == 0)
             {
