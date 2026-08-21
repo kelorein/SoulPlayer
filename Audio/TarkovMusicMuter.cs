@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using SoulPlayer.Configuration;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 
 namespace SoulPlayer.Audio
 {
@@ -21,19 +20,13 @@ namespace SoulPlayer.Audio
 
         private SoulPlayerSettings _settings;
         private bool _lastMuteSetting;
-        private bool _hasAppliedMute;
-        private float _nextRetry;
+        private float _nextApply;
 
         internal void Initialize(SoulPlayerSettings settings)
         {
             _settings = settings;
             _lastMuteSetting = settings.MuteTarkovMusic;
-            SceneManager.sceneLoaded += OnSceneLoaded;
-
-            if (_lastMuteSetting)
-            {
-                TryMuteTarkovMusic();
-            }
+            _nextApply = 0f;
         }
 
         private void Update()
@@ -47,29 +40,17 @@ namespace SoulPlayer.Audio
             if (shouldMute != _lastMuteSetting)
             {
                 _lastMuteSetting = shouldMute;
-                if (shouldMute)
-                {
-                    TryMuteTarkovMusic();
-                }
-                else
+                if (!shouldMute)
                 {
                     RestoreTarkovMusic();
                 }
+
+                _nextApply = 0f;
             }
 
-            if (shouldMute && !_hasAppliedMute && Time.unscaledTime >= _nextRetry)
+            if (shouldMute && Time.unscaledTime >= _nextApply)
             {
-                _nextRetry = Time.unscaledTime + 3f;
-                TryMuteTarkovMusic();
-            }
-        }
-
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            if (_settings != null && _settings.MuteTarkovMusic)
-            {
-                _hasAppliedMute = false;
-                _nextRetry = 0f;
+                _nextApply = Time.unscaledTime + 3f;
                 TryMuteTarkovMusic();
             }
         }
@@ -77,7 +58,6 @@ namespace SoulPlayer.Audio
         private void TryMuteTarkovMusic()
         {
             AudioMixer[] mixers = Resources.FindObjectsOfTypeAll<AudioMixer>();
-            bool mutedAny = false;
 
             foreach (AudioMixer mixer in mixers)
             {
@@ -101,26 +81,29 @@ namespace SoulPlayer.Audio
                         _savedValues[mixer] = values;
                     }
 
-                    if (!values.ContainsKey(parameter))
+                    bool firstDiscovery = !values.ContainsKey(parameter);
+                    if (firstDiscovery)
                     {
                         values[parameter] = current;
                     }
 
-                    if (mixer.SetFloat(parameter, -80f))
+                    if (mixer.SetFloat(parameter, -80f) && firstDiscovery)
                     {
-                        mutedAny = true;
                         Plugin.Log.LogInfo(
                             "Muted Tarkov music mixer parameter '" + parameter +
                             "' on '" + mixer.name + "'.");
                     }
                 }
             }
-
-            _hasAppliedMute = mutedAny;
         }
 
         private void RestoreTarkovMusic()
         {
+            if (_savedValues.Count == 0)
+            {
+                return;
+            }
+
             foreach (KeyValuePair<AudioMixer, Dictionary<string, float>> mixerEntry in _savedValues)
             {
                 AudioMixer mixer = mixerEntry.Key;
@@ -136,13 +119,11 @@ namespace SoulPlayer.Audio
             }
 
             _savedValues.Clear();
-            _hasAppliedMute = false;
             Plugin.Log.LogInfo("Restored Tarkov music mixer volume.");
         }
 
         private void OnDestroy()
         {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
             RestoreTarkovMusic();
         }
     }
