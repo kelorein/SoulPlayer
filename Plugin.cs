@@ -28,6 +28,8 @@ namespace SoulPlayer
 
             EnablePatch("Tarkov music volume", () => new Patches.TarkovMusicVolumePatch().Enable());
             EnablePatch("Tarkov settings music apply", () => new Patches.TarkovMusicSettingsApplyPatch().Enable());
+            EnablePatch("Tarkov force-apply volume", () => new Patches.TarkovForceApplyVolumePatch().Enable());
+            EnablePatch("Tarkov sound settings screen", () => new Patches.TarkovSoundSettingsTabPatch().Enable());
 
             MusicLibrary = new MusicLibrary();
             AudioPlayer = gameObject.AddComponent<SoulAudioPlayer>();
