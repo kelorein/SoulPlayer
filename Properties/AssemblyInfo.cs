@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("SoulPlayer")]
-[assembly: AssemblyDescription("Local music library and menu player for SPT 4.1.2")]
+[assembly: AssemblyDescription("Local music library and menu player for SPT 4.1.3")]
 [assembly: AssemblyCompany("kelorein")]
 [assembly: AssemblyProduct("SoulPlayer")]
 [assembly: AssemblyCopyright("Copyright © 2026")]
