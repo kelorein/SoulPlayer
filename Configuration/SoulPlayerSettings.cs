@@ -53,7 +53,7 @@ namespace SoulPlayer.Configuration
             _autoPlayAfterRaid = config.Bind(
                 "Post-raid",
                 "Autoplay after raid",
-                false,
+                true,
                 "Automatically start outcome-specific music when the raid result screen appears.");
 
             _survivedMusicFolder = config.Bind(
