@@ -27,6 +27,7 @@ namespace SoulPlayer
             Settings = new SoulPlayerSettings(Config);
 
             EnablePatch("Tarkov music volume", () => new Patches.TarkovMusicVolumePatch().Enable());
+            EnablePatch("Tarkov settings music apply", () => new Patches.TarkovMusicSettingsApplyPatch().Enable());
 
             MusicLibrary = new MusicLibrary();
             AudioPlayer = gameObject.AddComponent<SoulAudioPlayer>();
