@@ -271,7 +271,7 @@ namespace SoulPlayer.UI
 
             foreach (DriveInfo drive in GetReadyDrives().Take(4))
             {
-                AddQuickRow(drive.Name, drive.RootDirectory.FullName, row++);
+                AddQuickRow(FormatDriveCaption(drive), drive.RootDirectory.FullName, row++);
             }
         }
 
@@ -598,18 +598,6 @@ namespace SoulPlayer.UI
 
         private static BrowserEntry CreateDriveEntry(DriveInfo drive)
         {
-            string label = drive.Name;
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(drive.VolumeLabel))
-                {
-                    label += "  " + drive.VolumeLabel;
-                }
-            }
-            catch
-            {
-            }
-
             string detail = "OPEN  >";
             try
             {
@@ -622,9 +610,31 @@ namespace SoulPlayer.UI
             return new BrowserEntry
             {
                 Path = drive.RootDirectory.FullName,
-                Title = label,
+                Title = FormatDriveCaption(drive),
                 Detail = detail
             };
+        }
+
+        private static string FormatDriveCaption(DriveInfo drive)
+        {
+            string driveName = drive.Name.TrimEnd('\\', '/');
+            string volumeLabel = string.Empty;
+
+            try
+            {
+                volumeLabel = drive.VolumeLabel == null ? string.Empty : drive.VolumeLabel.Trim();
+            }
+            catch
+            {
+            }
+
+            if (string.IsNullOrWhiteSpace(volumeLabel) ||
+                string.Equals(volumeLabel, driveName, StringComparison.OrdinalIgnoreCase))
+            {
+                return driveName;
+            }
+
+            return volumeLabel + " (" + driveName + ")";
         }
 
         private static IEnumerable<DriveInfo> GetReadyDrives()
