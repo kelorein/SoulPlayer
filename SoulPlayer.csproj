@@ -57,7 +57,7 @@
     <Compile Include="Audio\DecodedAudio.cs" /><Compile Include="Audio\FlacDecoder.cs" /><Compile Include="Audio\PostRaidCoordinator.cs" /><Compile Include="Audio\SoulAudioPlayer.cs" /><Compile Include="Audio\TarkovMusicMuter.cs" />
     <Compile Include="Configuration\SoulPlayerSettings.cs" /><Compile Include="Library\MusicLibrary.cs" /><Compile Include="Library\MusicTrack.cs" />
     <Compile Include="Patches\MenuScreenPatch.cs" /><Compile Include="Patches\PostRaidResultPatch.cs" /><Compile Include="Patches\TarkovMusicVolumePatch.cs" /><Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" /><Compile Include="UI\SoulPlayerWindow.cs" /><Compile Include="UI\SoulMiniPlayer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" /><Compile Include="UI\SoulFolderBrowser.cs" /><Compile Include="UI\SoulPlayerWindow.cs" /><Compile Include="UI\SoulMiniPlayer.cs" />
     <Compile Include="UI\UIUtils.cs" /><Compile Include="UI\SoulPlayerOverlayHost.cs" /><Compile Include="Utils\GameState.cs" /><Compile Include="Utils\MediaKeyInput.cs" />
   </ItemGroup>
   <Target Name="ValidateSptRoot" BeforeTargets="ResolveAssemblyReferences">
