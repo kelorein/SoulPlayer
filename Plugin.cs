@@ -16,6 +16,7 @@ namespace SoulPlayer
         internal static SoulPlayerSettings Settings { get; private set; }
         internal static MusicLibrary MusicLibrary { get; private set; }
         internal static SoulAudioPlayer AudioPlayer { get; private set; }
+        internal static TarkovMusicMuter TarkovMusicMuter { get; private set; }
 
         private void Awake()
         {
@@ -27,6 +28,8 @@ namespace SoulPlayer
             MusicLibrary = new MusicLibrary();
             AudioPlayer = gameObject.AddComponent<SoulAudioPlayer>();
             AudioPlayer.Initialize(Settings);
+            TarkovMusicMuter = gameObject.AddComponent<TarkovMusicMuter>();
+            TarkovMusicMuter.Initialize(Settings);
 
             EnablePatch("menu screen", () => new Patches.MenuScreenPatch().Enable());
             EnablePatch("menu taskbar", () => new Patches.MenuTaskBarPatch().Enable());
