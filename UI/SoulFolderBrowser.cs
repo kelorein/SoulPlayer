@@ -617,9 +617,28 @@ namespace SoulPlayer.UI
 
         private static string FormatDriveCaption(DriveInfo drive)
         {
-            string driveName = drive.Name.TrimEnd('\\', '/');
-            string volumeLabel = string.Empty;
+            string rootPath = string.Empty;
+            try
+            {
+                rootPath = drive.RootDirectory.FullName;
+            }
+            catch
+            {
+                rootPath = drive.Name;
+            }
 
+            string driveName = (rootPath ?? string.Empty).Trim().TrimEnd('\\', '/');
+            if (driveName.Length >= 2 && char.IsLetter(driveName[0]) && driveName[1] == ':')
+            {
+                driveName = char.ToUpperInvariant(driveName[0]) + ":";
+            }
+
+            if (string.IsNullOrWhiteSpace(driveName))
+            {
+                driveName = "DRIVE";
+            }
+
+            string volumeLabel = string.Empty;
             try
             {
                 volumeLabel = drive.VolumeLabel == null ? string.Empty : drive.VolumeLabel.Trim();
@@ -628,13 +647,26 @@ namespace SoulPlayer.UI
             {
             }
 
-            if (string.IsNullOrWhiteSpace(volumeLabel) ||
-                string.Equals(volumeLabel, driveName, StringComparison.OrdinalIgnoreCase))
+            // Some Unity/Mono environments incorrectly expose the root path itself
+            // as the volume label (for example "C:\\"). Never display path syntax
+            // as a friendly drive name.
+            string normalizedLabel = (volumeLabel ?? string.Empty).Trim().TrimEnd('\\', '/');
+            bool labelLooksLikeDrivePath =
+                normalizedLabel.IndexOf('\\') >= 0 ||
+                normalizedLabel.IndexOf('/') >= 0 ||
+                (normalizedLabel.Length >= 2 &&
+                 char.IsLetter(normalizedLabel[0]) &&
+                 normalizedLabel[1] == ':' &&
+                 normalizedLabel.Length <= 3);
+
+            if (string.IsNullOrWhiteSpace(normalizedLabel) ||
+                labelLooksLikeDrivePath ||
+                string.Equals(normalizedLabel, driveName, StringComparison.OrdinalIgnoreCase))
             {
                 return driveName;
             }
 
-            return volumeLabel + " (" + driveName + ")";
+            return normalizedLabel + " (" + driveName + ")";
         }
 
         private static IEnumerable<DriveInfo> GetReadyDrives()
