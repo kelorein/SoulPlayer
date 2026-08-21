@@ -41,6 +41,7 @@ namespace SoulPlayer
 
             EnablePatch("menu screen", () => new Patches.MenuScreenPatch().Enable());
             EnablePatch("menu taskbar", () => new Patches.MenuTaskBarPatch().Enable());
+            EnablePatch("in-game folder browser", () => new Patches.FolderBrowserPatch().Enable());
             EnablePatch("post-raid result", () => new Patches.PostRaidResultPatch().Enable());
 
             MusicLibrary.BeginScan(Settings.GetScanFolders());
