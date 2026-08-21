@@ -4,7 +4,7 @@ setlocal EnableExtensions
 set "PROJECT=%~dp0SoulPlayer.csproj"
 set "SPT_ROOT=%~1"
 
-if not defined SPT_ROOT set /p "SPT_ROOT=Enter the full path to your SPT 4.1.2 folder: "
+if not defined SPT_ROOT set /p "SPT_ROOT=Enter the full path to your SPT 4.1.3 folder: "
 
 if not exist "%SPT_ROOT%\SPT\SPT.Server.exe" (
   echo.
@@ -37,4 +37,3 @@ echo %~dp0bin\Release\Soulplayer.dll
 echo.
 echo This script builds only. It does not modify your SPT installation.
 pause
-
