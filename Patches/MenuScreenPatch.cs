@@ -17,15 +17,34 @@ namespace SoulPlayer.Patches
     {
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.Method(
-                typeof(MenuScreen),
-                "Show",
-                new[]
+            // EFT frequently renames the middle controller type used by MenuScreen.Show.
+            // Resolve the overload by the stable Profile + ESessionMode parameters instead
+            // of compiling against the obfuscated controller class name.
+            var candidates = typeof(MenuScreen)
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(method => method.Name == "Show")
+                .Select(method => new
                 {
-                    typeof(Profile),
-                    typeof(MatchmakerPlayerControllerClass),
-                    typeof(ESessionMode)
-                });
+                    Method = method,
+                    Parameters = method.GetParameters()
+                })
+                .Where(candidate =>
+                    candidate.Parameters.Any(parameter => parameter.ParameterType == typeof(Profile)) &&
+                    candidate.Parameters.Any(parameter => parameter.ParameterType == typeof(ESessionMode)))
+                .ToArray();
+
+            MethodBase target = candidates
+                .FirstOrDefault(candidate => candidate.Parameters.Length == 3)?.Method ??
+                candidates.FirstOrDefault()?.Method;
+
+            if (target == null)
+            {
+                throw new MissingMethodException(
+                    typeof(MenuScreen).FullName,
+                    "Show(Profile, ..., ESessionMode)");
+            }
+
+            return target;
         }
 
         [PatchPostfix]
