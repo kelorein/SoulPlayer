@@ -54,7 +54,7 @@ namespace SoulPlayer.Recorder
 
             Plugin.Log.LogInfo(
                 "SoulRecorder prototype ready: M toggles the starter tape during raids. " +
-                "Physical proxy order: radio transmitter, then current-hands compass state.");
+                "Physical proxy waits for confirmed tape playback before raising.");
         }
 
         private void Update()
@@ -85,16 +85,27 @@ namespace SoulPlayer.Recorder
                 }
             }
 
-            if (_active && !_physicalProxyRaised && Time.unscaledTime >= _nextPhysicalProxyAttempt)
+            // Do not raise the temporary hands proxy until Unity confirms the tape
+            // AudioSource is actually playing. This keeps the animation synchronized
+            // with real playback and makes regressions visible in the log.
+            if (_active && _audioPlayer.IsPlaying && !_physicalProxyRaised &&
+                Time.unscaledTime >= _nextPhysicalProxyAttempt)
             {
                 _nextPhysicalProxyAttempt = Time.unscaledTime + PhysicalProxyRetrySeconds;
-                TrySetPhysicalProxyState(true);
+                if (TrySetPhysicalProxyState(true))
+                {
+                    Plugin.Log.LogInfo(
+                        "SoulRecorder HANDS -> " + _physicalProxyName + " proxy raised after audio start.");
+                }
             }
 
             if (_active && !_audioPlayer.IsLoading && !_audioPlayer.IsPlaying &&
                 _audioPlayer.CurrentTrack != null)
             {
-                StopRecorder("tape finished");
+                string reason = string.IsNullOrEmpty(_audioPlayer.LastError)
+                    ? "tape finished"
+                    : "audio failed: " + _audioPlayer.LastError;
+                StopRecorder(reason);
             }
         }
 
@@ -128,11 +139,10 @@ namespace SoulPlayer.Recorder
             _nextPhysicalProxyAttempt = 0f;
 
             _audioPlayer.Play(track);
-            bool physical = TrySetPhysicalProxyState(true);
 
             Plugin.Log.LogInfo(
-                "SoulRecorder PLAY -> " + track.Artist + " - " + track.Title +
-                (physical ? " [" + _physicalProxyName + " hands proxy active]" : " [audio-only prototype]"));
+                "SoulRecorder PLAY REQUEST -> " + track.Artist + " - " + track.Title +
+                " [waiting for confirmed audio start before hands proxy]");
         }
 
         private void StopRecorder(string reason)
