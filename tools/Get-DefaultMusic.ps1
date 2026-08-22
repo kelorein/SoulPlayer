@@ -1,38 +1,31 @@
 param(
-    [string]$Destination = (Join-Path $PSScriptRoot "..\DefaultMusic")
+    [string]$Destination = (Join-Path $PSScriptRoot "..\DefaultMusic"),
+    [switch]$RequireComplete
 )
 
 $ErrorActionPreference = "Stop"
 
-$tracks = @(
-    @{ File = "SRG774 - Sector.mp3"; Url = "https://opengameart.org/sites/default/files/sector_0.mp3" },
-    @{ File = "SRG774 - Airy.mp3"; Url = "https://opengameart.org/sites/default/files/airy_0.mp3" },
-    @{ File = "SRG774 - Pulse.mp3"; Url = "https://opengameart.org/sites/default/files/pulse_0.mp3" },
-    @{ File = "SRG774 - Urgent.mp3"; Url = "https://opengameart.org/sites/default/files/urgent_0.mp3" },
-    @{ File = "SRG774 - Transmission.mp3"; Url = "https://opengameart.org/sites/default/files/transmission_1.mp3" },
-    @{ File = "SRG774 - Title.mp3"; Url = "https://opengameart.org/sites/default/files/title_6.mp3" },
-    @{ File = "tricksntraps - Endless Moons.ogg"; Url = "https://opengameart.org/sites/default/files/01_endless_moons_3.ogg" },
-    @{ File = "tricksntraps - Dreaming of Leaves.ogg"; Url = "https://opengameart.org/sites/default/files/02_dreaming_of_leaves_2.ogg" },
-    @{ File = "tricksntraps - Mystical Fungi Cave.ogg"; Url = "https://opengameart.org/sites/default/files/03_mystical_fungi_cave.ogg" },
-    @{ File = "tricksntraps - Frozen Ocean Trip.ogg"; Url = "https://opengameart.org/sites/default/files/04_frozen_ocean_trip.ogg" },
-    @{ File = "tricksntraps - Conscious Swamp.ogg"; Url = "https://opengameart.org/sites/default/files/05_conscious_swamp.ogg" },
-    @{ File = "tricksntraps - Strange Reality Warp.ogg"; Url = "https://opengameart.org/sites/default/files/06_strange_reality_warp.ogg" },
-    @{ File = "Alex McCulloch - Synth Wave.mp3"; Url = "https://opengameart.org/sites/default/files/Synth%20Wave_0.mp3" },
-    @{ File = "G_P - Synthwave Type.mp3"; Url = "https://opengameart.org/sites/default/files/synth_type_1.mp3" },
-    @{ File = "SkyleTheFrench - Blackout.mp3"; Url = "https://opengameart.org/sites/default/files/blackout_3mzut0qtwao.mp3" },
-    @{ File = "DST - MindStream.mp3"; Url = "https://opengameart.org/sites/default/files/DST-MindStream.mp3" },
-    @{ File = "hatmix - Canary.ogg"; Url = "https://opengameart.org/sites/default/files/canary_0.ogg" },
-    @{ File = "Centurion_of_war - Technological Messup.ogg"; Url = "https://opengameart.org/sites/default/files/tecnological_messup_v2_0.ogg" },
-    @{ File = "MintoDog - Space Adventure.mp3"; Url = "https://opengameart.org/sites/default/files/space_adventure_bpm140.mp3" },
-    @{ File = "iamoneabe - Vintage Menu.mp3"; Url = "https://opengameart.org/sites/default/files/vintage_menu_0.mp3" }
+$automaticTracks = @(
+    @{ Name = "Scott Buckley - Electric Dreams"; File = "Scott Buckley - Electric Dreams.mp3"; Url = "https://www.scottbuckley.com.au/library/wp-content/uploads/2020/09/sb_electricdreams.mp3" },
+    @{ Name = "Scott Buckley - Resonance"; File = "Scott Buckley - Resonance.mp3"; Url = "https://www.scottbuckley.com.au/library/wp-content/uploads/2018/04/sb_resonance.mp3" },
+    @{ Name = "Scott Buckley - Signal to Noise"; File = "Scott Buckley - Signal to Noise.mp3"; Url = "https://www.scottbuckley.com.au/library/wp-content/uploads/2020/04/sb_signaltonoise.mp3" },
+    @{ Name = "Scott Buckley - The Long Dark"; File = "Scott Buckley - The Long Dark.mp3"; Url = "https://www.scottbuckley.com.au/library/wp-content/uploads/2023/01/TheLongDark.mp3" }
 )
 
+$manualTracks = @(
+    @{ Name = "Anders - Frostbite"; Source = "https://soundcloud.com/anttu-janhunen/frostbite" },
+    @{ Name = "Anders - False Awakenings"; Source = "https://soundcloud.com/anttu-janhunen/false-awakenings-reupload" },
+    @{ Name = "Anders - Into World Unknown"; Source = "https://soundcloud.com/anttu-janhunen/into-world-unknown-royalty-free" },
+    @{ Name = "Anders - Ex Nihilo"; Source = "https://soundcloud.com/anttu-janhunen/ex-nihilo" }
+)
+
+$supportedExtensions = @(".mp3", ".ogg", ".wav", ".flac")
 $destinationPath = [System.IO.Path]::GetFullPath($Destination)
 New-Item -ItemType Directory -Path $destinationPath -Force | Out-Null
 
 $headers = @{ "User-Agent" = "SoulPlayer default music pack builder" }
 
-foreach ($track in $tracks) {
+foreach ($track in $automaticTracks) {
     $target = Join-Path $destinationPath $track.File
 
     if (Test-Path $target) {
@@ -70,6 +63,61 @@ foreach ($track in $tracks) {
     }
 }
 
+function Test-ApprovedTrackPresent {
+    param([string]$Name)
+
+    foreach ($extension in $supportedExtensions) {
+        $candidate = Join-Path $destinationPath ($Name + $extension)
+        if (Test-Path $candidate) {
+            $item = Get-Item $candidate
+            if ($item.Length -gt 0) {
+                return $true
+            }
+        }
+    }
+
+    return $false
+}
+
+$missing = New-Object System.Collections.Generic.List[object]
+
+foreach ($track in $automaticTracks) {
+    if (-not (Test-ApprovedTrackPresent $track.Name)) {
+        $missing.Add($track)
+    }
+}
+
+foreach ($track in $manualTracks) {
+    if (-not (Test-ApprovedTrackPresent $track.Name)) {
+        $missing.Add($track)
+    }
+}
+
 Write-Host ""
-Write-Host "SoulPlayer default library ready: $($tracks.Count) CC0 tracks"
+if ($missing.Count -eq 0) {
+    Write-Host "SoulPlayer default library ready: 8 / 8 approved tracks"
+}
+else {
+    Write-Warning ("SoulPlayer default library is incomplete: " + (8 - $missing.Count) + " / 8 approved tracks present.")
+    Write-Host ""
+    Write-Host "Missing tracks:"
+    foreach ($track in $missing) {
+        Write-Host ("  - " + $track.Name)
+        if ($track.ContainsKey("Source")) {
+            Write-Host ("    Official source: " + $track.Source)
+        }
+    }
+
+    Write-Host ""
+    Write-Host "The Anders tracks are intentionally not scraped from SoundCloud."
+    Write-Host "Obtain them through the creator's official download route and save them as:"
+    foreach ($track in $manualTracks) {
+        Write-Host ("  " + $track.Name + ".mp3  (or .ogg/.wav/.flac)")
+    }
+
+    if ($RequireComplete) {
+        throw "Default music pack is missing $($missing.Count) approved track(s)."
+    }
+}
+
 Write-Host $destinationPath
