@@ -122,13 +122,29 @@ However, current SPT does not contain these new live-only recorder classes, so S
 
 The important positive result is that live EFT built the recorder on the **same `UsableItemController` family that SPT already has**. Therefore the practical SoulPlayer path is to reproduce only the missing recorder-specific layer while reusing SPT's existing first-person utility-item controller/operation infrastructure.
 
+## Implemented prototype
+
+The branch now contains a first runnable SoulRecorder MVP:
+
+- `Recorder/SoulRecorderAudioPlayer.cs` provides a dedicated in-raid audio source so normal menu music can remain suspended during raids.
+- `Recorder/SoulRecorderController.cs` toggles the recorder with **M** during a raid.
+- Preferred starter tape is `Scott Buckley - The Long Dark`; if unavailable, the first active-library track is used.
+- The cassette plays once and stops automatically when it finishes or when the raid ends.
+- If the player currently has SPT's existing radio transmitter in hands, SoulPlayer temporarily uses the public `RadioTransmitterController.SetAim(bool)` state as a first-person physical animation proxy.
+- Without that item equipped, the audio backend still works, allowing the audio and physical layers to be validated independently.
+
+See `docs/RECORDER-PROTOTYPE.md` for test behavior.
+
+No live EFT recorder assets are used or redistributed.
+
 ## Next implementation step
 
-1. Map live recorder concepts onto SPT's existing `RadioTransmitterController` / `UsableItemController` operation model.
-2. Build a minimal `SoulRecorderController` backend with one active/unlocked tape and play/stop state, without committing any BSG assets.
-3. Prototype equip/use behavior with an existing SPT runtime utility-item path first.
-4. Scan SPT's installed asset catalogs/bundles for recorder/tape prefab or animation names. If the live assets are absent, do not redistribute them from EFT; use a legally distributable recorder/cassette model and animations instead.
-5. After the one-tape prototype works, connect it to SoulPlayer's persistent cassette collection and map-spawn system.
+1. Build/test the one-tape recorder MVP in SPT.
+2. Validate the temporary radio-transmitter hands proxy.
+3. Build a real `SoulRecorder` item/controller layer around SPT's `UsableItemController` framework.
+4. Add cassette insert/eject state and persistent unlocked-tape storage.
+5. Scan SPT's installed asset catalogs/bundles for recorder/tape prefab or animation names. If the live assets are absent, do not redistribute them from EFT; use a legally distributable recorder/cassette model and animations instead.
+6. After the one-tape prototype works, connect it to SoulPlayer's persistent cassette collection and map-spawn system.
 
 ## Development probe
 
