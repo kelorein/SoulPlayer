@@ -59,6 +59,10 @@ namespace SoulPlayer.Recorder
             _source.Stop();
             ReleaseClip();
 
+            Plugin.Log.LogInfo(
+                "SoulRecorder AUDIO LOAD -> " + track.Artist + " - " + track.Title +
+                " [" + track.Extension + "]");
+
             if (string.Equals(track.Extension, "FLAC", StringComparison.OrdinalIgnoreCase))
             {
                 _flacTask = Task.Run(() => FlacDecoder.Decode(track.FilePath));
@@ -161,8 +165,19 @@ namespace SoulPlayer.Recorder
 
             _source.clip = clip;
             _source.volume = _settings.Volume;
+            _source.mute = false;
             _source.Play();
             _loading = false;
+
+            MusicTrack track = CurrentTrack;
+            Plugin.Log.LogInfo(
+                "SoulRecorder AUDIO START -> " +
+                (track == null ? clip.name : track.Artist + " - " + track.Title) +
+                " | isPlaying=" + _source.isPlaying +
+                " | sourceVolume=" + _source.volume.ToString("0.00") +
+                " | listenerVolume=" + AudioListener.volume.ToString("0.00") +
+                " | listenerPause=" + AudioListener.pause +
+                " | length=" + clip.length.ToString("0.0") + "s");
         }
 
         private void FailLoad(string message)
