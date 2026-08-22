@@ -27,10 +27,10 @@ namespace SoulPlayer
 
             Settings = new SoulPlayerSettings(Config);
 
-            EnablePatch("Tarkov music volume", () => new Patches.TarkovMusicVolumePatch().Enable());
-            EnablePatch("Tarkov settings music apply", () => new Patches.TarkovMusicSettingsApplyPatch().Enable());
-            EnablePatch("Tarkov force-apply volume", () => new Patches.TarkovForceApplyVolumePatch().Enable());
-            EnablePatch("Tarkov sound settings screen", () => new Patches.TarkovSoundSettingsTabPatch().Enable());
+            EnablePatch("Tushonka music volume", () => new Patches.TarkovMusicVolumePatch().Enable());
+            EnablePatch("Tushonka settings music apply", () => new Patches.TarkovMusicSettingsApplyPatch().Enable());
+            EnablePatch("Tushonka force-apply volume", () => new Patches.TarkovForceApplyVolumePatch().Enable());
+            EnablePatch("Tushonka sound settings screen", () => new Patches.TarkovSoundSettingsTabPatch().Enable());
 
             MusicLibrary = new MusicLibrary();
             AudioPlayer = gameObject.AddComponent<SoulAudioPlayer>();
