@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using Comfort.Common;
 using EFT;
 using SoulPlayer.Configuration;
@@ -15,9 +16,10 @@ namespace SoulPlayer.Recorder
     /// M toggles one starter tape during a live raid. Recorder audio uses its own
     /// AudioSource so the normal menu player can remain paused for the raid.
     ///
-    /// For the first physical-hands validation, an equipped SPT radio transmitter
-    /// is used only as a temporary animation proxy. SoulPlayer does not copy or
-    /// redistribute any EFT recorder assets.
+    /// Physical-hands validation first tries SPT's radio-transmitter controller.
+    /// If that item is not equipped, SoulPlayer asks the current hands controller
+    /// for its existing compass utility-item state through reflection. SoulPlayer
+    /// does not copy or redistribute any EFT recorder assets.
     /// </summary>
     internal sealed class SoulRecorderController : MonoBehaviour
     {
@@ -34,6 +36,7 @@ namespace SoulPlayer.Recorder
         private bool _physicalProxyRaised;
         private bool _loggedMissingPhysicalProxy;
         private float _nextPhysicalProxyAttempt;
+        private string _physicalProxyName = string.Empty;
 
         internal bool IsActive { get { return _active; } }
         internal MusicTrack ActiveTape { get { return _audioPlayer == null ? null : _audioPlayer.CurrentTrack; } }
@@ -51,7 +54,7 @@ namespace SoulPlayer.Recorder
 
             Plugin.Log.LogInfo(
                 "SoulRecorder prototype ready: M toggles the starter tape during raids. " +
-                "Equip a radio transmitter to test the temporary physical-hands proxy.");
+                "Physical proxy order: radio transmitter, then current-hands compass state.");
         }
 
         private void Update()
@@ -82,14 +85,12 @@ namespace SoulPlayer.Recorder
                 }
             }
 
-            if (_active && Time.unscaledTime >= _nextPhysicalProxyAttempt)
+            if (_active && !_physicalProxyRaised && Time.unscaledTime >= _nextPhysicalProxyAttempt)
             {
                 _nextPhysicalProxyAttempt = Time.unscaledTime + PhysicalProxyRetrySeconds;
                 TrySetPhysicalProxyState(true);
             }
 
-            // A cassette is single-play for this first prototype. When the track
-            // reaches its natural end, lower the proxy and return to the idle state.
             if (_active && !_audioPlayer.IsLoading && !_audioPlayer.IsPlaying &&
                 _audioPlayer.CurrentTrack != null)
             {
@@ -121,6 +122,8 @@ namespace SoulPlayer.Recorder
 
             _pendingStart = false;
             _active = true;
+            _physicalProxyRaised = false;
+            _physicalProxyName = string.Empty;
             _loggedMissingPhysicalProxy = false;
             _nextPhysicalProxyAttempt = 0f;
 
@@ -129,7 +132,7 @@ namespace SoulPlayer.Recorder
 
             Plugin.Log.LogInfo(
                 "SoulRecorder PLAY -> " + track.Artist + " - " + track.Title +
-                (physical ? " [radio-transmitter hands proxy active]" : " [audio-only prototype]"));
+                (physical ? " [" + _physicalProxyName + " hands proxy active]" : " [audio-only prototype]"));
         }
 
         private void StopRecorder(string reason)
@@ -147,6 +150,7 @@ namespace SoulPlayer.Recorder
 
             TrySetPhysicalProxyState(false);
             _physicalProxyRaised = false;
+            _physicalProxyName = string.Empty;
 
             if (hadState)
             {
@@ -189,40 +193,102 @@ namespace SoulPlayer.Recorder
             {
                 GameWorld world = Singleton<GameWorld>.Instance;
                 Player player = world == null ? null : world.MainPlayer;
-                RadioTransmitterController proxy = player == null
-                    ? null
-                    : player.HandsController as RadioTransmitterController;
+                object hands = player == null ? null : player.HandsController;
 
-                if (proxy == null)
+                if (hands == null)
                 {
-                    if (raised && !_loggedMissingPhysicalProxy)
-                    {
-                        _loggedMissingPhysicalProxy = true;
-                        Plugin.Log.LogInfo(
-                            "SoulRecorder physical proxy not active: equip SPT's radio transmitter " +
-                            "to test the existing utility-item hands animation. Audio still works.");
-                    }
+                    LogMissingProxy(raised, "no local hands controller is available yet");
                     return false;
                 }
 
-                if (_physicalProxyRaised != raised || proxy.CurrentRadioTransmitterState != raised)
+                RadioTransmitterController radio = hands as RadioTransmitterController;
+                if (radio != null)
                 {
-                    proxy.SetAim(raised);
+                    if (_physicalProxyRaised != raised || radio.CurrentRadioTransmitterState != raised)
+                    {
+                        radio.SetAim(raised);
+                    }
+
+                    _physicalProxyRaised = raised;
+                    _physicalProxyName = "radio-transmitter";
+                    _loggedMissingPhysicalProxy = false;
+                    return true;
                 }
 
-                _physicalProxyRaised = raised;
-                _loggedMissingPhysicalProxy = false;
-                return true;
+                if ((!_physicalProxyRaised || !raised) && TryInvokeBoolMethod(hands, "SetCompassState", raised))
+                {
+                    _physicalProxyRaised = raised;
+                    _physicalProxyName = "compass";
+                    _loggedMissingPhysicalProxy = false;
+                    return true;
+                }
+
+                LogMissingProxy(
+                    raised,
+                    "current hands controller '" + hands.GetType().FullName +
+                    "' exposes neither an active radio-transmitter proxy nor a usable SetCompassState(bool) path");
+                return false;
+            }
+            catch (TargetInvocationException ex)
+            {
+                Exception inner = ex.InnerException ?? ex;
+                LogProxyFailure(raised, inner.Message);
+                return false;
             }
             catch (Exception ex)
             {
-                if (raised && !_loggedMissingPhysicalProxy)
-                {
-                    _loggedMissingPhysicalProxy = true;
-                    Plugin.Log.LogWarning("SoulRecorder physical proxy failed: " + ex.Message);
-                }
+                LogProxyFailure(raised, ex.Message);
                 return false;
             }
+        }
+
+        private static bool TryInvokeBoolMethod(object target, string methodName, bool value)
+        {
+            Type type = target.GetType();
+            Type[] signature = { typeof(bool) };
+
+            while (type != null)
+            {
+                MethodInfo method = type.GetMethod(
+                    methodName,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly,
+                    null,
+                    signature,
+                    null);
+
+                if (method != null)
+                {
+                    method.Invoke(target, new object[] { value });
+                    return true;
+                }
+
+                type = type.BaseType;
+            }
+
+            return false;
+        }
+
+        private void LogMissingProxy(bool raised, string detail)
+        {
+            if (!raised || _loggedMissingPhysicalProxy)
+            {
+                return;
+            }
+
+            _loggedMissingPhysicalProxy = true;
+            Plugin.Log.LogInfo(
+                "SoulRecorder physical proxy not active: " + detail + ". Audio still works.");
+        }
+
+        private void LogProxyFailure(bool raised, string message)
+        {
+            if (!raised || _loggedMissingPhysicalProxy)
+            {
+                return;
+            }
+
+            _loggedMissingPhysicalProxy = true;
+            Plugin.Log.LogWarning("SoulRecorder physical proxy failed: " + message);
         }
 
         private void OnLibraryChanged()
