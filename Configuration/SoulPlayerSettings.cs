@@ -41,7 +41,7 @@ namespace SoulPlayer.Configuration
             _musicFolders = config.Bind(
                 "Library",
                 "Music folders",
-                @"D:\\soulseek_share",
+                @"D:\soulseek_share",
                 "Windows folders scanned recursively. Separate multiple folders with |.");
 
             _librarySourceMode = config.Bind(
@@ -79,13 +79,13 @@ namespace SoulPlayer.Configuration
             _survivedMusicFolder = config.Bind(
                 "Post-raid",
                 "Survived music folder",
-                @"D:\\soulseek_share\\PostRaid\\Survived",
+                @"D:\soulseek_share\PostRaid\Survived",
                 "Tracks under this folder are used after surviving a raid.");
 
             _deathMusicFolder = config.Bind(
                 "Post-raid",
                 "Death music folder",
-                @"D:\\soulseek_share\\PostRaid\\Died",
+                @"D:\soulseek_share\PostRaid\Died",
                 "Tracks under this folder are used after a failed raid.");
 
             _enableMediaKeys = config.Bind(
@@ -301,8 +301,13 @@ namespace SoulPlayer.Configuration
 
         internal IReadOnlyList<string> GetScanFolders()
         {
-            return GetLibraryFolders()
-                .Concat(new[] { SurvivedMusicFolder, DeathMusicFolder })
+            IEnumerable<string> folders = GetLibraryFolders();
+            if (LibraryMode != LibrarySourceMode.IncludedOnly)
+            {
+                folders = folders.Concat(new[] { SurvivedMusicFolder, DeathMusicFolder });
+            }
+
+            return folders
                 .Where(path => !string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
