@@ -4,6 +4,7 @@ using BepInEx.Logging;
 using SoulPlayer.Audio;
 using SoulPlayer.Configuration;
 using SoulPlayer.Library;
+using SoulPlayer.Utils;
 using UnityEngine;
 
 namespace SoulPlayer
@@ -18,6 +19,7 @@ namespace SoulPlayer
         internal static SoulAudioPlayer AudioPlayer { get; private set; }
         internal static TarkovMusicMuter TarkovMusicMuter { get; private set; }
         internal static PostRaidCoordinator PostRaidCoordinator { get; private set; }
+        internal static RecorderDiagnostics RecorderDiagnostics { get; private set; }
 
         private void Awake()
         {
@@ -38,6 +40,7 @@ namespace SoulPlayer
             TarkovMusicMuter = gameObject.AddComponent<TarkovMusicMuter>();
             TarkovMusicMuter.Initialize(Settings);
             PostRaidCoordinator = gameObject.AddComponent<PostRaidCoordinator>();
+            RecorderDiagnostics = gameObject.AddComponent<RecorderDiagnostics>();
 
             EnablePatch("menu screen", () => new Patches.MenuScreenPatch().Enable());
             EnablePatch("menu taskbar", () => new Patches.MenuTaskBarPatch().Enable());
@@ -46,6 +49,7 @@ namespace SoulPlayer
 
             MusicLibrary.BeginScan(Settings.GetScanFolders());
             Log.LogInfo("SoulPlayer 0.8.0 loaded. Library scan started.");
+            Log.LogInfo("Recorder discovery probe armed on Ctrl+Shift+F10 (development branch only).");
         }
 
         private static void EnablePatch(string name, Action enable)
