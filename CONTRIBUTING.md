@@ -5,19 +5,19 @@ Bug reports, focused improvements, and compatibility fixes are welcome.
 ## Before opening an issue
 
 1. Install the latest SoulPlayer release.
-2. Confirm the issue on SPT 3.9.8.
+2. Confirm the issue on SPT 4.1.3.
 3. Check existing issues for duplicates.
 4. Collect the relevant section of `BepInEx/LogOutput.log`.
 
 ## Building locally
 
-SoulPlayer targets .NET Framework 4.7.2 and compiles against an existing SPT 3.9.8 installation.
+SoulPlayer targets .NET Framework 4.7.2 and compiles against an existing SPT 4.1.3 installation.
 
 ```powershell
 dotnet build SoulPlayer.csproj -c Release -p:SptRoot="C:\Path\To\SPT"
 ```
 
-The SPT installation is required only for compile-time game and BepInEx references. Do not commit SPT or Escape from Tarkov files.
+The SPT installation is required only for compile-time game and BepInEx references. Do not commit SPT or game files.
 
 ## Pull requests
 
@@ -29,4 +29,3 @@ The SPT installation is required only for compile-time game and BepInEx referenc
 - Update `CHANGELOG.md` when behavior changes.
 
 SoulPlayer's source is MIT-licensed. Bundled third-party runtime libraries retain their original licenses as documented in `THIRD-PARTY-NOTICES.txt`.
-

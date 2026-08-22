@@ -10,6 +10,16 @@ namespace SoulPlayer.Utils
         private const float CountdownLookupInterval = 1f;
         private static MatchmakerFinalCountdown _cachedCountdown;
         private static float _nextCountdownLookup;
+        private static float _suspendSuppressedUntil = -1f;
+
+        internal static void SuppressRaidMusicSuspend(float seconds)
+        {
+            _suspendSuppressedUntil = Mathf.Max(
+                _suspendSuppressedUntil,
+                Time.unscaledTime + Mathf.Max(0f, seconds));
+            _cachedCountdown = null;
+            _nextCountdownLookup = 0f;
+        }
 
         internal static bool IsInRaid()
         {
@@ -33,6 +43,14 @@ namespace SoulPlayer.Utils
 
         internal static bool ShouldSuspendMenuMusic()
         {
+            // During post-raid UI construction EFT can briefly keep raid-state
+            // objects alive. Ignore that stale state so result music starts once
+            // and is not immediately paused/restarted by teardown jitter.
+            if (Time.unscaledTime < _suspendSuppressedUntil)
+            {
+                return false;
+            }
+
             // AbstractGame.InRaid becomes true while the map is still loading.
             // Keep menu music alive until EFT presents the deployment countdown
             // or the local player is actually present in the live GameWorld.
