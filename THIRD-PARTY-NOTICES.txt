@@ -12,3 +12,40 @@ Project: https://github.com/VPKSoft/NAudio.Flac
 The bundled NAudio.Flac assembly has only its NAudio.Core reference version
 updated from 2.2.1 to 2.3.0 so it can use the bundled compatible NAudio.Core
 runtime already validated with SPT's .NET Framework target.
+
+SoulPlayer default music pack
+=============================
+
+The audio files in DefaultMusic are NOT licensed under SoulPlayer's MIT license.
+They remain under the licenses granted by their creators.
+
+Scott Buckley tracks - Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+https://www.scottbuckley.com.au/
+
+- Electric Dreams
+  Attribution: 'Electric Dreams' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+- Resonance
+  Attribution: 'Resonance' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+- Signal to Noise
+  Attribution: 'Signal to Noise' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+- The Long Dark
+  Attribution: 'The Long Dark' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+
+Anders / Anttu Janhunen tracks
+Official catalog: https://soundcloud.com/anttu-janhunen
+
+- Frostbite
+- False Awakenings
+- Into World Unknown
+- Ex Nihilo
+
+These tracks are distributed only as part of SoulPlayer's free/non-commercial music pack.
+False Awakenings is marked CC BY-NC-SA on SoundCloud; Into World Unknown and
+Ex Nihilo have been published with CC BY-NC-SA 3.0 attribution in projects that
+use the creator's royalty-free catalog. Preserve creator attribution and the
+non-commercial/share-alike terms. Frostbite must not be shipped from an
+unofficial mirror; release packaging should retain documented proof of the
+creator-authorized download/source used for the file.
+
+See DefaultMusic/SOURCES.md for per-track source pages and release notes.
