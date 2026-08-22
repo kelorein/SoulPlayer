@@ -14,7 +14,7 @@ body:
     attributes:
       label: SoulPlayer version
       description: Shown in `BepInEx/LogOutput.log` when the game starts.
-      placeholder: 0.6.5
+      placeholder: 0.8.0
     validations:
       required: true
 
@@ -22,7 +22,7 @@ body:
     id: spt-version
     attributes:
       label: SPT version
-      placeholder: 3.9.8
+      placeholder: 4.1.3
     validations:
       required: true
 
@@ -69,4 +69,3 @@ body:
           required: true
         - label: I searched existing issues for the same problem.
           required: true
-

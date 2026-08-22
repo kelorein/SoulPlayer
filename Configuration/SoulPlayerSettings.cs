@@ -15,6 +15,7 @@ namespace SoulPlayer.Configuration
         private readonly ConfigEntry<bool> _shuffle;
         private readonly ConfigEntry<int> _repeatMode;
         private readonly ConfigEntry<bool> _showMiniPlayer;
+        private readonly ConfigEntry<bool> _muteTarkovMusic;
         private readonly ConfigEntry<bool> _autoPlayAfterRaid;
         private readonly ConfigEntry<string> _survivedMusicFolder;
         private readonly ConfigEntry<string> _deathMusicFolder;
@@ -43,6 +44,11 @@ namespace SoulPlayer.Configuration
 
             _shuffle = config.Bind("Player", "Shuffle", true, "Shuffle the current library queue.");
             _repeatMode = config.Bind("Player", "Repeat mode", 0, "0 = off, 1 = repeat queue, 2 = repeat one.");
+            _muteTarkovMusic = config.Bind(
+                "Player",
+                "Mute Tushonka music",
+                true,
+                "Mute Tushonka's built-in music while SoulPlayer is active. Other game audio is not changed.");
 
             _showMiniPlayer = config.Bind(
                 "Interface",
@@ -53,7 +59,7 @@ namespace SoulPlayer.Configuration
             _autoPlayAfterRaid = config.Bind(
                 "Post-raid",
                 "Autoplay after raid",
-                false,
+                true,
                 "Automatically start outcome-specific music when the raid result screen appears.");
 
             _survivedMusicFolder = config.Bind(
@@ -141,6 +147,16 @@ namespace SoulPlayer.Configuration
             set
             {
                 _repeatMode.Value = Math.Max(0, Math.Min(2, value));
+                _config.Save();
+            }
+        }
+
+        internal bool MuteTarkovMusic
+        {
+            get { return _muteTarkovMusic.Value; }
+            set
+            {
+                _muteTarkovMusic.Value = value;
                 _config.Save();
             }
         }

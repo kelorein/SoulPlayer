@@ -152,7 +152,7 @@ namespace SoulPlayer.UI
             UIUtils.CreateLabel(
                 sidebar,
                 "Version",
-                "LOCAL MUSIC  •  0.6.4",
+                "LOCAL MUSIC  •  0.8.0",
                 _styleSource,
                 11f,
                 UIUtils.MutedText,
