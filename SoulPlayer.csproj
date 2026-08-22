@@ -58,7 +58,7 @@
     <Compile Include="Configuration\SoulPlayerSettings.cs" /><Compile Include="Library\MusicLibrary.cs" /><Compile Include="Library\MusicTrack.cs" />
     <Compile Include="Patches\MenuScreenPatch.cs" /><Compile Include="Patches\PostRaidResultPatch.cs" /><Compile Include="Patches\TarkovMusicVolumePatch.cs" /><Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" /><Compile Include="UI\SoulFolderBrowser.cs" /><Compile Include="UI\SoulPlayerWindow.cs" /><Compile Include="UI\SoulMiniPlayer.cs" />
-    <Compile Include="UI\UIUtils.cs" /><Compile Include="UI\SoulPlayerOverlayHost.cs" /><Compile Include="Utils\GameState.cs" /><Compile Include="Utils\MediaKeyInput.cs" />
+    <Compile Include="UI\UIUtils.cs" /><Compile Include="UI\SoulPlayerOverlayHost.cs" /><Compile Include="Utils\GameState.cs" /><Compile Include="Utils\MediaKeyInput.cs" /><Compile Include="Utils\RecorderDiagnostics.cs" />
   </ItemGroup>
   <Target Name="ValidateSptRoot" BeforeTargets="ResolveAssemblyReferences">
     <Error Condition="'$(SptRoot)' == ''" Text="Set SptRoot to an SPT 4.1.3 installation, for example: -p:SptRoot=&quot;C:\SPT&quot;" />
