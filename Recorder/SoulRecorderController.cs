@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using Comfort.Common;
 using EFT;
 using SoulPlayer.Configuration;
@@ -11,35 +10,50 @@ using UnityEngine;
 namespace SoulPlayer.Recorder
 {
     /// <summary>
-    /// First SoulPlayer recorder prototype.
-    ///
-    /// M toggles one starter tape during a live raid. Recorder audio uses its own
-    /// AudioSource so the normal menu player can remain paused for the raid.
-    ///
-    /// Physical-hands validation first tries SPT's radio-transmitter controller.
-    /// If that item is not equipped, SoulPlayer asks the current hands controller
-    /// for its existing compass utility-item state through reflection. SoulPlayer
-    /// does not copy or redistribute any EFT recorder assets.
+    /// Raid-level input/lifetime host for the SoulRecorder usable-item controller.
+    /// M enters or exits the recorder interaction; tape transport lives on the
+    /// usable-item controller and no longer borrows compass state.
     /// </summary>
     internal sealed class SoulRecorderController : MonoBehaviour
     {
         private const KeyCode RecorderHotkey = KeyCode.M;
         private const string PreferredStarterArtist = "Scott Buckley";
         private const string PreferredStarterTitle = "The Long Dark";
-        private const float PhysicalProxyRetrySeconds = 0.5f;
 
         private SoulPlayerSettings _settings;
         private SoulRecorderAudioPlayer _audioPlayer;
-        private bool _active;
-        private bool _pendingStart;
+        private SoulRecorderUsableItemController _usableItemController;
+        private bool _pendingEnter;
         private bool _wasInRaid;
-        private bool _physicalProxyRaised;
-        private bool _loggedMissingPhysicalProxy;
-        private float _nextPhysicalProxyAttempt;
-        private string _physicalProxyName = string.Empty;
 
-        internal bool IsActive { get { return _active; } }
-        internal MusicTrack ActiveTape { get { return _audioPlayer == null ? null : _audioPlayer.CurrentTrack; } }
+        internal bool IsActive
+        {
+            get
+            {
+                return _pendingEnter ||
+                       (_usableItemController != null && _usableItemController.IsInteractionActive);
+            }
+        }
+
+        internal SoulRecorderState State
+        {
+            get
+            {
+                return _usableItemController == null
+                    ? SoulRecorderState.Idle
+                    : _usableItemController.RecorderState;
+            }
+        }
+
+        internal MusicTrack ActiveTape
+        {
+            get
+            {
+                return _usableItemController == null
+                    ? null
+                    : _usableItemController.ActiveTape;
+            }
+        }
 
         internal void Initialize(SoulPlayerSettings settings)
         {
@@ -47,14 +61,17 @@ namespace SoulPlayer.Recorder
             _audioPlayer = gameObject.AddComponent<SoulRecorderAudioPlayer>();
             _audioPlayer.Initialize(settings);
 
+            _usableItemController = new SoulRecorderUsableItemController();
+            _usableItemController.Bind(_audioPlayer, CreateHandsView());
+
             if (Plugin.MusicLibrary != null)
             {
                 Plugin.MusicLibrary.Changed += OnLibraryChanged;
             }
 
             Plugin.Log.LogInfo(
-                "SoulRecorder prototype ready: M toggles the starter tape during raids. " +
-                "Physical proxy waits for confirmed tape playback before raising.");
+                "SoulRecorder usable-item controller ready: M enters/exits the recorder interaction; " +
+                "starter cassette is " + PreferredStarterArtist + " - " + PreferredStarterTitle + ".");
         }
 
         private void Update()
@@ -62,9 +79,9 @@ namespace SoulPlayer.Recorder
             bool inRaid = GameState.IsInRaid();
             if (!inRaid)
             {
-                if (_wasInRaid || _active || _pendingStart)
+                if (_wasInRaid || IsActive)
                 {
-                    StopRecorder("raid ended");
+                    ResetRecorder("raid ended");
                 }
 
                 _wasInRaid = false;
@@ -75,41 +92,34 @@ namespace SoulPlayer.Recorder
 
             if (Input.GetKeyDown(RecorderHotkey))
             {
-                if (_active || _pendingStart)
-                {
-                    StopRecorder("M pressed");
-                }
-                else
-                {
-                    StartRecorder();
-                }
+                ToggleInteraction();
             }
 
-            // Do not raise the temporary hands proxy until Unity confirms the tape
-            // AudioSource is actually playing. This keeps the animation synchronized
-            // with real playback and makes regressions visible in the log.
-            if (_active && _audioPlayer.IsPlaying && !_physicalProxyRaised &&
-                Time.unscaledTime >= _nextPhysicalProxyAttempt)
+            _usableItemController.ManualRecorderUpdate(Time.unscaledTime);
+        }
+
+        private void ToggleInteraction()
+        {
+            if (_pendingEnter)
             {
-                _nextPhysicalProxyAttempt = Time.unscaledTime + PhysicalProxyRetrySeconds;
-                if (TrySetPhysicalProxyState(true))
-                {
-                    Plugin.Log.LogInfo(
-                        "SoulRecorder HANDS -> " + _physicalProxyName + " proxy raised after audio start.");
-                }
+                _pendingEnter = false;
+                Plugin.Log.LogInfo("SoulRecorder pending interaction cancelled (M pressed).");
+                return;
             }
 
-            if (_active && !_audioPlayer.IsLoading && !_audioPlayer.IsPlaying &&
-                _audioPlayer.CurrentTrack != null)
+            if (_usableItemController.RecorderState == SoulRecorderState.Idle)
             {
-                string reason = string.IsNullOrEmpty(_audioPlayer.LastError)
-                    ? "tape finished"
-                    : "audio failed: " + _audioPlayer.LastError;
-                StopRecorder(reason);
+                EnterInteraction();
+                return;
+            }
+
+            if (_usableItemController.RecorderState != SoulRecorderState.Ejecting)
+            {
+                _usableItemController.ExitInteraction();
             }
         }
 
-        private void StartRecorder()
+        private void EnterInteraction()
         {
             if (!GameState.IsInRaid())
             {
@@ -121,50 +131,42 @@ namespace SoulPlayer.Recorder
             {
                 if (Plugin.MusicLibrary != null && Plugin.MusicLibrary.IsScanning)
                 {
-                    _pendingStart = true;
-                    Plugin.Log.LogInfo("SoulRecorder is waiting for the music library scan to finish.");
+                    _pendingEnter = true;
+                    Plugin.Log.LogInfo(
+                        "SoulRecorder is waiting for the music library scan before entering the interaction.");
                 }
                 else
                 {
-                    Plugin.Log.LogWarning("SoulRecorder found no playable track for the starter tape.");
+                    Plugin.Log.LogWarning("SoulRecorder found no playable track for the starter cassette.");
                 }
                 return;
             }
 
-            _pendingStart = false;
-            _active = true;
-            _physicalProxyRaised = false;
-            _physicalProxyName = string.Empty;
-            _loggedMissingPhysicalProxy = false;
-            _nextPhysicalProxyAttempt = 0f;
-
-            _audioPlayer.Play(track);
-
-            Plugin.Log.LogInfo(
-                "SoulRecorder PLAY REQUEST -> " + track.Artist + " - " + track.Title +
-                " [waiting for confirmed audio start before hands proxy]");
-        }
-
-        private void StopRecorder(string reason)
-        {
-            bool hadState = _active || _pendingStart ||
-                            (_audioPlayer != null && (_audioPlayer.IsPlaying || _audioPlayer.IsLoading));
-
-            _pendingStart = false;
-            _active = false;
-
-            if (_audioPlayer != null)
+            GameWorld world = Singleton<GameWorld>.Instance;
+            Player player = world == null ? null : world.MainPlayer;
+            if (player == null)
             {
-                _audioPlayer.Stop();
+                Plugin.Log.LogInfo("SoulRecorder interaction is waiting for the local raid player.");
+                return;
             }
 
-            TrySetPhysicalProxyState(false);
-            _physicalProxyRaised = false;
-            _physicalProxyName = string.Empty;
-
-            if (hadState)
+            _pendingEnter = false;
+            if (!_usableItemController.EnterInteraction(player, track))
             {
-                Plugin.Log.LogInfo("SoulRecorder STOP (" + reason + ").");
+                Plugin.Log.LogWarning("SoulRecorder could not enter from state " + State + ".");
+            }
+        }
+
+        private void ResetRecorder(string reason)
+        {
+            _pendingEnter = false;
+            if (_usableItemController != null)
+            {
+                _usableItemController.ForceReset(reason);
+            }
+            else if (_audioPlayer != null)
+            {
+                _audioPlayer.Stop();
             }
         }
 
@@ -189,7 +191,7 @@ namespace SoulPlayer.Recorder
             if (fallback != null)
             {
                 Plugin.Log.LogInfo(
-                    "Preferred starter tape '" + PreferredStarterArtist + " - " +
+                    "Preferred starter cassette '" + PreferredStarterArtist + " - " +
                     PreferredStarterTitle + "' is not in the active library; using " +
                     fallback.Artist + " - " + fallback.Title + ".");
             }
@@ -197,115 +199,22 @@ namespace SoulPlayer.Recorder
             return fallback;
         }
 
-        private bool TrySetPhysicalProxyState(bool raised)
+        private static ISoulRecorderHandsView CreateHandsView()
         {
-            try
-            {
-                GameWorld world = Singleton<GameWorld>.Instance;
-                Player player = world == null ? null : world.MainPlayer;
-                object hands = player == null ? null : player.HandsController;
-
-                if (hands == null)
-                {
-                    LogMissingProxy(raised, "no local hands controller is available yet");
-                    return false;
-                }
-
-                RadioTransmitterController radio = hands as RadioTransmitterController;
-                if (radio != null)
-                {
-                    if (_physicalProxyRaised != raised || radio.CurrentRadioTransmitterState != raised)
-                    {
-                        radio.SetAim(raised);
-                    }
-
-                    _physicalProxyRaised = raised;
-                    _physicalProxyName = "radio-transmitter";
-                    _loggedMissingPhysicalProxy = false;
-                    return true;
-                }
-
-                if ((!_physicalProxyRaised || !raised) && TryInvokeBoolMethod(hands, "SetCompassState", raised))
-                {
-                    _physicalProxyRaised = raised;
-                    _physicalProxyName = "compass";
-                    _loggedMissingPhysicalProxy = false;
-                    return true;
-                }
-
-                LogMissingProxy(
-                    raised,
-                    "current hands controller '" + hands.GetType().FullName +
-                    "' exposes neither an active radio-transmitter proxy nor a usable SetCompassState(bool) path");
-                return false;
-            }
-            catch (TargetInvocationException ex)
-            {
-                Exception inner = ex.InnerException ?? ex;
-                LogProxyFailure(raised, inner.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                LogProxyFailure(raised, ex.Message);
-                return false;
-            }
-        }
-
-        private static bool TryInvokeBoolMethod(object target, string methodName, bool value)
-        {
-            Type type = target.GetType();
-            Type[] signature = { typeof(bool) };
-
-            while (type != null)
-            {
-                MethodInfo method = type.GetMethod(
-                    methodName,
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly,
-                    null,
-                    signature,
-                    null);
-
-                if (method != null)
-                {
-                    method.Invoke(target, new object[] { value });
-                    return true;
-                }
-
-                type = type.BaseType;
-            }
-
-            return false;
-        }
-
-        private void LogMissingProxy(bool raised, string detail)
-        {
-            if (!raised || _loggedMissingPhysicalProxy)
-            {
-                return;
-            }
-
-            _loggedMissingPhysicalProxy = true;
-            Plugin.Log.LogInfo(
-                "SoulRecorder physical proxy not active: " + detail + ". Audio still works.");
-        }
-
-        private void LogProxyFailure(bool raised, string message)
-        {
-            if (!raised || _loggedMissingPhysicalProxy)
-            {
-                return;
-            }
-
-            _loggedMissingPhysicalProxy = true;
-            Plugin.Log.LogWarning("SoulRecorder physical proxy failed: " + message);
+#if SOULPLAYER_RECORDER_DEV_PROXY
+            Plugin.Log.LogWarning(
+                "SoulRecorder development radio/compass hands proxy is enabled for this build.");
+            return new DevelopmentRecorderHandsProxy();
+#else
+            return HeadlessSoulRecorderHandsView.Instance;
+#endif
         }
 
         private void OnLibraryChanged()
         {
-            if (_pendingStart && GameState.IsInRaid())
+            if (_pendingEnter && GameState.IsInRaid())
             {
-                StartRecorder();
+                EnterInteraction();
             }
         }
 
@@ -316,7 +225,7 @@ namespace SoulPlayer.Recorder
                 Plugin.MusicLibrary.Changed -= OnLibraryChanged;
             }
 
-            StopRecorder("component destroyed");
+            ResetRecorder("component destroyed");
         }
     }
 }

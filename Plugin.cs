@@ -53,7 +53,7 @@ namespace SoulPlayer
 
             MusicLibrary.BeginScan(Settings.GetScanFolders());
             Log.LogInfo("SoulPlayer 0.8.0 loaded. Library scan started.");
-            Log.LogInfo("SoulRecorder prototype: press M during a raid to play/stop the starter tape.");
+            Log.LogInfo("SoulRecorder: press M during a raid to enter/exit the recorder interaction.");
             Log.LogInfo("Recorder discovery probe armed on Ctrl+Shift+F10 (development branch only).");
         }
 
