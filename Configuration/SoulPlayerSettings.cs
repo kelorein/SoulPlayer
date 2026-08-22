@@ -7,10 +7,18 @@ using UnityEngine;
 
 namespace SoulPlayer.Configuration
 {
+    internal enum LibrarySourceMode
+    {
+        IncludedOnly = 0,
+        PersonalOnly = 1,
+        IncludedAndPersonal = 2
+    }
+
     internal sealed class SoulPlayerSettings
     {
         private readonly ConfigFile _config;
         private readonly ConfigEntry<string> _musicFolders;
+        private readonly ConfigEntry<LibrarySourceMode> _librarySourceMode;
         private readonly ConfigEntry<float> _volume;
         private readonly ConfigEntry<bool> _shuffle;
         private readonly ConfigEntry<int> _repeatMode;
@@ -33,8 +41,14 @@ namespace SoulPlayer.Configuration
             _musicFolders = config.Bind(
                 "Library",
                 "Music folders",
-                @"D:\soulseek_share",
+                @"D:\\soulseek_share",
                 "Windows folders scanned recursively. Separate multiple folders with |.");
+
+            _librarySourceMode = config.Bind(
+                "Library",
+                "Library source mode",
+                LibrarySourceMode.IncludedAndPersonal,
+                "IncludedOnly = bundled CC0 music only, PersonalOnly = your folders only, IncludedAndPersonal = merge both libraries.");
 
             _volume = config.Bind(
                 "Player",
@@ -65,13 +79,13 @@ namespace SoulPlayer.Configuration
             _survivedMusicFolder = config.Bind(
                 "Post-raid",
                 "Survived music folder",
-                @"D:\soulseek_share\PostRaid\Survived",
+                @"D:\\soulseek_share\\PostRaid\\Survived",
                 "Tracks under this folder are used after surviving a raid.");
 
             _deathMusicFolder = config.Bind(
                 "Post-raid",
                 "Death music folder",
-                @"D:\soulseek_share\PostRaid\Died",
+                @"D:\\soulseek_share\\PostRaid\\Died",
                 "Tracks under this folder are used after a failed raid.");
 
             _enableMediaKeys = config.Bind(
@@ -181,6 +195,35 @@ namespace SoulPlayer.Configuration
             }
         }
 
+        internal LibrarySourceMode LibraryMode
+        {
+            get { return _librarySourceMode.Value; }
+            set
+            {
+                _librarySourceMode.Value = value;
+                _config.Save();
+            }
+        }
+
+        internal string DefaultMusicFolder
+        {
+            get
+            {
+                try
+                {
+                    string assemblyPath = typeof(SoulPlayer.Plugin).Assembly.Location;
+                    string pluginFolder = Path.GetDirectoryName(assemblyPath);
+                    return string.IsNullOrWhiteSpace(pluginFolder)
+                        ? string.Empty
+                        : Path.Combine(pluginFolder, "DefaultMusic");
+                }
+                catch
+                {
+                    return string.Empty;
+                }
+            }
+        }
+
         internal string SurvivedMusicFolder
         {
             get { return NormalizePath(_survivedMusicFolder.Value); }
@@ -236,9 +279,29 @@ namespace SoulPlayer.Configuration
                 .ToList();
         }
 
+        internal IReadOnlyList<string> GetLibraryFolders()
+        {
+            List<string> folders = new List<string>();
+
+            if (LibraryMode != LibrarySourceMode.PersonalOnly && Directory.Exists(DefaultMusicFolder))
+            {
+                folders.Add(DefaultMusicFolder);
+            }
+
+            if (LibraryMode != LibrarySourceMode.IncludedOnly)
+            {
+                folders.AddRange(GetFolders());
+            }
+
+            return folders
+                .Where(path => !string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+
         internal IReadOnlyList<string> GetScanFolders()
         {
-            return GetFolders()
+            return GetLibraryFolders()
                 .Concat(new[] { SurvivedMusicFolder, DeathMusicFolder })
                 .Where(path => !string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -316,7 +379,9 @@ namespace SoulPlayer.Configuration
 
             folders.Add(normalized);
             SaveFolders(folders);
-            message = "Folder added. Scanning in the background...";
+            message = LibraryMode == LibrarySourceMode.IncludedOnly
+                ? "Folder added. Switch Library source mode to PersonalOnly or IncludedAndPersonal to hear it."
+                : "Folder added. Scanning in the background...";
             return true;
         }
 
