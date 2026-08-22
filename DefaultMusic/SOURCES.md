@@ -37,4 +37,4 @@ with the eight approved audio files plus this source notice.
 
 SoulPlayer's source code remains MIT licensed. Bundled music is **not** relicensed under MIT; each track remains under its creator's license above.
 
-The Anders tracks are non-commercial-license material. If SoulPlayer is ever sold, paywalled, or otherwise used commercially, remove those tracks or obtain separate permission before release.
+The documented CC BY-NC-SA Anders tracks are non-commercial material. If SoulPlayer is ever sold, paywalled, or otherwise used commercially, remove those tracks or obtain separate permission before release. Frostbite should remain release-gated until the exact redistribution terms for the creator-authorized copy are retained with the release records.
