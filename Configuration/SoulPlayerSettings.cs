@@ -46,9 +46,9 @@ namespace SoulPlayer.Configuration
             _repeatMode = config.Bind("Player", "Repeat mode", 0, "0 = off, 1 = repeat queue, 2 = repeat one.");
             _muteTarkovMusic = config.Bind(
                 "Player",
-                "Mute Tarkov music",
+                "Mute Tushonka music",
                 true,
-                "Mute Escape from Tarkov's built-in music while SoulPlayer is active. Other game audio is not changed.");
+                "Mute Tushonka's built-in music while SoulPlayer is active. Other game audio is not changed.");
 
             _showMiniPlayer = config.Bind(
                 "Interface",
