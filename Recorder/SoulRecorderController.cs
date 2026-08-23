@@ -1,7 +1,7 @@
 using System;
-using System.Linq;
 using Comfort.Common;
 using EFT;
+using SoulPlayer.Cassettes;
 using SoulPlayer.Configuration;
 using SoulPlayer.Library;
 using SoulPlayer.Utils;
@@ -126,7 +126,23 @@ namespace SoulPlayer.Recorder
                 return;
             }
 
-            MusicTrack track = ResolveStarterTape();
+            GameWorld world = Singleton<GameWorld>.Instance;
+            Player player = world == null ? null : world.MainPlayer;
+            if (player == null)
+            {
+                Plugin.Log.LogInfo("SoulRecorder interaction is waiting for the local raid player.");
+                return;
+            }
+
+            if (Plugin.TapeCollectionHost == null ||
+                !Plugin.TapeCollectionHost.EnsureProfile(player))
+            {
+                Plugin.Log.LogWarning(
+                    "SoulRecorder cannot enter until the profile cassette collection is loaded.");
+                return;
+            }
+
+            MusicTrack track = ResolveUnlockedTape();
             if (track == null)
             {
                 if (Plugin.MusicLibrary != null && Plugin.MusicLibrary.IsScanning)
@@ -137,16 +153,9 @@ namespace SoulPlayer.Recorder
                 }
                 else
                 {
-                    Plugin.Log.LogWarning("SoulRecorder found no playable track for the starter cassette.");
+                    Plugin.Log.LogWarning(
+                        "SoulRecorder found no unlocked cassette with available audio.");
                 }
-                return;
-            }
-
-            GameWorld world = Singleton<GameWorld>.Instance;
-            Player player = world == null ? null : world.MainPlayer;
-            if (player == null)
-            {
-                Plugin.Log.LogInfo("SoulRecorder interaction is waiting for the local raid player.");
                 return;
             }
 
@@ -170,33 +179,31 @@ namespace SoulPlayer.Recorder
             }
         }
 
-        private MusicTrack ResolveStarterTape()
+        private MusicTrack ResolveUnlockedTape()
         {
-            if (Plugin.MusicLibrary == null)
+            if (Plugin.TapeCollection == null || !Plugin.TapeCollection.IsLoaded)
             {
                 return null;
             }
 
-            var tracks = Plugin.MusicLibrary.Tracks;
-            MusicTrack preferred = tracks.FirstOrDefault(track =>
-                string.Equals(track.Artist, PreferredStarterArtist, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(track.Title, PreferredStarterTitle, StringComparison.OrdinalIgnoreCase));
-
-            if (preferred != null)
+            SoulTapeCatalogEntry selected = SoulTapeRecorderSelector.Select(Plugin.TapeCollection);
+            if (selected == null)
             {
-                return preferred;
+                return null;
             }
 
-            MusicTrack fallback = tracks.FirstOrDefault();
-            if (fallback != null)
+            if (!string.Equals(
+                    selected.Id,
+                    SoulTapeCatalog.StarterTapeId,
+                    StringComparison.Ordinal))
             {
                 Plugin.Log.LogInfo(
-                    "Preferred starter cassette '" + PreferredStarterArtist + " - " +
-                    PreferredStarterTitle + "' is not in the active library; using " +
-                    fallback.Artist + " - " + fallback.Title + ".");
+                    "Unlocked starter cassette '" + PreferredStarterArtist + " - " +
+                    PreferredStarterTitle + "' has no available audio; using unlocked cassette " +
+                    selected.Artist + " - " + selected.Title + ".");
             }
 
-            return fallback;
+            return selected.Track;
         }
 
         private static ISoulRecorderHandsView CreateHandsView()

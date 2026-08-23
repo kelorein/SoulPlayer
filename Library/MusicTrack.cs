@@ -24,6 +24,8 @@ namespace SoulPlayer.Library
                 Artist = "Unknown artist";
                 Title = CleanName(baseName);
             }
+
+            AudioFingerprint = TrackFingerprint.Compute(FilePath);
         }
 
         internal string FilePath { get; private set; }
@@ -32,6 +34,7 @@ namespace SoulPlayer.Library
         internal string Artist { get; private set; }
         internal string Album { get; private set; }
         internal string Extension { get; private set; }
+        internal string AudioFingerprint { get; private set; }
 
         internal string SearchText
         {

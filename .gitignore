@@ -28,3 +28,6 @@ DefaultMusic/*.flac
 Thumbs.db
 Desktop.ini
 
+
+# Local SPT launcher/runtime files
+user/
