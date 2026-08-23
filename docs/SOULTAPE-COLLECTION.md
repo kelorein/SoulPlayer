@@ -52,9 +52,16 @@ contains a release TODO beside those definitions so their vetted hashes can be a
 without changing IDs or progression format. A supplied hash mismatch is logged and the
 curated ID remains unbound.
 
-`SoulTapeSpawnHint` already carries a map ID, semantic spawn-group tag, and weight. These
-are data-only hints for the next milestone; they do not reference or redistribute EFT
-assets.
+`SoulTapeSpawnHint` carries a map ID, semantic spawn-group tag, and weight. Separately,
+`SoulTapeSpawnAnchor` records an author-reviewed canonical map ID, solved world
+transform, surface normal, semantic tag, source, and enabled state. Neither structure
+references or redistributes EFT assets.
+
+Curated anchors are the authoritative long-term placement source. Automatically derived
+loose-loot locations may be retained as an explicit fallback or research source, but
+they never override valid curated anchors. The earlier spawn-selection experiment is
+kept outside project and test compilation while this milestone focuses only on authoring.
+Production raid selection and world spawning remain paused.
 
 ## Per-profile progression
 
@@ -111,16 +118,30 @@ SoulRecorder's validated usable-item lifecycle is unchanged. Its entry step now:
 
 The recorder never falls back to an arbitrary locked library track.
 
-## Next gameplay milestone
+## Curated authoring milestone
+
+The opt-in placement-tools build supports an in-raid workflow for creating anchors
+without copying coordinates manually. It moves the local player in a safe flight mode,
+raycasts from the first-person view, previews a SoulPlayer-owned placeholder cassette,
+solves surface clearance/collision, and appends the valid result to editable JSON.
+
+See `SOULTAPE-AUTHORING.md` for the build command, controls, output location, and safety
+behavior. Normal Release builds exclude active placement behavior.
+
+## Later gameplay milestone
 
 The next layer can build on these APIs without changing progression format:
 
-1. assign map/spawn hints to collectible catalog entries;
+1. review and ship a small set of curated anchors;
 2. create legally distributable cassette world items;
-3. call `UnlockTape(id)` after a successful pickup/collection action;
-4. show a collection notification and collection browser;
-5. add favorite and explicit recorder-selection controls;
-6. decide duplicate-pickup rewards for an already unlocked cassette.
+3. select only one through three valid curated discoveries for each raid;
+4. call `UnlockTape(id)` after a successful pickup/collection action;
+5. show a collection notification and collection browser;
+6. add favorite and explicit recorder-selection controls;
+7. decide duplicate-pickup rewards for an already unlocked cassette.
+
+World spawning and pickup/discovery are intentionally not part of the current authoring
+milestone.
 
 No copyrighted Battlestate recorder or cassette assets are included.
 

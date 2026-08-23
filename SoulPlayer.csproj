@@ -32,6 +32,9 @@
   <PropertyGroup Condition=" '$(RecorderDevelopmentProxy)' == 'true' ">
     <DefineConstants>$(DefineConstants);SOULPLAYER_RECORDER_DEV_PROXY</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(SoulPlayerPlacementTools)' == 'true' ">
+    <DefineConstants>$(DefineConstants);SOULPLAYER_PLACEMENT_TOOLS</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony"><HintPath>$(SptRoot)\BepInEx\core\0Harmony.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="Assembly-CSharp"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath><Private>False</Private></Reference>
@@ -45,7 +48,10 @@
     <Reference Include="UnityEngine.AssetBundleModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.AudioModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.AudioModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.CoreModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.PhysicsModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.InputLegacyModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.IMGUIModule" Condition="'$(SoulPlayerPlacementTools)' == 'true'"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.TextRenderingModule" Condition="'$(SoulPlayerPlacementTools)' == 'true'"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.UIModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.UIModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.UI"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath><Private>False</Private></Reference>
@@ -61,12 +67,13 @@
   <ItemGroup><PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" /></ItemGroup>
   <ItemGroup>
     <Compile Include="Audio\DecodedAudio.cs" /><Compile Include="Audio\FlacDecoder.cs" /><Compile Include="Audio\PostRaidCoordinator.cs" /><Compile Include="Audio\SoulAudioPlayer.cs" /><Compile Include="Audio\TarkovMusicMuter.cs" />
-    <Compile Include="Cassettes\IProfileIdProvider.cs" /><Compile Include="Cassettes\ISoulTapeLog.cs" /><Compile Include="Cassettes\SoulTapeCatalog.cs" /><Compile Include="Cassettes\SoulTapeCatalogEntry.cs" /><Compile Include="Cassettes\SoulTapeCollection.cs" /><Compile Include="Cassettes\SoulTapeCollectionController.cs" /><Compile Include="Cassettes\SoulTapeCollectionHost.cs" /><Compile Include="Cassettes\SoulTapeCollectionStore.cs" /><Compile Include="Cassettes\SoulTapeRecorderSelector.cs" />
+    <Compile Include="Cassettes\IProfileIdProvider.cs" /><Compile Include="Cassettes\ISoulTapeLog.cs" /><Compile Include="Cassettes\SoulTapeCatalog.cs" /><Compile Include="Cassettes\SoulTapeCatalogEntry.cs" /><Compile Include="Cassettes\SoulTapeCollection.cs" /><Compile Include="Cassettes\SoulTapeCollectionController.cs" /><Compile Include="Cassettes\SoulTapeCollectionHost.cs" /><Compile Include="Cassettes\SoulTapeCollectionStore.cs" /><Compile Include="Cassettes\SoulTapePlacementSolver.cs" /><Compile Include="Cassettes\SoulTapeRecorderSelector.cs" /><Compile Include="Cassettes\SoulTapeSpawnAnchor.cs" /><Compile Include="Cassettes\SoulTapeSpawnAnchorStore.cs" />
     <Compile Include="Configuration\SoulPlayerSettings.cs" /><Compile Include="Library\MusicLibrary.cs" /><Compile Include="Library\MusicTrack.cs" /><Compile Include="Library\TrackFingerprint.cs" />
     <Compile Include="Patches\MenuScreenPatch.cs" /><Compile Include="Patches\PostRaidResultPatch.cs" /><Compile Include="Patches\TarkovMusicVolumePatch.cs" /><Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" /><Compile Include="Recorder\DevelopmentRecorderHandsProxy.cs" /><Compile Include="Recorder\ISoulRecorderHandsView.cs" /><Compile Include="Recorder\SoulRecorderAudioPlayer.cs" /><Compile Include="Recorder\SoulRecorderController.cs" /><Compile Include="Recorder\SoulRecorderState.cs" /><Compile Include="Recorder\SoulRecorderUsableItemController.cs" />
     <Compile Include="UI\SoulFolderBrowser.cs" /><Compile Include="UI\SoulPlayerWindow.cs" /><Compile Include="UI\SoulMiniPlayer.cs" />
     <Compile Include="UI\UIUtils.cs" /><Compile Include="UI\SoulPlayerOverlayHost.cs" /><Compile Include="Utils\GameState.cs" /><Compile Include="Utils\MediaKeyInput.cs" /><Compile Include="Utils\RecorderDiagnostics.cs" />
+    <Compile Include="World\DevelopmentSoulTapeSpawnMarker.cs" />
   </ItemGroup>
   <Target Name="ValidateSptRoot" BeforeTargets="ResolveAssemblyReferences">
     <Error Condition="'$(SptRoot)' == ''" Text="Set SptRoot to an SPT 4.1.x installation, for example: -p:SptRoot=&quot;D:\SPT_4.1.2&quot;" />
