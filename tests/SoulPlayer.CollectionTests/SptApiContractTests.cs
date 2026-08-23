@@ -99,6 +99,18 @@ namespace SoulPlayer.CollectionTests
                     typeof(QueryTriggerInteraction)
                 },
                 null));
+            Assert.NotNull(typeof(Camera).GetMethod(
+                "ViewportPointToRay",
+                BindingFlags.Public | BindingFlags.Instance,
+                null,
+                new[] { typeof(Vector3) },
+                null));
+            Assert.NotNull(typeof(Camera).GetProperty(
+                "main",
+                BindingFlags.Public | BindingFlags.Static));
+            Assert.NotNull(typeof(Camera).GetProperty(
+                "allCameras",
+                BindingFlags.Public | BindingFlags.Static));
             Assert.NotNull(typeof(Physics).GetMethod(
                 "CheckBox",
                 BindingFlags.Public | BindingFlags.Static,

@@ -32,6 +32,9 @@ namespace SoulPlayer.Configuration
         private readonly ConfigEntry<KeyboardShortcut> _stopHotkey;
         private readonly ConfigEntry<KeyboardShortcut> _nextHotkey;
         private readonly ConfigEntry<KeyboardShortcut> _previousHotkey;
+        private readonly ConfigEntry<KeyboardShortcut> _collectCassetteHotkey;
+        private readonly ConfigEntry<float> _cassetteInteractionDistance;
+        private readonly ConfigEntry<bool> _soulTapeTargetingDiagnostics;
         private readonly ConfigEntry<float> _raidFadeSeconds;
         private readonly ConfigEntry<float> _postRaidTransitionSeconds;
 
@@ -117,6 +120,26 @@ namespace SoulPlayer.Configuration
                 "Previous track hotkey",
                 new KeyboardShortcut(KeyCode.None),
                 "Optional additional previous-track shortcut. The media Previous key works by default.");
+
+            _collectCassetteHotkey = config.Bind(
+                "SoulTape discovery",
+                "Collect cassette hotkey",
+                new KeyboardShortcut(KeyCode.F),
+                "Collect a SoulTape world cassette while aiming at it within interaction range.");
+
+            _cassetteInteractionDistance = config.Bind(
+                "SoulTape discovery",
+                "Cassette interaction distance",
+                2.5f,
+                new ConfigDescription(
+                    "Maximum SoulTape pickup distance in metres.",
+                    new AcceptableValueRange<float>(1.5f, 4f)));
+
+            _soulTapeTargetingDiagnostics = config.Bind(
+                "SoulTape discovery",
+                "Show targeting diagnostics",
+                false,
+                "Show a temporary on-screen SoulTape camera and targeting diagnostic panel during runtime acceptance testing.");
 
             _raidFadeSeconds = config.Bind(
                 "Transitions",
@@ -257,6 +280,21 @@ namespace SoulPlayer.Configuration
         internal KeyboardShortcut PreviousHotkey
         {
             get { return _previousHotkey.Value; }
+        }
+
+        internal KeyboardShortcut CollectCassetteHotkey
+        {
+            get { return _collectCassetteHotkey.Value; }
+        }
+
+        internal float CassetteInteractionDistance
+        {
+            get { return Math.Max(1.5f, Math.Min(4f, _cassetteInteractionDistance.Value)); }
+        }
+
+        internal bool ShowSoulTapeTargetingDiagnostics
+        {
+            get { return _soulTapeTargetingDiagnostics.Value; }
         }
 
         internal float RaidFadeSeconds

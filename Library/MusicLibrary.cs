@@ -22,6 +22,7 @@ namespace SoulPlayer.Library
         private List<MusicTrack> _tracks = new List<MusicTrack>();
         private Task<ScanResult> _scanTask;
         private List<string> _pendingRoots;
+        private bool _hasAppliedScan;
 
         internal event Action Changed;
 
@@ -41,6 +42,11 @@ namespace SoulPlayer.Library
         internal bool IsScanning
         {
             get { return _scanTask != null && !_scanTask.IsCompleted; }
+        }
+
+        internal bool HasAppliedScan
+        {
+            get { return _hasAppliedScan; }
         }
 
         internal IReadOnlyList<MusicTrack> Tracks
@@ -67,6 +73,7 @@ namespace SoulPlayer.Library
                 return;
             }
 
+            _hasAppliedScan = false;
             _scanTask = Task.Run(() => Scan(roots));
         }
 
@@ -103,6 +110,8 @@ namespace SoulPlayer.Library
                 result = new ScanResult(new List<MusicTrack>(), 0, 1, ex.Message);
                 _logError("SoulPlayer library scan failed: " + ex);
             }
+
+            _hasAppliedScan = true;
 
             if (_pendingRoots != null)
             {

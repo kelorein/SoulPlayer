@@ -7,10 +7,8 @@ using SoulPlayer.Configuration;
 using SoulPlayer.Library;
 using SoulPlayer.Recorder;
 using SoulPlayer.Utils;
-using UnityEngine;
-#if SOULPLAYER_PLACEMENT_TOOLS
 using SoulPlayer.World;
-#endif
+using UnityEngine;
 
 namespace SoulPlayer
 {
@@ -29,6 +27,7 @@ namespace SoulPlayer
         internal static PostRaidCoordinator PostRaidCoordinator { get; private set; }
         internal static SoulRecorderController RecorderController { get; private set; }
         internal static RecorderDiagnostics RecorderDiagnostics { get; private set; }
+        internal static SoulTapeWorldDiscoveryController WorldDiscoveryController { get; private set; }
 #if SOULPLAYER_PLACEMENT_TOOLS
         internal static DevelopmentSoulTapeSpawnMarker TapeSpawnMarker { get; private set; }
 #endif
@@ -68,6 +67,17 @@ namespace SoulPlayer
             RecorderController = gameObject.AddComponent<SoulRecorderController>();
             RecorderController.Initialize(Settings);
             RecorderDiagnostics = gameObject.AddComponent<RecorderDiagnostics>();
+            SoulTapeSpawnAnchorCatalog spawnAnchors =
+                new SoulTapeSpawnAnchorCatalog(typeof(Plugin).Assembly, tapeLog);
+            WorldDiscoveryController = gameObject.AddComponent<SoulTapeWorldDiscoveryController>();
+            WorldDiscoveryController.Initialize(
+                Settings,
+                MusicLibrary,
+                TapeCatalog,
+                TapeCollection,
+                TapeCollectionHost,
+                spawnAnchors,
+                tapeLog);
 #if SOULPLAYER_PLACEMENT_TOOLS
             TapeSpawnMarker = gameObject.AddComponent<DevelopmentSoulTapeSpawnMarker>();
             TapeSpawnMarker.Initialize(Config);
