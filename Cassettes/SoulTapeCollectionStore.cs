@@ -23,12 +23,14 @@ namespace SoulPlayer.Cassettes
             ProfileId = string.Empty;
             UnlockedCassetteIds = new List<string>();
             FavoriteCassetteIds = new List<string>();
+            SelectedRecorderCassetteId = string.Empty;
         }
 
         public int Version { get; set; }
         public string ProfileId { get; set; }
         public List<string> UnlockedCassetteIds { get; set; }
         public List<string> FavoriteCassetteIds { get; set; }
+        public string SelectedRecorderCassetteId { get; set; }
     }
 
     internal sealed class SoulTapeLoadResult
@@ -191,6 +193,8 @@ namespace SoulPlayer.Cassettes
 
                 data.UnlockedCassetteIds = data.UnlockedCassetteIds ?? new List<string>();
                 data.FavoriteCassetteIds = data.FavoriteCassetteIds ?? new List<string>();
+                data.SelectedRecorderCassetteId =
+                    (data.SelectedRecorderCassetteId ?? string.Empty).Trim();
                 return data;
             }
             catch (Exception ex)

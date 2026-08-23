@@ -12,6 +12,7 @@ namespace SoulPlayer.Cassettes
         private readonly ISoulTapeLog _log;
         private HashSet<string> _unlocked = new HashSet<string>(StringComparer.Ordinal);
         private HashSet<string> _favorites = new HashSet<string>(StringComparer.Ordinal);
+        private string _selectedRecorderCassetteId = string.Empty;
         private string _profileId = string.Empty;
         private bool _loaded;
 
@@ -37,6 +38,7 @@ namespace SoulPlayer.Cassettes
                 return false;
             }
 
+            bool bound;
             lock (_sync)
             {
                 if (_loaded && string.Equals(_profileId, profileId, StringComparison.Ordinal))
@@ -44,74 +46,106 @@ namespace SoulPlayer.Cassettes
                     return true;
                 }
 
-                SoulTapeLoadResult result;
-                try
-                {
-                    result = _store.Load(profileId);
-                }
-                catch (Exception ex)
-                {
-                    _loaded = false;
-                    _profileId = profileId;
-                    _log.Error(
-                        "SoulTape collection load failed for profile " + profileId + ": " +
-                        ex.GetBaseException().Message);
-                    return false;
-                }
-
-                if (result.Status == SoulTapeLoadStatus.Failed)
-                {
-                    _loaded = false;
-                    _profileId = profileId;
-                    _unlocked.Clear();
-                    _favorites.Clear();
-                    _log.Error(
-                        "SoulTape collection is unreadable and was left untouched for profile " +
-                        profileId + ": " + result.Error);
-                    return false;
-                }
-
-                _profileId = profileId;
-                _unlocked = new HashSet<string>(StringComparer.Ordinal);
-                _favorites = new HashSet<string>(StringComparer.Ordinal);
-
-                if (result.Data != null)
-                {
-                    AddValidIds(_unlocked, result.Data.UnlockedCassetteIds);
-                    AddValidIds(_favorites, result.Data.FavoriteCassetteIds);
-                    _favorites.IntersectWith(_unlocked);
-                }
-
-                _loaded = true;
-
-                if (result.Status == SoulTapeLoadStatus.Missing)
-                {
-                    _unlocked.Add(SoulTapeCatalog.StarterTapeId);
-                    _log.Info(
-                        "SoulTape granted starter cassette " + SoulTapeCatalog.StarterTapeId +
-                        " to new profile " + profileId + ".");
-                    if (!SaveLocked("new collection"))
-                    {
-                        _loaded = false;
-                        return false;
-                    }
-                }
-                else if (result.Status == SoulTapeLoadStatus.RecoveredFromBackup)
-                {
-                    _log.Warning(
-                        "SoulTape collection recovered from backup for profile " + profileId +
-                        ". Primary error: " + result.Error);
-                }
-
-                int unresolved = _unlocked.Count(id => !_catalog.TryGetTape(id, out _));
-                _log.Info(
-                    "SoulTape collection loaded for profile " + profileId + ": " +
-                    _unlocked.Count + " unlocked, " + _favorites.Count + " favorites, " +
-                    unresolved + " currently missing from the catalog. Source: " +
-                    _store.Describe(profileId));
+                bound = BindProfileLocked(profileId);
             }
 
+            // A different profile attempt always changes the visible binding state,
+            // including an unreadable/unavailable result. Consumers must not retain
+            // a rendered snapshot from the previous profile.
             RaiseChanged();
+            return bound;
+        }
+
+        private bool BindProfileLocked(string profileId)
+        {
+            SoulTapeLoadResult result;
+            try
+            {
+                result = _store.Load(profileId);
+            }
+            catch (Exception ex)
+            {
+                _loaded = false;
+                _profileId = profileId;
+                _unlocked.Clear();
+                _favorites.Clear();
+                _selectedRecorderCassetteId = string.Empty;
+                _log.Error(
+                    "SoulTape collection load failed for profile " + profileId + ": " +
+                    ex.GetBaseException().Message);
+                return false;
+            }
+
+            if (result.Status == SoulTapeLoadStatus.Failed)
+            {
+                _loaded = false;
+                _profileId = profileId;
+                _unlocked.Clear();
+                _favorites.Clear();
+                _selectedRecorderCassetteId = string.Empty;
+                _log.Error(
+                    "SoulTape collection is unreadable and was left untouched for profile " +
+                    profileId + ": " + result.Error);
+                return false;
+            }
+
+            _profileId = profileId;
+            _unlocked = new HashSet<string>(StringComparer.Ordinal);
+            _favorites = new HashSet<string>(StringComparer.Ordinal);
+            _selectedRecorderCassetteId = string.Empty;
+
+            if (result.Data != null)
+            {
+                AddValidIds(_unlocked, result.Data.UnlockedCassetteIds);
+                AddValidIds(_favorites, result.Data.FavoriteCassetteIds);
+                _favorites.IntersectWith(_unlocked);
+                string selected = (result.Data.SelectedRecorderCassetteId ?? string.Empty).Trim();
+                if (!string.IsNullOrEmpty(selected))
+                {
+                    if (_unlocked.Contains(selected))
+                    {
+                        _selectedRecorderCassetteId = selected;
+                    }
+                    else
+                    {
+                        _log.Warning(
+                            "SoulTape ignored recorder selection for locked cassette " +
+                            selected + " in profile " + profileId + ".");
+                    }
+                }
+            }
+
+            _loaded = true;
+
+            if (result.Status == SoulTapeLoadStatus.Missing)
+            {
+                _unlocked.Add(SoulTapeCatalog.StarterTapeId);
+                _log.Info(
+                    "SoulTape granted starter cassette " + SoulTapeCatalog.StarterTapeId +
+                    " to new profile " + profileId + ".");
+                if (!SaveLocked("new collection"))
+                {
+                    _loaded = false;
+                    _unlocked.Clear();
+                    _favorites.Clear();
+                    _selectedRecorderCassetteId = string.Empty;
+                    return false;
+                }
+            }
+            else if (result.Status == SoulTapeLoadStatus.RecoveredFromBackup)
+            {
+                _log.Warning(
+                    "SoulTape collection recovered from backup for profile " + profileId +
+                    ". Primary error: " + result.Error);
+            }
+
+            int unresolved = _unlocked.Count(id => !_catalog.TryGetTape(id, out _));
+            _log.Info(
+                "SoulTape collection loaded for profile " + profileId + ": " +
+                _unlocked.Count + " unlocked, " + _favorites.Count + " favorites, " +
+                unresolved + " currently missing from the catalog. Source: " +
+                _store.Describe(profileId));
+
             return true;
         }
 
@@ -213,6 +247,79 @@ namespace SoulPlayer.Cassettes
             }
         }
 
+        internal bool SetRecorderTape(string id)
+        {
+            SoulTapeCatalogEntry ignored;
+            lock (_sync)
+            {
+                if (!_loaded)
+                {
+                    _log.Warning(
+                        "SoulTape recorder selection ignored because no profile collection is loaded.");
+                    return false;
+                }
+
+                if (!_catalog.TryGetTape(id, out ignored))
+                {
+                    _log.Warning(
+                        "SoulTape recorder selection rejected unknown cassette ID '" + id + "'.");
+                    return false;
+                }
+
+                if (!_unlocked.Contains(id))
+                {
+                    _log.Warning(
+                        "SoulTape cannot load a locked cassette into the recorder: " + id + ".");
+                    return false;
+                }
+
+                if (string.Equals(
+                        _selectedRecorderCassetteId,
+                        id,
+                        StringComparison.Ordinal))
+                {
+                    _log.Info("SoulTape recorder selection unchanged: " + id + ".");
+                    return false;
+                }
+
+                string previous = _selectedRecorderCassetteId;
+                _selectedRecorderCassetteId = id;
+                if (!SaveLocked("recorder selection " + id))
+                {
+                    _selectedRecorderCassetteId = previous;
+                    return false;
+                }
+
+                _log.Info(
+                    "SoulTape RECORDER SELECTION -> " + id +
+                    " for profile " + _profileId + ".");
+            }
+
+            RaiseChanged();
+            return true;
+        }
+
+        internal string GetSelectedRecorderTapeId()
+        {
+            lock (_sync)
+            {
+                return _loaded ? _selectedRecorderCassetteId : string.Empty;
+            }
+        }
+
+        internal bool IsRecorderTape(string id)
+        {
+            lock (_sync)
+            {
+                return _loaded &&
+                       !string.IsNullOrWhiteSpace(id) &&
+                       string.Equals(
+                           _selectedRecorderCassetteId,
+                           id,
+                           StringComparison.Ordinal);
+            }
+        }
+
         internal IReadOnlyList<SoulTapeCatalogEntry> GetUnlockedTapes()
         {
             lock (_sync)
@@ -253,7 +360,8 @@ namespace SoulPlayer.Cassettes
             {
                 ProfileId = _profileId,
                 UnlockedCassetteIds = _unlocked.OrderBy(id => id, StringComparer.Ordinal).ToList(),
-                FavoriteCassetteIds = _favorites.OrderBy(id => id, StringComparer.Ordinal).ToList()
+                FavoriteCassetteIds = _favorites.OrderBy(id => id, StringComparer.Ordinal).ToList(),
+                SelectedRecorderCassetteId = _selectedRecorderCassetteId
             };
 
             try

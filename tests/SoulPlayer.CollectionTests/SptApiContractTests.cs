@@ -1,9 +1,12 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using Comfort.Common;
 using EFT;
 using EFT.HealthSystem;
+using EFT.UI;
 using SoulPlayer.Cassettes;
+using SoulPlayer.Patches;
 using SoulPlayer.Recorder;
 using UnityEngine;
 using Xunit;
@@ -61,6 +64,33 @@ namespace SoulPlayer.CollectionTests
             Assert.True(typeof(Player.UsableItemController).IsAssignableFrom(
                 typeof(SoulRecorderUsableItemController)));
             Assert.True(typeof(IProfileIdProvider).IsAssignableFrom(typeof(SptProfileIdProvider)));
+
+            MethodBase menuShow = MenuScreenShowContract.FindTargetMethod();
+            Assert.NotNull(menuShow);
+            Assert.Equal(typeof(MenuScreen), menuShow.DeclaringType);
+            Assert.Contains(
+                menuShow.GetParameters(),
+                parameter => parameter.ParameterType == typeof(Profile));
+            Assert.Contains(
+                menuShow.GetParameters(),
+                parameter => parameter.ParameterType == typeof(ESessionMode));
+
+            MethodInfo ensureProfile = typeof(SoulTapeCollectionController).GetMethod(
+                "EnsureProfile",
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new[] { typeof(Player) },
+                null);
+            Assert.NotNull(ensureProfile);
+            Assert.Equal(typeof(bool), ensureProfile.ReturnType);
+            MethodInfo ensureProfileId = typeof(SoulTapeCollectionController).GetMethod(
+                "EnsureProfileId",
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new[] { typeof(string) },
+                null);
+            Assert.NotNull(ensureProfileId);
+            Assert.Equal(typeof(bool), ensureProfileId.ReturnType);
 
             Assert.NotNull(typeof(Player).GetMethod(
                 "Teleport",

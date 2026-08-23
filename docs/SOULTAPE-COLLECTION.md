@@ -14,8 +14,9 @@ world cassette
 ```
 
 Collection v1 implements the catalog and permanent progression underneath that loop.
-World Discovery v1 now supplies the first curated raid spawns and direct pickup path;
-the full collection browser, recorder models, hands, and animations remain deferred.
+World Discovery v1 supplies the first curated raid spawns and direct pickup path.
+Collection + Favorites UI v1 exposes that progression in the existing MUSIC window.
+SoulRecorder Cassette Selection UX v1 adds an explicit per-profile recorder tape.
 
 ## Cassette catalog
 
@@ -71,20 +72,27 @@ UnlockTape(id)
 IsUnlocked(id)
 SetFavorite(id, bool)
 IsFavorite(id)
+SetRecorderTape(id)
+GetSelectedRecorderTapeId()
+IsRecorderTape(id)
 GetUnlockedTapes()
 GetFavoriteTapes()
 ```
 
-The active profile is resolved from SPT's backend session, with the local raid player's
-profile ID as a fallback. Collection data is stored under:
+The active profile is resolved from SPT's backend session, with session and local
+raid-player fallbacks. The menu patch additionally captures the authoritative
+`EFT.Profile` already passed to `MenuScreen.Show` and sends its `ProfileId` through the
+same `SoulTapeCollectionHost`. Collection data is stored under:
 
 ```text
 BepInEx/config/SoulPlayer/collections/<profile-id>.json
 ```
 
-Each profile file contains a schema version, profile ID, unlocked cassette IDs, and
-favorite cassette IDs. Mutations save immediately and log collection load, save,
-unlock, and favorite operations.
+Each profile file contains a schema version, profile ID, unlocked cassette IDs, favorite
+cassette IDs, and an optional `SelectedRecorderCassetteId`. Mutations save immediately
+and log collection load, save, unlock, favorite, and recorder-selection operations.
+Version-1 JSON created before recorder selection remains valid: a missing field means no
+explicit selection and does not cause an automatic rewrite.
 
 A profile with no existing collection is granted
 `soul-tape.scott-buckley.the-long-dark` and saved immediately.
@@ -109,13 +117,14 @@ under a renamed file, reconnects the generated cassette ID automatically.
 SoulRecorder's validated usable-item lifecycle is unchanged. Its entry step now:
 
 1. ensures the active profile collection is loaded;
-2. asks the collection for unlocked catalog entries;
-3. prefers the unlocked **Scott Buckley - The Long Dark** cassette when its audio is
-   available;
-4. otherwise uses another unlocked cassette with available audio;
+2. uses the explicitly selected unlocked cassette when its audio is available;
+3. if selected audio is missing, uses another unlocked available cassette for that
+   interaction only and preserves the saved selection;
+4. when there is no explicit selection, retains the legacy starter-first fallback;
 5. refuses playback when no unlocked cassette can resolve to an audio file.
 
-The recorder never falls back to an arbitrary locked library track.
+The recorder never selects a locked library track and never overwrites selection because
+of temporary audio loss. See `SOULRECORDER-SELECTION.md`.
 
 ## Curated authoring milestone
 
@@ -139,8 +148,42 @@ pickup time: extraction is not required and dying later does not revoke the disc
 The pickup does not enter stash inventory. The temporary world cassette and discovery
 notification use SoulPlayer-owned presentation that can be replaced by final art later.
 
-Favorites/collection browsing, explicit recorder tape selection, final art, and
-duplicate rewards remain later milestones.
+Explicit recorder tape selection, final art, and duplicate rewards remain later
+milestones. Collection browsing and favorites are implemented in the existing MUSIC
+window.
+
+## Collection browser
+
+The MUSIC window now switches between its existing Library page and a SoulTape
+Collection page without restarting scans or changing playback. The Collection is an
+eight-card page (four columns by two rows) with ALL, DISCOVERED, FAVORITES, and
+UNDISCOVERED filters plus `DISCOVERED n / total` progress.
+
+Only catalog entries with an explicit rarity become collectible slots. Generated and
+personal-library entries with null rarity never enter the grid or progress total. A
+pure `SoulTapeCollectionProjection` applies that rule and removes artist, title, rarity,
+favorite, and audio metadata from locked cards before Unity rendering receives them.
+Locked cards therefore show only `SOULTAPE`, `???`, and `UNDISCOVERED`.
+
+Discovered cards show artist, title, a restrained centralized rarity accent, favorite
+state, recorder-selected state, and `AUDIO MISSING` when the current file cannot be
+resolved. Missing audio never removes discovery, favorite, or recorder selection.
+Favorite buttons call the existing
+transactional `SetFavorite(id, bool)` API and immediately re-project actual collection
+state; a failed save leaves the card unchanged and reports that it was not saved.
+
+Discovered cards also offer `LOAD RECORDER`; the selected card shows `RECORDER TAPE` and
+a restrained outline. The header names the selected collectible tape. Null-rarity
+personal entries remain excluded from the collectible grid and cannot leak metadata
+through the header.
+
+The page listens to both collection and catalog change events. Unlocks, profile changes,
+favorite mutations, and delayed library refreshes mark the view dirty and refresh it
+while open without closing the MUSIC window. An unloaded profile renders only
+`COLLECTION UNAVAILABLE`, never stale cards from an earlier projection.
+
+The curated target remains approximately 20–50+ collectible cassettes. See
+`SOULTAPE-COLLECTION-UI.md` for the presentation and acceptance details.
 
 No copyrighted Battlestate recorder or cassette assets are included.
 

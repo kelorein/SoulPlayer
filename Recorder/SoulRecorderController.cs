@@ -25,6 +25,13 @@ namespace SoulPlayer.Recorder
         private SoulRecorderUsableItemController _usableItemController;
         private bool _pendingEnter;
         private bool _wasInRaid;
+        private string _feedbackHeading = string.Empty;
+        private string _feedbackTrack = string.Empty;
+        private string _feedbackStatus = string.Empty;
+        private float _feedbackUntil;
+        private GUIStyle _feedbackHeadingStyle;
+        private GUIStyle _feedbackTrackStyle;
+        private GUIStyle _feedbackStatusStyle;
 
         internal bool IsActive
         {
@@ -63,6 +70,7 @@ namespace SoulPlayer.Recorder
 
             _usableItemController = new SoulRecorderUsableItemController();
             _usableItemController.Bind(_audioPlayer, CreateHandsView());
+            _usableItemController.StateChanged += OnRecorderStateChanged;
 
             if (Plugin.MusicLibrary != null)
             {
@@ -71,7 +79,8 @@ namespace SoulPlayer.Recorder
 
             Plugin.Log.LogInfo(
                 "SoulRecorder usable-item controller ready: M enters/exits the recorder interaction; " +
-                "starter cassette is " + PreferredStarterArtist + " - " + PreferredStarterTitle + ".");
+                "the selected cassette is preferred and the no-selection default is " +
+                PreferredStarterArtist + " - " + PreferredStarterTitle + ".");
         }
 
         private void Update()
@@ -142,8 +151,8 @@ namespace SoulPlayer.Recorder
                 return;
             }
 
-            MusicTrack track = ResolveUnlockedTape();
-            if (track == null)
+            SoulTapeCatalogEntry tape = ResolveUnlockedTape();
+            if (tape == null || tape.Track == null)
             {
                 if (Plugin.MusicLibrary != null && Plugin.MusicLibrary.IsScanning)
                 {
@@ -160,15 +169,23 @@ namespace SoulPlayer.Recorder
             }
 
             _pendingEnter = false;
-            if (!_usableItemController.EnterInteraction(player, track))
+            if (!_usableItemController.EnterInteraction(player, tape.Track))
             {
                 Plugin.Log.LogWarning("SoulRecorder could not enter from state " + State + ".");
+                return;
             }
+
+            ShowFeedback(
+                "SOULRECORDER",
+                tape.Artist + " — " + tape.Title,
+                "LOADING CASSETTE...",
+                3f);
         }
 
         private void ResetRecorder(string reason)
         {
             _pendingEnter = false;
+            _feedbackUntil = 0f;
             if (_usableItemController != null)
             {
                 _usableItemController.ForceReset(reason);
@@ -179,20 +196,42 @@ namespace SoulPlayer.Recorder
             }
         }
 
-        private MusicTrack ResolveUnlockedTape()
+        private SoulTapeCatalogEntry ResolveUnlockedTape()
         {
             if (Plugin.TapeCollection == null || !Plugin.TapeCollection.IsLoaded)
             {
                 return null;
             }
 
-            SoulTapeCatalogEntry selected = SoulTapeRecorderSelector.Select(Plugin.TapeCollection);
+            SoulTapeRecorderSelectionResult resolution =
+                SoulTapeRecorderSelector.Resolve(Plugin.TapeCollection);
+            SoulTapeCatalogEntry selected = resolution.Tape;
             if (selected == null)
             {
+                if (resolution.HasExplicitSelection)
+                {
+                    Plugin.Log.LogWarning(
+                        "SoulRecorder selected cassette " + resolution.ExplicitCassetteId +
+                        " has no available audio and no unlocked runtime fallback is available; " +
+                        "the saved selection was preserved.");
+                }
                 return null;
             }
 
-            if (!string.Equals(
+            if (resolution.UsedRuntimeFallback)
+            {
+                Plugin.Log.LogWarning(
+                    "SoulRecorder selected cassette " + resolution.ExplicitCassetteId +
+                    " has no available audio; using " + selected.Artist + " - " +
+                    selected.Title + " for this interaction only. The saved selection was preserved.");
+            }
+            else if (resolution.HasExplicitSelection)
+            {
+                Plugin.Log.LogInfo(
+                    "SoulRecorder using selected cassette " + selected.Artist + " - " +
+                    selected.Title + ".");
+            }
+            else if (!string.Equals(
                     selected.Id,
                     SoulTapeCatalog.StarterTapeId,
                     StringComparison.Ordinal))
@@ -203,7 +242,103 @@ namespace SoulPlayer.Recorder
                     selected.Artist + " - " + selected.Title + ".");
             }
 
-            return selected.Track;
+            return selected;
+        }
+
+        private void OnRecorderStateChanged(
+            SoulRecorderState previous,
+            SoulRecorderState next)
+        {
+            if (next == SoulRecorderState.Playing && ActiveTape != null)
+            {
+                ShowFeedback(
+                    "NOW PLAYING",
+                    ActiveTape.Artist + " — " + ActiveTape.Title,
+                    string.Empty,
+                    2.5f);
+            }
+            else if (next == SoulRecorderState.Ejecting || next == SoulRecorderState.Idle)
+            {
+                _feedbackUntil = 0f;
+            }
+        }
+
+        private void ShowFeedback(
+            string heading,
+            string track,
+            string status,
+            float duration)
+        {
+            _feedbackHeading = heading ?? string.Empty;
+            _feedbackTrack = track ?? string.Empty;
+            _feedbackStatus = status ?? string.Empty;
+            _feedbackUntil = Time.unscaledTime + Mathf.Max(0.1f, duration);
+        }
+
+        private void OnGUI()
+        {
+            if (_feedbackUntil <= Time.unscaledTime || !GameState.IsInRaid())
+            {
+                return;
+            }
+
+            EnsureFeedbackStyles();
+            const float width = 430f;
+            const float height = 104f;
+            Rect panel = new Rect(
+                (Screen.width - width) * 0.5f,
+                Screen.height * 0.70f,
+                width,
+                height);
+            Color previousBackground = GUI.backgroundColor;
+            GUI.backgroundColor = new Color(0.02f, 0.025f, 0.027f, 0.92f);
+            GUI.Box(panel, GUIContent.none);
+            GUI.backgroundColor = previousBackground;
+            GUI.Label(
+                new Rect(panel.x + 18f, panel.y + 10f, width - 36f, 24f),
+                _feedbackHeading,
+                _feedbackHeadingStyle);
+            GUI.Label(
+                new Rect(panel.x + 18f, panel.y + 36f, width - 36f, 28f),
+                _feedbackTrack,
+                _feedbackTrackStyle);
+            if (!string.IsNullOrEmpty(_feedbackStatus))
+            {
+                GUI.Label(
+                    new Rect(panel.x + 18f, panel.y + 70f, width - 36f, 20f),
+                    _feedbackStatus,
+                    _feedbackStatusStyle);
+            }
+        }
+
+        private void EnsureFeedbackStyles()
+        {
+            if (_feedbackHeadingStyle != null)
+            {
+                return;
+            }
+
+            _feedbackHeadingStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 14,
+                fontStyle = FontStyle.Bold
+            };
+            _feedbackHeadingStyle.normal.textColor = new Color(0.54f, 0.67f, 0.64f, 1f);
+            _feedbackTrackStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 17,
+                fontStyle = FontStyle.Normal
+            };
+            _feedbackTrackStyle.normal.textColor = Color.white;
+            _feedbackStatusStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 11,
+                fontStyle = FontStyle.Normal
+            };
+            _feedbackStatusStyle.normal.textColor = new Color(0.68f, 0.72f, 0.72f, 1f);
         }
 
         private static ISoulRecorderHandsView CreateHandsView()
@@ -230,6 +365,11 @@ namespace SoulPlayer.Recorder
             if (Plugin.MusicLibrary != null)
             {
                 Plugin.MusicLibrary.Changed -= OnLibraryChanged;
+            }
+
+            if (_usableItemController != null)
+            {
+                _usableItemController.StateChanged -= OnRecorderStateChanged;
             }
 
             ResetRecorder("component destroyed");
