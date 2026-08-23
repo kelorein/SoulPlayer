@@ -19,6 +19,9 @@
     <ProjectReference Include="..\..\SoulPlayer.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="SoulTapeSpawnPlannerTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>true</Private>
@@ -33,6 +36,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>true</Private>
     </Reference>
   </ItemGroup>

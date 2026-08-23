@@ -8,6 +8,9 @@ using SoulPlayer.Library;
 using SoulPlayer.Recorder;
 using SoulPlayer.Utils;
 using UnityEngine;
+#if SOULPLAYER_PLACEMENT_TOOLS
+using SoulPlayer.World;
+#endif
 
 namespace SoulPlayer
 {
@@ -26,6 +29,9 @@ namespace SoulPlayer
         internal static PostRaidCoordinator PostRaidCoordinator { get; private set; }
         internal static SoulRecorderController RecorderController { get; private set; }
         internal static RecorderDiagnostics RecorderDiagnostics { get; private set; }
+#if SOULPLAYER_PLACEMENT_TOOLS
+        internal static DevelopmentSoulTapeSpawnMarker TapeSpawnMarker { get; private set; }
+#endif
 
         private void Awake()
         {
@@ -62,6 +68,10 @@ namespace SoulPlayer
             RecorderController = gameObject.AddComponent<SoulRecorderController>();
             RecorderController.Initialize(Settings);
             RecorderDiagnostics = gameObject.AddComponent<RecorderDiagnostics>();
+#if SOULPLAYER_PLACEMENT_TOOLS
+            TapeSpawnMarker = gameObject.AddComponent<DevelopmentSoulTapeSpawnMarker>();
+            TapeSpawnMarker.Initialize(Config);
+#endif
 
             EnablePatch("menu screen", () => new Patches.MenuScreenPatch().Enable());
             EnablePatch("menu taskbar", () => new Patches.MenuTaskBarPatch().Enable());
@@ -72,6 +82,10 @@ namespace SoulPlayer
             Log.LogInfo("SoulPlayer 0.8.0 loaded. Library scan started.");
             Log.LogInfo("SoulRecorder: press M during a raid to enter/exit the recorder interaction.");
             Log.LogInfo("Recorder discovery probe armed on Ctrl+Shift+F10 (development branch only).");
+#if SOULPLAYER_PLACEMENT_TOOLS
+            Log.LogWarning(
+                "SoulTape placement-tools DEVELOPMENT BUILD active; default toggle is Ctrl+Shift+F8.");
+#endif
         }
 
         private static void EnablePatch(string name, Action enable)

@@ -54,6 +54,7 @@ boundary, including:
 - Tarkov session or profile integration;
 - raid lifecycle hooks;
 - world cassette/item spawning;
+- placement-mode player movement, raycasts, collision checks, or Unity ghost previews;
 - pickup or interaction behavior;
 - Unity audio loading/playback behavior;
 - first-person hands, models, prefabs, or animations;

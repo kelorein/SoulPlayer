@@ -139,6 +139,7 @@ if ($unitPassed) {
     $groups += Invoke-ValidationGroup 'PersistenceRecovery' 'Persistence/recovery'
     $groups += Invoke-ValidationGroup 'RecorderSelection' 'Recorder selection'
     $groups += Invoke-ValidationGroup 'SptApiContracts' 'SPT API contracts'
+    $groups += Invoke-ValidationGroup 'PlacementAuthoring' 'Placement authoring'
 }
 else {
     foreach ($label in @(
@@ -146,10 +147,32 @@ else {
         'Catalog/library refresh',
         'Persistence/recovery',
         'Recorder selection',
-        'SPT API contracts')) {
+        'SPT API contracts',
+        'Placement authoring')) {
         Write-ValidationLine $false $label 'NOT RUN'
     }
 }
+
+$placementBuild = Invoke-DotNetCaptured @(
+    'build',
+    $mainProject,
+    '-c', 'Release',
+    "-p:SptRoot=$SptRoot",
+    '-p:SoulPlayerPlacementTools=true',
+    '-p:OutputPath=bin\PlacementTools\',
+    '--no-restore',
+    '--no-incremental'
+)
+$placementErrorMatches = [regex]::Matches($placementBuild.Text, '(\d+) Error\(s\)')
+$placementErrorCount = if ($placementErrorMatches.Count -gt 0) {
+    [int]$placementErrorMatches[$placementErrorMatches.Count - 1].Groups[1].Value
+}
+else {
+    -1
+}
+$placementBuildPassed = $placementBuild.ExitCode -eq 0 -and $placementErrorCount -eq 0
+Write-ValidationLine $placementBuildPassed 'Placement-tools build' $(
+    if ($placementErrorCount -ge 0) { "$placementErrorCount errors" } else { 'FAILED' })
 
 $build = Invoke-DotNetCaptured @(
     'build',
@@ -181,7 +204,7 @@ $allGroupsPassed = $unitPassed
 foreach ($group in $groups) {
     $allGroupsPassed = $allGroupsPassed -and $group.Passed
 }
-$allPassed = $allGroupsPassed -and $buildPassed
+$allPassed = $allGroupsPassed -and $placementBuildPassed -and $buildPassed
 
 Write-Host ''
 Write-Host "Warnings: $warningCount existing UnityWebRequest deprecation warnings"
@@ -195,7 +218,11 @@ $changedFiles = @(
 
 $runtimeRequired = $false
 $runtimeReason = 'no runtime-specific systems changed'
-if ($changedFiles -contains 'Cassettes/IProfileIdProvider.cs' -or
+if ($changedFiles -contains 'World/DevelopmentSoulTapeSpawnMarker.cs') {
+    $runtimeRequired = $true
+    $runtimeReason = 'placement-mode movement/raycast/Unity authoring integration changed'
+}
+elseif ($changedFiles -contains 'Cassettes/IProfileIdProvider.cs' -or
     $changedFiles -contains 'Cassettes/SoulTapeCollectionController.cs') {
     $runtimeRequired = $true
     $runtimeReason = 'Tarkov session/profile integration wiring changed'
@@ -225,6 +252,9 @@ if (-not $allPassed) {
         if (-not $group.Passed) {
             Write-Host $group.Output
         }
+    }
+    if (-not $placementBuildPassed) {
+        Write-Host $placementBuild.Text
     }
     if (-not $buildPassed) {
         Write-Host $build.Text
