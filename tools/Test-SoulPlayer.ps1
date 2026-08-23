@@ -135,6 +135,7 @@ Write-ValidationLine $unitPassed 'Unit tests' $unitDetail
 $groups = @()
 if ($unitPassed) {
     $groups += Invoke-ValidationGroup 'CollectionBootstrap' 'Collection bootstrap'
+    $groups += Invoke-ValidationGroup 'CollectionBrowser' 'Collection browser'
     $groups += Invoke-ValidationGroup 'CatalogLibraryRefresh' 'Catalog/library refresh'
     $groups += Invoke-ValidationGroup 'PersistenceRecovery' 'Persistence/recovery'
     $groups += Invoke-ValidationGroup 'RecorderSelection' 'Recorder selection'
@@ -145,6 +146,7 @@ if ($unitPassed) {
 else {
     foreach ($label in @(
         'Collection bootstrap',
+        'Collection browser',
         'Catalog/library refresh',
         'Persistence/recovery',
         'Recorder selection',
@@ -220,7 +222,23 @@ $changedFiles = @(
 
 $runtimeRequired = $false
 $runtimeReason = 'no runtime-specific systems changed'
-if ($changedFiles -contains 'World/SoulTapeWorldDiscoveryController.cs' -or
+if ($changedFiles -contains 'Recorder/SoulRecorderController.cs' -or
+    $changedFiles -contains 'Cassettes/SoulTapeRecorderSelector.cs') {
+    $runtimeRequired = $true
+    $runtimeReason = 'SoulRecorder cassette-selection/menu integration changed'
+}
+elseif ($changedFiles -contains 'Patches/MenuScreenPatch.cs' -or
+    $changedFiles -contains 'Cassettes/SoulTapeCollectionController.cs') {
+    $runtimeRequired = $true
+    $runtimeReason = 'menu profile binding / Collection UI integration changed'
+}
+elseif ($changedFiles -contains 'UI/SoulPlayerWindow.cs' -or
+    $changedFiles -contains 'UI/SoulTapeCollectionPage.cs' -or
+    $changedFiles -contains 'UI/SoulTapeRarityPresentation.cs') {
+    $runtimeRequired = $true
+    $runtimeReason = 'SoulPlayer menu collection/favorites UI changed'
+}
+elseif ($changedFiles -contains 'World/SoulTapeWorldDiscoveryController.cs' -or
     $changedFiles -contains 'World/SoulTapeWorldPickup.cs') {
     $runtimeRequired = $true
     $runtimeReason = 'world cassette spawning/pickup integration changed'

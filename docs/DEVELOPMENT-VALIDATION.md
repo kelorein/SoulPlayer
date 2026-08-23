@@ -13,8 +13,9 @@ The script performs the normal developer validation loop without starting EFT:
 1. verifies the required SPT/BepInEx contract assemblies are present;
 2. restores the test project;
 3. compiles and runs the complete offline test suite;
-4. reports collection bootstrap, delayed catalog/library refresh, persistence/recovery,
-   recorder selection, SPT API contracts, placement authoring, and World Discovery;
+4. reports collection bootstrap, Collection Browser, delayed catalog/library refresh,
+   persistence/recovery, recorder selection, SPT API contracts, placement authoring,
+   and World Discovery;
 5. performs a non-incremental Release build;
 6. classifies whether the current changed files require an EFT acceptance run.
 
@@ -26,8 +27,10 @@ The offline harness never starts `EscapeFromTarkov.exe`.
 ## Profile and library simulation
 
 The pure `SoulTapeCollectionHost` accepts an `IProfileIdProvider`. Production uses
-`SptProfileIdProvider`, which reads `TarkovApplication.Session` / `IProfileSession` and
-retains the local raid-player profile ID fallback.
+`SptProfileIdProvider`, which prefers the client backend session and retains session and
+local raid-player fallbacks. At the main menu, the existing `MenuScreen.Show` patch also
+passes its authoritative `EFT.Profile.ProfileId` through the same host. No second
+resolver or collection instance is created.
 
 Offline tests use a mutable provider to model:
 
@@ -50,6 +53,7 @@ An EFT launch is required when a change crosses or modifies a runtime integratio
 boundary, including:
 
 - BepInEx/plugin startup or component wiring;
+- player-facing Unity menu layout, navigation, or interaction changes;
 - Tarkov session or profile integration;
 - raid lifecycle hooks;
 - world cassette/item spawning;
@@ -80,6 +84,8 @@ loop for these changes is the offline harness.
 
 ## Current workflow-change classification
 
-World Discovery v1 changes live raid spawning, Unity placeholder presentation, aiming,
-and pickup integration. Offline validation is the normal development loop, followed by
-one focused EFT acceptance run for the milestone. The harness does not launch EFT.
+SoulRecorder Cassette Selection UX v1 changes the player-facing Collection menu and the
+in-raid cassette-resolution/feedback path. Offline validation is the normal development
+loop followed by one focused EFT acceptance run for profile selection persistence,
+Collection controls, M-key tape choice, temporary missing-audio fallback, and the small
+loading/playing overlay. The harness reports this explicitly and never launches EFT.

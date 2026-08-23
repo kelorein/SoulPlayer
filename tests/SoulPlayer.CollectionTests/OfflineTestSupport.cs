@@ -76,7 +76,8 @@ namespace SoulPlayer.CollectionTests
                 Version = data.Version,
                 ProfileId = data.ProfileId,
                 UnlockedCassetteIds = data.UnlockedCassetteIds.ToList(),
-                FavoriteCassetteIds = data.FavoriteCassetteIds.ToList()
+                FavoriteCassetteIds = data.FavoriteCassetteIds.ToList(),
+                SelectedRecorderCassetteId = data.SelectedRecorderCassetteId
             };
         }
     }

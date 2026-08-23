@@ -17,6 +17,69 @@ namespace SoulPlayer.Patches
     {
         protected override MethodBase GetTargetMethod()
         {
+            return MenuScreenShowContract.FindTargetMethod();
+        }
+
+        [PatchPostfix]
+        private static void PatchPostfix(MenuScreen __instance, object[] __args)
+        {
+            BindMenuProfile(__args);
+
+            try
+            {
+                Transform obsoleteButton = __instance.transform.Find("SoulPlayerButton");
+                if (obsoleteButton != null)
+                {
+                    UnityEngine.Object.Destroy(obsoleteButton.gameObject);
+                }
+
+                TMP_Text styleSource = __instance.transform
+                    .Find("HideoutButton")?
+                    .GetComponentsInChildren<TMP_Text>(true)
+                    .FirstOrDefault();
+
+                SoulPlayerOverlayHost.Create(styleSource);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError("Failed to prepare the SoulPlayer window: " + ex);
+            }
+        }
+
+        private static void BindMenuProfile(object[] arguments)
+        {
+            try
+            {
+                Profile profile = MenuProfileArgumentResolver.Find(arguments);
+                if (profile == null || string.IsNullOrWhiteSpace(profile.ProfileId))
+                {
+                    Plugin.Log.LogWarning(
+                        "SoulTape menu profile binding skipped because MenuScreen.Show " +
+                        "did not provide a valid ProfileId; existing collection data was left unchanged.");
+                    return;
+                }
+
+                if (Plugin.TapeCollectionHost == null ||
+                    !Plugin.TapeCollectionHost.EnsureProfileId(profile.ProfileId))
+                {
+                    Plugin.Log.LogWarning(
+                        "SoulTape menu profile binding failed for ProfileId " +
+                        profile.ProfileId + ".");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning(
+                    "SoulTape menu profile binding failed without changing persisted data: " +
+                    ex.GetBaseException().Message);
+            }
+        }
+    }
+
+    internal static class MenuScreenShowContract
+    {
+        internal static MethodBase FindTargetMethod()
+        {
             // EFT frequently renames the middle controller type used by MenuScreen.Show.
             // Resolve the overload by the stable Profile + ESessionMode parameters instead
             // of compiling against the obfuscated controller class name.
@@ -46,29 +109,27 @@ namespace SoulPlayer.Patches
 
             return target;
         }
+    }
 
-        [PatchPostfix]
-        private static void PatchPostfix(MenuScreen __instance)
+    internal static class MenuProfileArgumentResolver
+    {
+        internal static Profile Find(object[] arguments)
         {
-            try
+            if (arguments == null)
             {
-                Transform obsoleteButton = __instance.transform.Find("SoulPlayerButton");
-                if (obsoleteButton != null)
+                return null;
+            }
+
+            foreach (object argument in arguments)
+            {
+                Profile profile = argument as Profile;
+                if (profile != null)
                 {
-                    UnityEngine.Object.Destroy(obsoleteButton.gameObject);
+                    return profile;
                 }
-
-                TMP_Text styleSource = __instance.transform
-                    .Find("HideoutButton")?
-                    .GetComponentsInChildren<TMP_Text>(true)
-                    .FirstOrDefault();
-
-                SoulPlayerOverlayHost.Create(styleSource);
             }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError("Failed to prepare the SoulPlayer window: " + ex);
-            }
+
+            return null;
         }
     }
 

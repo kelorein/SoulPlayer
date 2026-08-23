@@ -11,6 +11,12 @@ namespace SoulPlayer.UI
 {
     internal sealed class SoulPlayerWindow : MonoBehaviour
     {
+        private enum WindowPage
+        {
+            Library,
+            Collection
+        }
+
         private const string ObjectName = "SoulPlayerWindow";
         private const int TracksPerPage = 8;
 
@@ -18,6 +24,7 @@ namespace SoulPlayer.UI
         private readonly List<GameObject> _folderRows = new List<GameObject>();
         private TMP_Text _styleSource;
         private GameObject _panel;
+        private GameObject _libraryPage;
         private GameObject _trackArea;
         private GameObject _folderArea;
         private GameObject _folderModal;
@@ -43,8 +50,16 @@ namespace SoulPlayer.UI
         private TextMeshProUGUI _postRaidStatus;
         private Slider _progressSlider;
         private Slider _volumeSlider;
+        private SoulTapeCollectionPage _collectionPage;
+        private Button _libraryNavigation;
+        private Button _collectionNavigation;
+        private TextMeshProUGUI _libraryNavigationLabel;
+        private TextMeshProUGUI _collectionNavigationLabel;
+        private GameObject _libraryNavigationAccent;
+        private GameObject _collectionNavigationAccent;
         private List<MusicTrack> _filteredTracks = new List<MusicTrack>();
         private int _page;
+        private WindowPage _activePage = WindowPage.Library;
         private bool _audioDirty = true;
         private bool _libraryDirty = true;
         private bool _updatingProgress;
@@ -117,9 +132,11 @@ namespace SoulPlayer.UI
 
             BuildSidebar();
             BuildLibrary();
+            BuildCollection();
             BuildPlayerBar();
             BuildFolderModal();
             BuildPostRaidModal();
+            ApplyPageVisibility();
 
             Plugin.AudioPlayer.Changed += OnAudioChanged;
             Plugin.MusicLibrary.Changed += OnLibraryChanged;
@@ -162,36 +179,22 @@ namespace SoulPlayer.UI
                 new Vector2(205f, 22f),
                 new Vector2(25f, -58f));
 
-            GameObject selected = UIUtils.CreatePanel(
+            _libraryNavigation = CreateNavigationButton(
                 sidebar,
-                "LibrarySelected",
-                UIUtils.PanelLight,
-                new Vector2(0f, 1f),
-                new Vector2(0f, 1f),
-                new Vector2(218f, 48f),
-                new Vector2(16f, -94f));
-
-            UIUtils.CreatePanel(
-                selected,
-                "Accent",
-                UIUtils.Accent,
-                new Vector2(0f, 0.5f),
-                new Vector2(0f, 0.5f),
-                new Vector2(3f, 48f),
-                Vector2.zero);
-
-            UIUtils.CreateLabel(
-                selected,
-                "Label",
-                "YOUR LIBRARY",
-                _styleSource,
-                17f,
-                UIUtils.Text,
-                TextAlignmentOptions.MidlineLeft,
-                new Vector2(0f, 0.5f),
-                new Vector2(0f, 0.5f),
-                new Vector2(180f, 42f),
-                new Vector2(18f, 0f));
+                "LibraryNavigation",
+                "LIBRARY",
+                -94f,
+                SwitchToLibrary,
+                out _libraryNavigationLabel,
+                out _libraryNavigationAccent);
+            _collectionNavigation = CreateNavigationButton(
+                sidebar,
+                "CollectionNavigation",
+                "COLLECTION",
+                -144f,
+                SwitchToCollection,
+                out _collectionNavigationLabel,
+                out _collectionNavigationAccent);
 
             _libraryCount = UIUtils.CreateLabel(
                 sidebar,
@@ -204,7 +207,7 @@ namespace SoulPlayer.UI
                 new Vector2(0f, 1f),
                 new Vector2(0f, 1f),
                 new Vector2(205f, 24f),
-                new Vector2(25f, -151f));
+                new Vector2(25f, -197f));
 
             UIUtils.CreateLabel(
                 sidebar,
@@ -217,7 +220,7 @@ namespace SoulPlayer.UI
                 new Vector2(0f, 1f),
                 new Vector2(0f, 1f),
                 new Vector2(190f, 24f),
-                new Vector2(25f, -201f));
+                new Vector2(25f, -235f));
 
             _folderCount = UIUtils.CreateLabel(
                 sidebar,
@@ -230,15 +233,15 @@ namespace SoulPlayer.UI
                 new Vector2(1f, 1f),
                 new Vector2(1f, 1f),
                 new Vector2(40f, 24f),
-                new Vector2(-22f, -201f));
+                new Vector2(-22f, -235f));
 
             _folderArea = UIUtils.CreateUIObject(sidebar, "FolderRows");
             UIUtils.SetRect(
                 (RectTransform)_folderArea.transform,
                 new Vector2(0f, 1f),
                 new Vector2(0f, 1f),
-                new Vector2(218f, 250f),
-                new Vector2(16f, -230f));
+                new Vector2(218f, 214f),
+                new Vector2(16f, -264f));
 
             UIUtils.CreateButton(
                 sidebar,
@@ -267,6 +270,139 @@ namespace SoulPlayer.UI
                 13f);
         }
 
+        private Button CreateNavigationButton(
+            GameObject sidebar,
+            string name,
+            string label,
+            float y,
+            UnityEngine.Events.UnityAction onClick,
+            out TextMeshProUGUI navigationLabel,
+            out GameObject accent)
+        {
+            Button button = UIUtils.CreateButton(
+                sidebar,
+                name,
+                label,
+                _styleSource,
+                new Vector2(0f, 1f),
+                new Vector2(0f, 1f),
+                new Vector2(218f, 46f),
+                new Vector2(16f, y),
+                onClick,
+                false,
+                16f);
+            navigationLabel = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (navigationLabel != null)
+            {
+                navigationLabel.alignment = TextAlignmentOptions.MidlineLeft;
+                RectTransform labelRect = (RectTransform)navigationLabel.transform;
+                UIUtils.SetRect(
+                    labelRect,
+                    new Vector2(0f, 0.5f),
+                    new Vector2(0f, 0.5f),
+                    new Vector2(180f, 42f),
+                    new Vector2(18f, 0f));
+            }
+
+            accent = UIUtils.CreatePanel(
+                button.gameObject,
+                "Accent",
+                UIUtils.Accent,
+                new Vector2(0f, 0.5f),
+                new Vector2(0f, 0.5f),
+                new Vector2(3f, 46f),
+                Vector2.zero);
+            accent.GetComponent<Image>().raycastTarget = false;
+            return button;
+        }
+
+        private void BuildCollection()
+        {
+            _collectionPage = SoulTapeCollectionPage.Create(
+                _panel,
+                _styleSource,
+                Plugin.TapeCatalog,
+                Plugin.TapeCollection,
+                Hide);
+        }
+
+        private void SwitchToLibrary()
+        {
+            if (_activePage == WindowPage.Library)
+            {
+                return;
+            }
+
+            _activePage = WindowPage.Library;
+            ApplyPageVisibility();
+        }
+
+        private void SwitchToCollection()
+        {
+            if (_activePage == WindowPage.Collection)
+            {
+                return;
+            }
+
+            _activePage = WindowPage.Collection;
+            ApplyPageVisibility();
+        }
+
+        private void ApplyPageVisibility()
+        {
+            bool showLibrary = _activePage == WindowPage.Library;
+            if (_libraryPage != null)
+            {
+                _libraryPage.SetActive(showLibrary);
+            }
+            if (_collectionPage != null)
+            {
+                if (showLibrary)
+                {
+                    _collectionPage.Hide();
+                }
+                else
+                {
+                    _collectionPage.Show();
+                }
+            }
+
+            ApplyNavigationState(
+                _libraryNavigation,
+                _libraryNavigationLabel,
+                _libraryNavigationAccent,
+                showLibrary);
+            ApplyNavigationState(
+                _collectionNavigation,
+                _collectionNavigationLabel,
+                _collectionNavigationAccent,
+                !showLibrary);
+        }
+
+        private static void ApplyNavigationState(
+            Button button,
+            TextMeshProUGUI label,
+            GameObject accent,
+            bool selected)
+        {
+            if (button != null)
+            {
+                Image image = button.GetComponent<Image>();
+                if (image != null)
+                {
+                    image.color = selected ? UIUtils.AccentMuted : UIUtils.PanelLight;
+                }
+            }
+            if (label != null)
+            {
+                label.color = selected ? UIUtils.Accent : UIUtils.Text;
+            }
+            if (accent != null)
+            {
+                accent.SetActive(selected);
+            }
+        }
+
         private void BuildLibrary()
         {
             GameObject main = UIUtils.CreatePanel(
@@ -277,6 +413,7 @@ namespace SoulPlayer.UI
                 new Vector2(0f, 1f),
                 new Vector2(1070f, 628f),
                 new Vector2(250f, 0f));
+            _libraryPage = main;
 
             UIUtils.CreateLabel(
                 main,

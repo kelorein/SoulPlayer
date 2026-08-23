@@ -33,6 +33,11 @@ namespace SoulPlayer.Cassettes
         internal bool EnsureProfile(Player raidPlayer)
         {
             string fallbackProfileId = raidPlayer == null ? string.Empty : raidPlayer.ProfileId;
+            return EnsureProfileId(fallbackProfileId);
+        }
+
+        internal bool EnsureProfileId(string fallbackProfileId)
+        {
             return _host != null && _host.RefreshProfile(fallbackProfileId);
         }
 
