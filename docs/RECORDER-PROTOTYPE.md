@@ -24,11 +24,24 @@ game asset is included or redistributed.
   future physical recorder's play control to replay the inserted cassette through the
   standard usable-item `SetAim`/primary-action seam, or **M** can eject and close it.
 - Leaving the raid force-resets the controller and stops recorder audio immediately.
-- The preferred starter cassette remains **Scott Buckley - The Long Dark**. If it is
-  unavailable in the active library, the first playable library track is still used.
+- The preferred starter cassette remains **Scott Buckley - The Long Dark**. Recorder
+  playback now resolves through the active profile's SoulTape collection and will only
+  use another track when its cassette ID is also unlocked.
 
 **M now controls the recorder interaction itself.** Normal builds do not change compass
 state and do not depend on a compass or radio transmitter being equipped.
+
+## SoulTape collection integration
+
+The recorder lifecycle remains unchanged for SoulTape Collection v1. Before entering,
+the raid host loads the active profile's cassette collection and resolves an unlocked
+catalog entry with available audio. It never falls back to an arbitrary locked library
+track.
+
+New profiles permanently receive the **Scott Buckley - The Long Dark** cassette ID.
+Missing audio prevents that cassette from playing but does not remove its unlock or
+favorite state. See [SOULTAPE-COLLECTION.md](SOULTAPE-COLLECTION.md) for the catalog,
+persistence, save-recovery, and future world-pickup design.
 
 ## Controller architecture
 

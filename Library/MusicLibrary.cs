@@ -17,11 +17,26 @@ namespace SoulPlayer.Library
             StringComparer.OrdinalIgnoreCase);
 
         private readonly object _sync = new object();
+        private readonly Action<string> _logInfo;
+        private readonly Action<string> _logError;
         private List<MusicTrack> _tracks = new List<MusicTrack>();
         private Task<ScanResult> _scanTask;
         private List<string> _pendingRoots;
 
         internal event Action Changed;
+
+        internal MusicLibrary()
+            : this(
+                message => Plugin.Log.LogInfo(message),
+                message => Plugin.Log.LogError(message))
+        {
+        }
+
+        internal MusicLibrary(Action<string> logInfo, Action<string> logError)
+        {
+            _logInfo = logInfo ?? delegate { };
+            _logError = logError ?? delegate { };
+        }
 
         internal bool IsScanning
         {
@@ -73,7 +88,7 @@ namespace SoulPlayer.Library
                     _tracks = result.Tracks;
                 }
 
-                Plugin.Log.LogInfo(
+                _logInfo(
                     "SoulPlayer library scan finished: " + result.Tracks.Count +
                     " tracks, " + result.DuplicateCount + " duplicates ignored.");
 
@@ -86,7 +101,7 @@ namespace SoulPlayer.Library
             catch (Exception ex)
             {
                 result = new ScanResult(new List<MusicTrack>(), 0, 1, ex.Message);
-                Plugin.Log.LogError("SoulPlayer library scan failed: " + ex);
+                _logError("SoulPlayer library scan failed: " + ex);
             }
 
             if (_pendingRoots != null)

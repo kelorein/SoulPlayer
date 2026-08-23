@@ -5,13 +5,22 @@ Bug reports, focused improvements, and compatibility fixes are welcome.
 ## Before opening an issue
 
 1. Install the latest SoulPlayer release.
-2. Confirm the issue on SPT 4.1.3.
+2. Confirm the issue on the supported SPT 4.1.x build.
 3. Check existing issues for duplicates.
 4. Collect the relevant section of `BepInEx/LogOutput.log`.
 
 ## Building locally
 
-SoulPlayer targets .NET Framework 4.7.2 and compiles against an existing SPT 4.1.3 installation.
+SoulPlayer targets .NET Framework 4.7.2 and compiles against an existing SPT 4.1.x installation.
+
+Run the standard offline developer workflow first:
+
+```powershell
+.\tools\Test-SoulPlayer.ps1
+```
+
+See `docs/DEVELOPMENT-VALIDATION.md` for the rule that determines whether a final EFT
+runtime acceptance test is also required.
 
 ```powershell
 dotnet build SoulPlayer.csproj -c Release -p:SptRoot="C:\Path\To\SPT"

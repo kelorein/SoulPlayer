@@ -2,6 +2,7 @@ using System;
 using BepInEx;
 using BepInEx.Logging;
 using SoulPlayer.Audio;
+using SoulPlayer.Cassettes;
 using SoulPlayer.Configuration;
 using SoulPlayer.Library;
 using SoulPlayer.Recorder;
@@ -17,6 +18,9 @@ namespace SoulPlayer
         internal static Plugin Instance { get; private set; }
         internal static SoulPlayerSettings Settings { get; private set; }
         internal static MusicLibrary MusicLibrary { get; private set; }
+        internal static SoulTapeCatalog TapeCatalog { get; private set; }
+        internal static SoulTapeCollection TapeCollection { get; private set; }
+        internal static SoulTapeCollectionController TapeCollectionHost { get; private set; }
         internal static SoulAudioPlayer AudioPlayer { get; private set; }
         internal static TarkovMusicMuter TarkovMusicMuter { get; private set; }
         internal static PostRaidCoordinator PostRaidCoordinator { get; private set; }
@@ -37,6 +41,19 @@ namespace SoulPlayer
             EnablePatch("Tushonka sound settings screen", () => new Patches.TarkovSoundSettingsTabPatch().Enable());
 
             MusicLibrary = new MusicLibrary();
+            ISoulTapeLog tapeLog = new PluginSoulTapeLog();
+            TapeCatalog = new SoulTapeCatalog(tapeLog);
+            TapeCollection = new SoulTapeCollection(
+                TapeCatalog,
+                new JsonSoulTapeCollectionStore(
+                    SoulTapeCollectionController.GetDefaultCollectionFolder()),
+                tapeLog);
+            TapeCollectionHost = gameObject.AddComponent<SoulTapeCollectionController>();
+            TapeCollectionHost.Initialize(
+                MusicLibrary,
+                TapeCatalog,
+                TapeCollection,
+                new SptProfileIdProvider(tapeLog));
             AudioPlayer = gameObject.AddComponent<SoulAudioPlayer>();
             AudioPlayer.Initialize(Settings);
             TarkovMusicMuter = gameObject.AddComponent<TarkovMusicMuter>();
