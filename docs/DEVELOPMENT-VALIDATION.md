@@ -14,13 +14,12 @@ The script performs the normal developer validation loop without starting EFT:
 2. restores the test project;
 3. compiles and runs the complete offline test suite;
 4. reports collection bootstrap, delayed catalog/library refresh, persistence/recovery,
-   recorder selection, and SPT API contract groups;
+   recorder selection, SPT API contracts, placement authoring, and World Discovery;
 5. performs a non-incremental Release build;
 6. classifies whether the current changed files require an EFT acceptance run.
 
-`-SptRoot` can override the SPT installation. The current development-machine request
-path `D:\SPT\_4.1.2` is checked first; because that path is absent on this machine, the
-script automatically uses the installed `D:\SPT_4.1.2` fallback and reports it.
+`-SptRoot` can override the SPT installation. The default development installation is
+`D:\SPT_4.1.2`; a missing supplied/default root fails clearly without fallback guessing.
 
 The offline harness never starts `EscapeFromTarkov.exe`.
 
@@ -81,8 +80,6 @@ loop for these changes is the offline harness.
 
 ## Current workflow-change classification
 
-This milestone changes the production profile-resolution wiring by introducing
-`IProfileIdProvider` and `SptProfileIdProvider`. The offline SPT contract test verifies
-the required types and members, but one final EFT acceptance run is still recommended
-because Tarkov session/profile integration changed. No repeated EFT launches are needed
-before that final check.
+World Discovery v1 changes live raid spawning, Unity placeholder presentation, aiming,
+and pickup integration. Offline validation is the normal development loop, followed by
+one focused EFT acceptance run for the milestone. The harness does not launch EFT.

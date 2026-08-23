@@ -14,8 +14,8 @@ world cassette
 ```
 
 Collection v1 implements the catalog and permanent progression underneath that loop.
-It does **not** add world items, loot spawns, pickup UI, recorder models, hands, or
-animations yet.
+World Discovery v1 now supplies the first curated raid spawns and direct pickup path;
+the full collection browser, recorder models, hands, and animations remain deferred.
 
 ## Cassette catalog
 
@@ -57,11 +57,10 @@ curated ID remains unbound.
 transform, surface normal, semantic tag, source, and enabled state. Neither structure
 references or redistributes EFT assets.
 
-Curated anchors are the authoritative long-term placement source. Automatically derived
-loose-loot locations may be retained as an explicit fallback or research source, but
-they never override valid curated anchors. The earlier spawn-selection experiment is
-kept outside project and test compilation while this milestone focuses only on authoring.
-Production raid selection and world spawning remain paused.
+Curated anchors are the authoritative long-term placement source. Production World
+Discovery uses only committed curated anchors. The current Factory Day set is embedded
+into `Soulplayer.dll`; the author's editable BepInEx output is never read as production
+spawn data. See `SOULTAPE-WORLD-DISCOVERY.md` for the selection rules.
 
 ## Per-profile progression
 
@@ -128,20 +127,20 @@ solves surface clearance/collision, and appends the valid result to editable JSO
 See `SOULTAPE-AUTHORING.md` for the build command, controls, output location, and safety
 behavior. Normal Release builds exclude active placement behavior.
 
-## Later gameplay milestone
+## World Discovery v1
 
-The next layer can build on these APIs without changing progression format:
+Factory Day currently has ten committed anchors. At raid startup SoulPlayer activates
+one to three of them, limited by the number of eligible locked cassettes. The starter,
+unlocked tapes, unavailable audio, and personal/generated entries without explicit
+rarity are excluded.
 
-1. review and ship a small set of curated anchors;
-2. create legally distributable cassette world items;
-3. select only one through three valid curated discoveries for each raid;
-4. call `UnlockTape(id)` after a successful pickup/collection action;
-5. show a collection notification and collection browser;
-6. add favorite and explicit recorder-selection controls;
-7. decide duplicate-pickup rewards for an already unlocked cassette.
+Collecting a cassette calls `UnlockTape(id)` immediately. The profile JSON is saved at
+pickup time: extraction is not required and dying later does not revoke the discovery.
+The pickup does not enter stash inventory. The temporary world cassette and discovery
+notification use SoulPlayer-owned presentation that can be replaced by final art later.
 
-World spawning and pickup/discovery are intentionally not part of the current authoring
-milestone.
+Favorites/collection browsing, explicit recorder tape selection, final art, and
+duplicate rewards remain later milestones.
 
 No copyrighted Battlestate recorder or cassette assets are included.
 
@@ -154,4 +153,7 @@ Automated tests cover:
 - rollback when a save fails;
 - preservation of missing catalog IDs;
 - generated ID stability after a file rename;
-- recovery from a valid backup after primary-file corruption.
+- recovery from a valid backup after primary-file corruption;
+- World Discovery eligibility and deterministic rarity-weighted planning;
+- committed Factory Day anchor packaging;
+- immediate discovery persistence, reload, rollback, events, and profile separation.

@@ -140,6 +140,7 @@ if ($unitPassed) {
     $groups += Invoke-ValidationGroup 'RecorderSelection' 'Recorder selection'
     $groups += Invoke-ValidationGroup 'SptApiContracts' 'SPT API contracts'
     $groups += Invoke-ValidationGroup 'PlacementAuthoring' 'Placement authoring'
+    $groups += Invoke-ValidationGroup 'WorldDiscovery' 'World discovery'
 }
 else {
     foreach ($label in @(
@@ -148,7 +149,8 @@ else {
         'Persistence/recovery',
         'Recorder selection',
         'SPT API contracts',
-        'Placement authoring')) {
+        'Placement authoring',
+        'World discovery')) {
         Write-ValidationLine $false $label 'NOT RUN'
     }
 }
@@ -218,7 +220,12 @@ $changedFiles = @(
 
 $runtimeRequired = $false
 $runtimeReason = 'no runtime-specific systems changed'
-if ($changedFiles -contains 'World/DevelopmentSoulTapeSpawnMarker.cs') {
+if ($changedFiles -contains 'World/SoulTapeWorldDiscoveryController.cs' -or
+    $changedFiles -contains 'World/SoulTapeWorldPickup.cs') {
+    $runtimeRequired = $true
+    $runtimeReason = 'world cassette spawning/pickup integration changed'
+}
+elseif ($changedFiles -contains 'World/DevelopmentSoulTapeSpawnMarker.cs') {
     $runtimeRequired = $true
     $runtimeReason = 'placement-mode movement/raycast/Unity authoring integration changed'
 }
