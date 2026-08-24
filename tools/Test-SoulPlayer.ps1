@@ -139,6 +139,7 @@ if ($unitPassed) {
     $groups += Invoke-ValidationGroup 'CatalogLibraryRefresh' 'Catalog/library refresh'
     $groups += Invoke-ValidationGroup 'PersistenceRecovery' 'Persistence/recovery'
     $groups += Invoke-ValidationGroup 'RecorderSelection' 'Recorder selection'
+    $groups += Invoke-ValidationGroup 'RecorderPresentation' 'Recorder presentation'
     $groups += Invoke-ValidationGroup 'SptApiContracts' 'SPT API contracts'
     $groups += Invoke-ValidationGroup 'PlacementAuthoring' 'Placement authoring'
     $groups += Invoke-ValidationGroup 'WorldDiscovery' 'World discovery'
@@ -150,6 +151,7 @@ else {
         'Catalog/library refresh',
         'Persistence/recovery',
         'Recorder selection',
+        'Recorder presentation',
         'SPT API contracts',
         'Placement authoring',
         'World discovery')) {
@@ -222,7 +224,14 @@ $changedFiles = @(
 
 $runtimeRequired = $false
 $runtimeReason = 'no runtime-specific systems changed'
-if ($changedFiles -contains 'Recorder/SoulRecorderController.cs' -or
+if ($changedFiles -contains 'Recorder/ProceduralSoulRecorderHandsView.cs' -or
+    $changedFiles -contains 'Recorder/SoulRecorderPresentationState.cs' -or
+    $changedFiles -contains 'Recorder/SoulRecorderPresentationTuning.cs' -or
+    $changedFiles -contains 'World/SoulTapeCassetteVisual.cs') {
+    $runtimeRequired = $true
+    $runtimeReason = 'first-person SoulRecorder/cassette presentation changed'
+}
+elseif ($changedFiles -contains 'Recorder/SoulRecorderController.cs' -or
     $changedFiles -contains 'Cassettes/SoulTapeRecorderSelector.cs') {
     $runtimeRequired = $true
     $runtimeReason = 'SoulRecorder cassette-selection/menu integration changed'

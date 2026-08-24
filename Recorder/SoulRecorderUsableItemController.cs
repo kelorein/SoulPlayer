@@ -137,7 +137,7 @@ namespace SoulPlayer.Recorder
 
             if (hadInteraction && _handsView != null)
             {
-                InvokeView(() => _handsView.OnInteractionExited(), "reset interaction");
+                InvokeView(() => _handsView.ForceReset(), "reset interaction");
             }
 
             _playRequested = false;

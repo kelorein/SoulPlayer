@@ -53,6 +53,12 @@ namespace SoulPlayer.Recorder
             _player = null;
         }
 
+        public void ForceReset()
+        {
+            TrySetState(false);
+            _player = null;
+        }
+
         private void TrySetState(bool raised)
         {
             try

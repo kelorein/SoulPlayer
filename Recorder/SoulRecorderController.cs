@@ -341,14 +341,24 @@ namespace SoulPlayer.Recorder
             _feedbackStatusStyle.normal.textColor = new Color(0.68f, 0.72f, 0.72f, 1f);
         }
 
-        private static ISoulRecorderHandsView CreateHandsView()
+        private ISoulRecorderHandsView CreateHandsView()
         {
 #if SOULPLAYER_RECORDER_DEV_PROXY
             Plugin.Log.LogWarning(
                 "SoulRecorder development radio/compass hands proxy is enabled for this build.");
             return new DevelopmentRecorderHandsProxy();
 #else
-            return HeadlessSoulRecorderHandsView.Instance;
+            try
+            {
+                return gameObject.AddComponent<ProceduralSoulRecorderHandsView>();
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError(
+                    "SoulRecorder procedural presentation could not initialize; using the " +
+                    "safe headless presentation: " + ex.Message);
+                return HeadlessSoulRecorderHandsView.Instance;
+            }
 #endif
         }
 

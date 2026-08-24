@@ -53,8 +53,19 @@ Artist — Title
 LOADING CASSETTE...
 ```
 
-When playback begins it briefly changes to `NOW PLAYING`. It is not permanent and does
-not replace the deferred physical recorder presentation.
+When playback begins it briefly changes to `NOW PLAYING`. It remains temporary and does
+not compete with the procedural first-person recorder prototype.
 
 The optional in-raid quick selector is not implemented in v1. Menu Collection selection
 is the single required selection surface.
+
+## Procedural presentation integration
+
+The selected `MusicTrack` is also passed through the existing `ISoulRecorderHandsView`
+callbacks to the SoulPlayer-owned procedural recorder. This adds only presentation:
+selection order, missing-audio fallback, persisted selected ID, and the proven usable-item
+state machine are unchanged. Insertion/ejection duration comes from the view contract so
+the visible cassette remains synchronized with `LoadingTape` and `Ejecting`.
+
+See `SOULRECORDER-PRESENTATION.md` for model ownership, placement, animation, fallback,
+and focused runtime acceptance details.

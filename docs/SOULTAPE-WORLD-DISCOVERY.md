@@ -109,10 +109,12 @@ also clears both. The native EFT action panel was not driven because its cursor 
 to `GamePlayerOwner` interaction state and supported EFT interactable/inventory objects,
 which would introduce fragile coupling for a progression-only collectible.
 
-World cassettes use a static SoulPlayer-owned placeholder made from simple cassette
-geometry and neutral materials. It has no rigidbody, gravity settling, EFT template,
-stash item, or Battlestate asset. The pickup prompt and short discovery notification are
-isolated presentation layers intended to be replaced alongside final custom art.
+World cassettes now reuse the SoulPlayer-owned procedural cassette visual used by the
+first-person recorder: a dark plastic shell, aged-paper label, two recognizable reel
+hubs, and a muted amber accent. The visual remains static at the authored solved transform,
+has no glow or beacon, and preserves the existing interaction focus/visibility contract.
+It has no rigidbody, gravity settling, EFT template, stash item, or Battlestate asset.
+The primitive prototype can later be replaced with original custom art without changing
+discovery progression or targeting.
 
-The full collection browser, favorites UI, explicit recorder selection, final cassette
-art, recorder hands/animations, and duplicate rewards are not part of v1.
+Final cassette art, a custom recorder hand rig, and duplicate rewards remain deferred.

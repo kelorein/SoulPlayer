@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using SoulPlayer.Cassettes;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace SoulPlayer.World
     /// </summary>
     internal sealed class SoulTapeWorldPickup : MonoBehaviour
     {
-        internal const float CassetteHalfThickness = 0.009f;
+        internal const float CassetteHalfThickness = SoulTapeCassetteVisual.HalfThickness;
         internal const float InteractionFocusClearance = 0.015f;
         internal const int VisibilitySampleCount = 3;
 
@@ -18,8 +17,6 @@ namespace SoulPlayer.World
             new Vector3(0.28f, 0.14f, 0.20f);
         internal static readonly Vector3 InteractionFocusLocalOffset =
             new Vector3(0f, CassetteHalfThickness + InteractionFocusClearance, 0f);
-
-        private readonly List<Material> _ownedMaterials = new List<Material>();
 
         internal SoulTapeCatalogEntry Cassette { get; private set; }
         internal BoxCollider InteractionTarget { get; private set; }
@@ -68,14 +65,6 @@ namespace SoulPlayer.World
             Cassette = cassette;
         }
 
-        internal void OwnMaterial(Material material)
-        {
-            if (material != null)
-            {
-                _ownedMaterials.Add(material);
-            }
-        }
-
         internal bool CreateInteractionTarget(ISoulTapeLog log)
         {
             int ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
@@ -97,17 +86,6 @@ namespace SoulPlayer.World
             return true;
         }
 
-        private void OnDestroy()
-        {
-            foreach (Material material in _ownedMaterials)
-            {
-                if (material != null)
-                {
-                    Destroy(material);
-                }
-            }
-            _ownedMaterials.Clear();
-        }
     }
 
     internal static class SoulTapeWorldPickupFactory
@@ -116,9 +94,7 @@ namespace SoulPlayer.World
             SoulTapeSpawnPlanEntry planned,
             ISoulTapeLog log)
         {
-            Shader shader = Shader.Find("Standard") ??
-                            Shader.Find("Legacy Shaders/Diffuse") ??
-                            Shader.Find("Unlit/Color");
+            Shader shader = SoulPlayerVisualShader.FindOpaque();
             if (shader == null)
             {
                 log.Error(
@@ -142,45 +118,16 @@ namespace SoulPlayer.World
                     return null;
                 }
 
-                Material body = CreateMaterial(shader, new Color(0.12f, 0.14f, 0.16f, 1f));
-                Material label = CreateMaterial(shader, new Color(0.72f, 0.65f, 0.48f, 1f));
-                Material reel = CreateMaterial(shader, new Color(0.33f, 0.35f, 0.38f, 1f));
-                pickup.OwnMaterial(body);
-                pickup.OwnMaterial(label);
-                pickup.OwnMaterial(reel);
-
-                AddPart(
-                    root,
-                    PrimitiveType.Cube,
-                    "Cassette body",
-                    Vector3.zero,
-                    new Vector3(0.11f, 0.018f, 0.07f),
-                    Quaternion.identity,
-                    body);
-                AddPart(
-                    root,
-                    PrimitiveType.Cube,
-                    "Cassette label",
-                    new Vector3(0f, 0.0095f, 0f),
-                    new Vector3(0.085f, 0.002f, 0.045f),
-                    Quaternion.identity,
-                    label);
-                AddPart(
-                    root,
-                    PrimitiveType.Cylinder,
-                    "Left reel",
-                    new Vector3(-0.025f, 0.011f, 0f),
-                    new Vector3(0.018f, 0.004f, 0.018f),
-                    Quaternion.identity,
-                    reel);
-                AddPart(
-                    root,
-                    PrimitiveType.Cylinder,
-                    "Right reel",
-                    new Vector3(0.025f, 0.011f, 0f),
-                    new Vector3(0.018f, 0.004f, 0.018f),
-                    Quaternion.identity,
-                    reel);
+                SoulTapeCassetteVisual visual = SoulTapeCassetteVisual.Create(
+                    root.transform,
+                    shader,
+                    "SoulTape cassette visual");
+                if (visual == null)
+                {
+                    Object.Destroy(root);
+                    log.Error("SoulTape world cassette visual factory returned no visual.");
+                    return null;
+                }
                 return pickup;
             }
             catch (System.Exception ex)
@@ -192,42 +139,6 @@ namespace SoulPlayer.World
                 log.Error(
                     "SoulTape world cassette placeholder construction failed: " + ex);
                 return null;
-            }
-        }
-
-        private static Material CreateMaterial(Shader shader, Color color)
-        {
-            Material material = new Material(shader);
-            material.color = color;
-            return material;
-        }
-
-        private static void AddPart(
-            GameObject root,
-            PrimitiveType primitive,
-            string name,
-            Vector3 localPosition,
-            Vector3 localScale,
-            Quaternion localRotation,
-            Material material)
-        {
-            GameObject part = GameObject.CreatePrimitive(primitive);
-            part.name = name;
-            part.transform.SetParent(root.transform, false);
-            part.transform.localPosition = localPosition;
-            part.transform.localRotation = localRotation;
-            part.transform.localScale = localScale;
-            Renderer renderer = part.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.sharedMaterial = material;
-            }
-
-            Collider collider = part.GetComponent<Collider>();
-            if (collider != null)
-            {
-                collider.enabled = false;
-                Object.Destroy(collider);
             }
         }
 
