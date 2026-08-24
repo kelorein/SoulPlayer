@@ -20,6 +20,7 @@ namespace SoulPlayer.Recorder
         void OnTapeEjectionStarted(MusicTrack tape);
         void OnTapeEjected(MusicTrack tape);
         void OnInteractionExited();
+        void ForceReset();
     }
 
     /// <summary>
@@ -64,6 +65,10 @@ namespace SoulPlayer.Recorder
         }
 
         public void OnInteractionExited()
+        {
+        }
+
+        public void ForceReset()
         {
         }
     }

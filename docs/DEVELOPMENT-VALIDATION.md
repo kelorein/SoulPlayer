@@ -14,8 +14,8 @@ The script performs the normal developer validation loop without starting EFT:
 2. restores the test project;
 3. compiles and runs the complete offline test suite;
 4. reports collection bootstrap, Collection Browser, delayed catalog/library refresh,
-   persistence/recovery, recorder selection, SPT API contracts, placement authoring,
-   and World Discovery;
+   persistence/recovery, recorder selection, recorder presentation, SPT API contracts,
+   placement authoring, and World Discovery;
 5. performs a non-incremental Release build;
 6. classifies whether the current changed files require an EFT acceptance run.
 
@@ -84,8 +84,10 @@ loop for these changes is the offline harness.
 
 ## Current workflow-change classification
 
-SoulRecorder Cassette Selection UX v1 changes the player-facing Collection menu and the
-in-raid cassette-resolution/feedback path. Offline validation is the normal development
-loop followed by one focused EFT acceptance run for profile selection persistence,
-Collection controls, M-key tape choice, temporary missing-audio fallback, and the small
-loading/playing overlay. The harness reports this explicitly and never launches EFT.
+SoulRecorder procedural first-person presentation v1 crosses the Unity first-person
+model/animation boundary. Offline validation covers its pure timeline, timing contract,
+headless fallback, selection invariants, cassette dimensions, world focus invariant, and
+both Release variants. One focused EFT acceptance run is still required for view placement,
+camera transitions, insertion/ejection motion, reel visibility, and raid cleanup. The
+harness reports `first-person SoulRecorder/cassette presentation changed` and never starts
+EFT automatically.
