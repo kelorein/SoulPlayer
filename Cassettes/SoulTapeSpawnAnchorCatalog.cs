@@ -10,8 +10,8 @@ namespace SoulPlayer.Cassettes
 {
     internal sealed class SoulTapeSpawnAnchorCatalog
     {
-        internal const string FactoryDayResourceName =
-            "SoulPlayer.Data.SoulTape.SpawnAnchors.factory4_day.json";
+        internal const string CuratedMapsResourceName =
+            "SoulPlayer.Data.SoulTape.SpawnAnchors.all-maps.json";
 
         private readonly Dictionary<string, IReadOnlyList<SoulTapeSpawnAnchor>> _byMap =
             new Dictionary<string, IReadOnlyList<SoulTapeSpawnAnchor>>(
@@ -19,7 +19,7 @@ namespace SoulPlayer.Cassettes
 
         internal SoulTapeSpawnAnchorCatalog(Assembly assembly, ISoulTapeLog log)
         {
-            LoadResource(assembly, FactoryDayResourceName, log);
+            LoadResource(assembly, CuratedMapsResourceName, log);
         }
 
         internal IReadOnlyList<SoulTapeSpawnAnchor> GetForMap(string mapId)
@@ -32,6 +32,16 @@ namespace SoulPlayer.Cassettes
             }
 
             return new SoulTapeSpawnAnchor[0];
+        }
+
+        internal IReadOnlyList<SoulTapeSpawnAnchor> GetAll()
+        {
+            return _byMap.Values
+                .SelectMany(anchors => anchors)
+                .GroupBy(anchor => anchor.Id, StringComparer.Ordinal)
+                .Select(group => group.First())
+                .OrderBy(anchor => anchor.Id, StringComparer.Ordinal)
+                .ToList();
         }
 
         internal static SoulTapeSpawnAnchorDocument Parse(string json)

@@ -1,0 +1,42 @@
+SoulRecorder replacement-arm auto animation draft v3
+StaticMaster_v1: LOCKED 2EA27472ACBEBF323D9C2502AF7FDFCE1FC3FB8ACDD72D56629C8E8ECEC20AA2
+Architecture: one rigid prop owner at a time
+Recorder owner: LEFT_HAND for entire interaction
+Cassette owners: RIGHT_HAND -> RECORDER_SLOT -> RIGHT_HAND
+Human CassetteAlign: preserved as bone/finger input
+Human CassetteContact: preserved and not modified
+Interaction assembly shift: (32.09, 22.33, -69.80) mm (max 80 mm)
+
+Pose metrics
+Auto_CassetteAlign: owner=Hand axisError=177.3915deg extension=77.95% recorderDrift=0.0000mm cassetteDrift=0.0003mm
+Auto_CassetteContact: owner=Hand axisError=0.0000deg extension=96.50% recorderDrift=0.0000mm cassetteDrift=0.0002mm
+Auto_CassetteEjectApproach: owner=Recorder axisError=0.0000deg extension=96.43% recorderDrift=0.0000mm cassetteDrift=0.0000mm
+Auto_CassetteEjectClear: owner=Hand axisError=0.0000deg extension=96.50% recorderDrift=0.0000mm cassetteDrift=0.0001mm
+Auto_CassetteEjectGrip: owner=Recorder axisError=0.0000deg extension=96.50% recorderDrift=0.0000mm cassetteDrift=0.0000mm
+Auto_CassetteHalfInserted: owner=Hand axisError=0.0000deg extension=96.50% recorderDrift=0.0000mm cassetteDrift=0.0002mm
+Auto_CassetteRelease: owner=Recorder axisError=0.0000deg extension=95.57% recorderDrift=0.0000mm cassetteDrift=0.0000mm
+Auto_CassetteSeated: owner=Hand axisError=0.0000deg extension=96.50% recorderDrift=0.0000mm cassetteDrift=0.0002mm
+Auto_HandsBelowCarry: owner=Hand axisError=177.3915deg extension=87.45% recorderDrift=0.0001mm cassetteDrift=0.0001mm
+Auto_HandsBelowSeated: owner=Recorder axisError=0.0000deg extension=95.57% recorderDrift=0.0001mm cassetteDrift=0.0001mm
+Auto_StopRecorderReturn: owner=Recorder axisError=0.0000deg extension=95.17% recorderDrift=0.0000mm cassetteDrift=0.0000mm
+Auto_SupportHold: owner=Hand axisError=177.3915deg extension=87.45% recorderDrift=0.0000mm cassetteDrift=0.0001mm
+
+Recorder-left-hand relative transform drift: 0.0001 mm / 0.0000 deg (target 0)
+Cassette-right-hand relative transform drift while hand-owned: 0.0003 mm / 0.0000 deg (target 0)
+Cassette slot-relative drift while recorder-owned: 0.0001 mm / 0.0000 deg (target 0)
+Insertion ownership-transfer world snap: 0.0001 mm / 0.0000 deg (target 0)
+Ejection ownership-transfer world snap: 0.0001 mm / 0.0000 deg (target 0)
+contact/slot entry error: 100.7809 mm
+seated error: 83.4487 mm
+maximum lateral insertion drift: 11.9508 mm
+final insertion rotation delta: 0.0000 deg
+Quaternion interpolation: explicit shortest path
+Geometry failures:
+- Fixed-shoulder rigid-grip target requires 115.89% extension; clamped to 96.5% for diagnostic rendering.
+- Fixed-shoulder rigid-grip target requires 114.20% extension; clamped to 96.5% for diagnostic rendering.
+- Fixed-shoulder rigid-grip target requires 112.55% extension; clamped to 96.5% for diagnostic rendering.
+- Fixed-shoulder rigid-grip target requires 123.73% extension; clamped to 96.5% for diagnostic rendering.
+- Final insertion lateral drift is 11.951 mm.
+- Half-inserted cassette missed its mechanical midpoint by 91.989 mm.
+AUTO NUMERICAL GATE: FAIL
+AUTO VISUAL DRAFT V3 GATE: REQUIRES FIVE-POSE HUMAN REVIEW

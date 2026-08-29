@@ -25,8 +25,11 @@ namespace SoulPlayer.Audio
 
         private readonly System.Random _random = new System.Random();
         private SoulPlayerSettings _settings;
+        private TrackRoutingService _routing;
+        private SoulPlayerVolumeState _volumeState;
         private AudioSource _source;
         private List<MusicTrack> _queue = new List<MusicTrack>();
+        private TrackRoute _queueRoute = TrackRoute.None;
         private int _queueIndex = -1;
         private Coroutine _loadCoroutine;
         private Task<DecodedAudio> _flacTask;
@@ -48,10 +51,18 @@ namespace SoulPlayer.Audio
         private float _fadeStartVolume;
         private MusicTrack _fadePendingTrack;
         private List<MusicTrack> _fadePendingQueue;
+        private TrackRoute _fadePendingRoute;
+        private ExactTrackPlaybackRequest _fadePendingExactRequest;
+        private ExactTrackPlaybackRequest _loadingExactRequest;
+        private int _nextExactRequestId;
 
         internal event Action Changed;
 
         internal MusicTrack CurrentTrack { get; private set; }
+        internal MusicTrack DisplayTrack
+        {
+            get { return CurrentTrack; }
+        }
         internal bool IsLoading { get { return _loading; } }
         internal bool IsPlaying { get { return _source != null && _source.isPlaying; } }
         internal bool IsPaused { get { return _paused || _pausedForRaid; } }
@@ -59,18 +70,50 @@ namespace SoulPlayer.Audio
         internal float CurrentTime { get { return _source != null && _source.clip != null ? _source.time : 0f; } }
         internal float Duration { get { return _source != null && _source.clip != null ? _source.clip.length : 0f; } }
 
-        internal void Initialize(SoulPlayerSettings settings)
+        internal void Initialize(SoulPlayerSettings settings, TrackRoutingService routing)
         {
+            if (_settings != null)
+            {
+                _settings.VolumeChanged -= OnVolumeChanged;
+            }
             _settings = settings;
+            _routing = routing;
+            _volumeState = new SoulPlayerVolumeState(settings.Volume);
+            _settings.VolumeChanged += OnVolumeChanged;
             _source = gameObject.AddComponent<AudioSource>();
             _source.playOnAwake = false;
             _source.loop = false;
             _source.spatialBlend = 0f;
             _source.ignoreListenerPause = true;
-            _source.volume = settings.Volume;
+            _source.volume = _volumeState.TargetVolume;
         }
 
         internal void Play(MusicTrack track, IEnumerable<MusicTrack> queue)
+        {
+            PlayCore(track, queue, TrackRoute.None, null);
+        }
+
+        private void PlayAutomatic(
+            MusicTrack track,
+            IEnumerable<MusicTrack> queue,
+            TrackRoute route)
+        {
+            PlayCore(track, queue, route, null);
+        }
+
+        private void PlayExactPostRaid(
+            MusicTrack track,
+            IEnumerable<MusicTrack> queue,
+            ExactTrackPlaybackRequest request)
+        {
+            PlayCore(track, queue, request.Route, request);
+        }
+
+        private void PlayCore(
+            MusicTrack track,
+            IEnumerable<MusicTrack> queue,
+            TrackRoute route,
+            ExactTrackPlaybackRequest exactRequest)
         {
             if (track == null)
             {
@@ -80,8 +123,9 @@ namespace SoulPlayer.Audio
             CancelFade();
 
             _queue = queue == null ? new List<MusicTrack>() : queue.ToList();
+            _queueRoute = route;
             _queueIndex = _queue.FindIndex(item =>
-                string.Equals(item.FilePath, track.FilePath, StringComparison.OrdinalIgnoreCase));
+                SoulPath.AreEquivalent(item.FilePath, track.FilePath));
 
             if (_queueIndex < 0)
             {
@@ -89,7 +133,7 @@ namespace SoulPlayer.Audio
                 _queueIndex = 0;
             }
 
-            BeginLoad(track);
+            BeginLoad(track, exactRequest);
         }
 
         internal void TogglePause()
@@ -122,6 +166,7 @@ namespace SoulPlayer.Audio
             {
                 _source.Pause();
                 _paused = true;
+                _volumeState.MarkPaused();
             }
             else
             {
@@ -136,6 +181,7 @@ namespace SoulPlayer.Audio
                     _source.UnPause();
                 }
                 _paused = false;
+                _volumeState.MarkPlaying();
             }
 
             NotifyChanged();
@@ -152,6 +198,7 @@ namespace SoulPlayer.Audio
             }
 
             _flacTask = null;
+            _loadingExactRequest = null;
             _loading = false;
             _playWhenLibraryReady = false;
             _pendingPostRaidOutcome = null;
@@ -164,14 +211,23 @@ namespace SoulPlayer.Audio
             }
             _paused = true;
             _hasStarted = false;
+            _volumeState.MarkStopped();
             NotifyChanged();
         }
 
         internal void Next()
         {
+            RefreshAutomaticQueue();
             if (_queue.Count == 0)
             {
-                StartFromLibrary();
+                if (_queueRoute == TrackRoute.None)
+                {
+                    StartFromLibrary();
+                }
+                else
+                {
+                    StopPlayback();
+                }
                 return;
             }
 
@@ -207,6 +263,33 @@ namespace SoulPlayer.Audio
             BeginLoad(_queue[_queueIndex]);
         }
 
+        private void AdvanceAutomatically()
+        {
+            if (_queueRoute == TrackRoute.None)
+            {
+                StartFromLibrary();
+                return;
+            }
+
+            Next();
+        }
+
+        private void RefreshAutomaticQueue()
+        {
+            if (_queueRoute == TrackRoute.None || _routing == null)
+            {
+                return;
+            }
+
+            string currentId = TrackRoutingService.GetTrackId(CurrentTrack);
+            _queue = _routing.SelectEligible(Plugin.MusicLibrary.Tracks, _queueRoute);
+            _queueIndex = _queue.FindIndex(track =>
+                string.Equals(
+                    TrackRoutingService.GetTrackId(track),
+                    currentId,
+                    StringComparison.Ordinal));
+        }
+
         internal void Previous()
         {
             if (_source.clip != null && _source.time > 4f)
@@ -230,8 +313,34 @@ namespace SoulPlayer.Audio
         internal void SetVolume(float volume)
         {
             _settings.Volume = volume;
-            _source.volume = _settings.Volume;
+        }
+
+        private void OnVolumeChanged(float volume)
+        {
+            _volumeState.UpdateTarget(volume);
+            ApplyTargetVolume();
             NotifyChanged();
+        }
+
+        private void ApplyTargetVolume()
+        {
+            if (_source == null)
+            {
+                return;
+            }
+
+            if (_fadeCompletion == FadeCompletion.None)
+            {
+                _source.volume = _volumeState.TargetVolume;
+                return;
+            }
+
+            float progress = _fadeDuration <= 0.01f
+                ? 1f
+                : Mathf.Clamp01((Time.unscaledTime - _fadeStartedAt) /
+                    _fadeDuration);
+            _fadeStartVolume = _volumeState.TargetVolume;
+            _source.volume = Mathf.Lerp(_fadeStartVolume, 0f, progress);
         }
 
         internal void SetProgress(float normalized)
@@ -247,17 +356,6 @@ namespace SoulPlayer.Audio
 
         internal void PlayPostRaid(ExitStatus outcome)
         {
-            if (!_settings.AutoPlayAfterRaid)
-            {
-                Plugin.Log.LogInfo("Post-raid autoplay is disabled.");
-                return;
-            }
-
-            // Keep the pre-raid track paused while the outcome playlist is
-            // selected and (for FLAC) decoded. This prevents a brief old-song
-            // burst between the raid and the new result music.
-            _resumeAfterRaidAt = float.PositiveInfinity;
-
             if (_lastPostRaidOutcome == outcome && Time.realtimeSinceStartup - _lastPostRaidTrigger < 8f)
             {
                 return;
@@ -265,6 +363,22 @@ namespace SoulPlayer.Audio
 
             _lastPostRaidOutcome = outcome;
             _lastPostRaidTrigger = Time.realtimeSinceStartup;
+
+            if (!_settings.AutoPlayAfterRaid)
+            {
+                LogPostRaidPlan(PostRaidAutoplayPlan.Resolve(
+                    outcome,
+                    false,
+                    Plugin.MusicLibrary.Tracks,
+                    _routing,
+                    null));
+                return;
+            }
+
+            // Keep the pre-raid track paused while the outcome playlist is
+            // selected and (for FLAC) decoded. This prevents a brief old-song
+            // burst between the raid and the new result music.
+            _resumeAfterRaidAt = float.PositiveInfinity;
 
             if (Plugin.MusicLibrary.IsScanning && Plugin.MusicLibrary.Tracks.Count == 0)
             {
@@ -276,15 +390,28 @@ namespace SoulPlayer.Audio
             StartPostRaidPlayback(outcome);
         }
 
-        private void BeginLoad(MusicTrack track)
+        private void BeginLoad(
+            MusicTrack track,
+            ExactTrackPlaybackRequest exactRequest = null)
         {
             _loadGeneration++;
             int generation = _loadGeneration;
+            _loadingExactRequest = exactRequest;
             _lastError = string.Empty;
             _loading = true;
             _paused = false;
             _hasStarted = false;
             CurrentTrack = track;
+
+            if (exactRequest != null)
+            {
+                Plugin.Log.LogInfo(
+                    "SoulPlayer post-raid play request: postRaidRoute=" +
+                    exactRequest.Route +
+                    " playRequestId=" + exactRequest.RequestId +
+                    " playRequestTrackId=" + exactRequest.TrackId +
+                    " playRequestPath=" + exactRequest.TrackPath + ".");
+            }
 
             if (_loadCoroutine != null)
             {
@@ -311,7 +438,7 @@ namespace SoulPlayer.Audio
         private IEnumerator LoadUnityAudio(MusicTrack track, int generation)
         {
             AudioType type = GetAudioType(track.Extension);
-            string uri = new Uri(track.FilePath).AbsoluteUri;
+            string uri = SoulPath.ToFileUri(track.FilePath);
 
             using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, type))
             {
@@ -420,42 +547,43 @@ namespace SoulPlayer.Audio
                 _source.clip != null && !_source.isPlaying && _source.time >= _source.clip.length - 0.15f)
             {
                 _hasStarted = false;
-                if (_settings.RepeatMode == 2)
+                if (_settings.RepeatMode == 2 &&
+                    (_queueRoute == TrackRoute.None ||
+                     _routing.IsEligible(CurrentTrack, _queueRoute)))
                 {
                     BeginLoad(CurrentTrack);
                 }
                 else
                 {
-                    Next();
+                    AdvanceAutomatically();
                 }
             }
         }
 
         private void StartPostRaidPlayback(ExitStatus outcome)
         {
-            bool survived = outcome == ExitStatus.Survived;
-            string outcomeFolder = _settings.GetPostRaidFolder(survived);
-            List<MusicTrack> allTracks = Plugin.MusicLibrary.Tracks.ToList();
-            List<MusicTrack> outcomeTracks = allTracks
-                .Where(track => IsInsideFolder(track.FilePath, outcomeFolder))
-                .ToList();
+            PostRaidAutoplayPlan plan = PostRaidAutoplayPlan.Resolve(
+                outcome,
+                true,
+                Plugin.MusicLibrary.Tracks,
+                _routing,
+                count => _random.Next(count));
+            LogPostRaidPlan(plan);
 
-            List<MusicTrack> queue = outcomeTracks.Count > 0 ? outcomeTracks : allTracks;
-            if (queue.Count == 0)
+            if (!plan.ShouldStart)
             {
-                Plugin.Log.LogWarning("Post-raid autoplay found no playable tracks.");
                 ResumePreRaidTrack();
                 return;
             }
 
-            if (outcomeTracks.Count == 0)
-            {
-                Plugin.Log.LogWarning(
-                    "No " + (survived ? "survived" : "death") +
-                    " playlist tracks were found. Falling back to the full library.");
-            }
-
-            MusicTrack selected = queue[_random.Next(queue.Count)];
+            List<MusicTrack> queue = plan.EligibleTracks;
+            MusicTrack selected = plan.SelectedTrack;
+            TrackRoute route = plan.Route;
+            ExactTrackPlaybackRequest exactRequest =
+                new ExactTrackPlaybackRequest(
+                    ++_nextExactRequestId,
+                    route,
+                    selected);
             _pausedForRaid = false;
             _resumeAfterRaidAt = -1f;
 
@@ -463,25 +591,55 @@ namespace SoulPlayer.Audio
             {
                 _fadePendingTrack = selected;
                 _fadePendingQueue = queue;
+                _fadePendingRoute = route;
+                _fadePendingExactRequest = exactRequest;
                 BeginFade(_settings.PostRaidTransitionSeconds, FadeCompletion.StartPendingTrack);
             }
             else
             {
-                Play(selected, queue);
+                PlayExactPostRaid(selected, queue, exactRequest);
             }
+        }
+
+        private static void LogPostRaidPlan(PostRaidAutoplayPlan plan)
+        {
+            string selected = plan.SelectedTrack == null
+                ? (plan.AutoplayEnabled ? "<none>" : "<suppressed>")
+                : plan.SelectedTrack.Title;
+            string selectedId = plan.SelectedTrack == null
+                ? "<none>"
+                : TrackRoutingService.GetTrackId(plan.SelectedTrack);
+            string selectedPath = plan.SelectedTrack == null
+                ? "<none>"
+                : plan.SelectedTrack.FilePath;
+            string eligibleIds = string.Join(
+                ",",
+                plan.EligibleTracks
+                    .Select(TrackRoutingService.GetTrackId)
+                    .ToArray());
             Plugin.Log.LogInfo(
-                "Post-raid autoplay: " + outcome + " -> " + selected.Title +
-                " (" + queue.Count + " available tracks).");
+                "SoulPlayer post-raid: outcome=" + plan.Outcome +
+                " postRaidRoute=" + plan.Route +
+                " eligible=" + plan.EligibleTracks.Count +
+                " eligibleIds=[" + eligibleIds + "]" +
+                " autoplay=" + plan.AutoplayEnabled +
+                " selected=" + selected +
+                " selectedId=" + selectedId +
+                " selectedPath=" + selectedPath + ".");
         }
 
         private bool StartFromLibrary()
         {
-            List<MusicTrack> tracks = Plugin.MusicLibrary.Tracks.ToList();
+            List<MusicTrack> tracks = _routing.SelectEligible(
+                Plugin.MusicLibrary.Tracks,
+                TrackRoute.Main);
             if (tracks.Count == 0)
             {
                 if (!Plugin.MusicLibrary.IsScanning)
                 {
-                    _lastError = "No playable tracks are available. Add a music folder first.";
+                    _lastError = Plugin.MusicLibrary.Tracks.Count == 0
+                        ? "No playable tracks are available. Add a music folder first."
+                        : "No tracks are routed to Main.";
                     NotifyChanged();
                 }
 
@@ -489,29 +647,8 @@ namespace SoulPlayer.Audio
             }
 
             int index = _settings.Shuffle ? _random.Next(tracks.Count) : 0;
-            Play(tracks[index], tracks);
+            PlayAutomatic(tracks[index], tracks, TrackRoute.Main);
             return true;
-        }
-
-        private static bool IsInsideFolder(string filePath, string folder)
-        {
-            if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrWhiteSpace(folder))
-            {
-                return false;
-            }
-
-            try
-            {
-                string root = Path.GetFullPath(folder)
-                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-                string fullPath = Path.GetFullPath(filePath);
-                string prefix = root + Path.DirectorySeparatorChar;
-                return fullPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         private void StartClip(AudioClip clip, int generation)
@@ -526,11 +663,49 @@ namespace SoulPlayer.Audio
                 return;
             }
 
+            ExactTrackPlaybackRequest startedExactRequest = null;
+            string actualStartedId = null;
+            string actualStartedPath = null;
+            if (_loadingExactRequest != null)
+            {
+                ExactTrackPlaybackRequest exactRequest = _loadingExactRequest;
+                actualStartedId = TrackRoutingService.GetTrackId(CurrentTrack);
+                actualStartedPath = CurrentTrack == null
+                    ? "<none>"
+                    : CurrentTrack.FilePath;
+                if (!exactRequest.TryMarkStarted(CurrentTrack))
+                {
+                    UnityEngine.Object.Destroy(clip);
+                    Plugin.Log.LogError(
+                        "SoulPlayer post-raid exact-track mismatch: playRequestId=" +
+                        exactRequest.RequestId +
+                        " requestedId=" + exactRequest.TrackId +
+                        " requestedPath=" + exactRequest.TrackPath +
+                        " actualStartedId=" + actualStartedId +
+                        " actualStartedPath=" + actualStartedPath +
+                        ". Playback was stopped; no fallback was selected.");
+                    FailLoad("Post-raid playback did not match the routed track request.");
+                    return;
+                }
+
+                startedExactRequest = exactRequest;
+                _loadingExactRequest = null;
+            }
+
             _source.clip = clip;
-            _source.volume = _settings.Volume;
+            _source.volume = _volumeState.TargetVolume;
             _source.Play();
+            if (startedExactRequest != null)
+            {
+                Plugin.Log.LogInfo(
+                    "SoulPlayer post-raid actual start: playRequestId=" +
+                    startedExactRequest.RequestId +
+                    " actualStartedId=" + actualStartedId +
+                    " actualStartedPath=" + actualStartedPath + ".");
+            }
             _loading = false;
             _hasStarted = true;
+            _volumeState.MarkPlaying();
             NotifyChanged();
         }
 
@@ -539,6 +714,7 @@ namespace SoulPlayer.Audio
             _source.Stop();
             _paused = false;
             _hasStarted = false;
+            _volumeState.MarkStopped();
             NotifyChanged();
         }
 
@@ -549,6 +725,7 @@ namespace SoulPlayer.Audio
             if (!_paused && _source.clip != null)
             {
                 _source.UnPause();
+                _volumeState.MarkPlaying();
             }
 
             NotifyChanged();
@@ -591,11 +768,12 @@ namespace SoulPlayer.Audio
 
         private void CompleteFade(FadeCompletion completion)
         {
-            _source.volume = _settings.Volume;
+            _source.volume = _volumeState.TargetVolume;
             if (completion == FadeCompletion.PauseForRaid)
             {
                 _source.Pause();
                 _pausedForRaid = true;
+                _volumeState.MarkPaused();
                 NotifyChanged();
                 return;
             }
@@ -604,11 +782,28 @@ namespace SoulPlayer.Audio
             {
                 MusicTrack track = _fadePendingTrack;
                 List<MusicTrack> queue = _fadePendingQueue;
+                TrackRoute route = _fadePendingRoute;
+                ExactTrackPlaybackRequest exactRequest =
+                    _fadePendingExactRequest;
                 _fadePendingTrack = null;
                 _fadePendingQueue = null;
-                if (track != null)
+                _fadePendingRoute = TrackRoute.None;
+                _fadePendingExactRequest = null;
+
+                if (track != null && exactRequest != null &&
+                    ReferenceEquals(track, exactRequest.Track) &&
+                    route == exactRequest.Route)
                 {
-                    Play(track, queue);
+                    // The route decision is final. Never run shuffle or choose a
+                    // replacement between selection and the AudioSource request.
+                    PlayExactPostRaid(track, queue, exactRequest);
+                }
+                else
+                {
+                    Plugin.Log.LogError(
+                        "Post-raid exact-track request was lost before playback; " +
+                        "no fallback track was selected.");
+                    ResumePreRaidTrack();
                 }
             }
         }
@@ -623,7 +818,9 @@ namespace SoulPlayer.Audio
             _fadeCompletion = FadeCompletion.None;
             _fadePendingTrack = null;
             _fadePendingQueue = null;
-            _source.volume = _settings.Volume;
+            _fadePendingRoute = TrackRoute.None;
+            _fadePendingExactRequest = null;
+            _source.volume = _volumeState.TargetVolume;
             NotifyChanged();
         }
 
@@ -688,6 +885,7 @@ namespace SoulPlayer.Audio
 
         private void FailLoad(string message)
         {
+            _loadingExactRequest = null;
             _lastError = message;
             _loading = false;
             _hasStarted = false;
@@ -731,6 +929,10 @@ namespace SoulPlayer.Audio
 
         private void OnDestroy()
         {
+            if (_settings != null)
+            {
+                _settings.VolumeChanged -= OnVolumeChanged;
+            }
             ReleaseClip();
         }
     }

@@ -7,6 +7,7 @@ using EFT;
 using SoulPlayer.Cassettes;
 using SoulPlayer.Configuration;
 using SoulPlayer.Library;
+using SoulPlayer.Recorder;
 using SoulPlayer.Utils;
 using UnityEngine;
 
@@ -37,14 +38,22 @@ namespace SoulPlayer.World
         private PickupEvaluation _nearestPickupEvaluation;
         private bool _spawnPending;
         private bool _spawnCompleted;
-        private int _raidSeed;
+        private string _raidIdentity = string.Empty;
         private string _notificationTitle = string.Empty;
+        private string _notificationTrack = string.Empty;
         private string _notificationDetail = string.Empty;
         private float _notificationUntil;
+        private readonly SoulRecorderStatusOverlayAnimation _notificationAnimation =
+            new SoulRecorderStatusOverlayAnimation();
         private GUIStyle _promptStyle;
-        private GUIStyle _notificationStyle;
+        private GUIStyle _notificationHeadingStyle;
+        private GUIStyle _notificationTrackStyle;
+        private GUIStyle _notificationDetailStyle;
+        private GUIStyle _notificationPanelStyle;
         private GUIStyle _diagnosticStyle;
         private Texture2D _interactionEyeTexture;
+        private Texture2D _notificationPanelTexture;
+        private Texture2D _notificationPixelTexture;
 
         internal void Initialize(
             SoulPlayerSettings settings,
@@ -65,6 +74,14 @@ namespace SoulPlayer.World
             _discovery = new SoulTapeDiscoveryService(catalog, collection, log);
             _discovery.Discovered += OnDiscovered;
             _catalog.Changed += OnCatalogChanged;
+        }
+
+        internal bool IsNotificationVisible(float now)
+        {
+            return !string.IsNullOrEmpty(_notificationTitle) &&
+                (now < _notificationUntil ||
+                 now < _notificationUntil +
+                    SoulRecorderStatusOverlayLayout.FadeOutSeconds);
         }
 
         private void Update()
@@ -107,7 +124,9 @@ namespace SoulPlayer.World
         private void BeginRaid(GameWorld world)
         {
             _activeWorld = world;
-            _raidSeed = unchecked(Environment.TickCount * 397 ^ world.GetInstanceID());
+            _raidIdentity = world.GetInstanceID().ToString(CultureInfo.InvariantCulture) +
+                            "-" + Environment.TickCount.ToString(CultureInfo.InvariantCulture) +
+                            "-" + Guid.NewGuid().ToString("N");
             _spawnPending = true;
             _spawnCompleted = false;
             _gameplayCamera = null;
@@ -116,7 +135,7 @@ namespace SoulPlayer.World
             _activeCameraCount = 0;
             _log.Info(
                 "SoulTape World Discovery pending for canonical map " +
-                (world.LocationId ?? "<unavailable>") + ", seed " + _raidSeed + ".");
+                (world.LocationId ?? "<unavailable>") + ".");
         }
 
         private void TrySpawnForRaid(GameWorld world, Player player)
@@ -146,24 +165,28 @@ namespace SoulPlayer.World
                 return;
             }
 
-            IReadOnlyList<SoulTapeCatalogEntry> eligible =
-                SoulTapeWorldEligibility.GetEligibleTapes(_catalog, _collection);
-            if (eligible.Count == 0)
-            {
-                _spawnPending = false;
-                _log.Info(
-                    "SoulTape World Discovery remains pending: no locked, available " +
-                    "curated-rarity tapes are currently eligible; a later catalog " +
-                    "refresh will retry this raid.");
-                return;
-            }
-
-            SoulTapeSpawnPlan plan = _planner.CreatePlan(
+            SoulTapeEligibleCatalogSnapshot eligibleSnapshot =
+                _collectionHost.CurrentEligibleCatalog;
+            IReadOnlyList<SoulTapeCatalogEntry> eligibleTapes =
+                SoulTapeWorldEligibility.GetModeEligibleTapes(
+                    eligibleSnapshot,
+                    _catalog,
+                    _collection);
+            SoulTapeRaidSelectionResult selection =
+                _planner.CreateRaidSelection(
+                _collection.ProfileId,
                 mapId,
-                eligible,
-                mapAnchors,
-                _raidSeed);
-            foreach (SoulTapeSpawnPlanEntry planned in plan.Entries)
+                _raidIdentity,
+                eligibleTapes,
+                _collection.GetUnlockedTapeIds(),
+                mapAnchors);
+            _log.Info(
+                "SoulTape raid selection: map=" + mapId +
+                " eligible=" + selection.EligibleCount +
+                " undiscovered=" + selection.UndiscoveredCount +
+                " spawned=" + selection.Plan.Entries.Count + ".");
+
+            foreach (SoulTapeSpawnPlanEntry planned in selection.Plan.Entries)
             {
                 SoulTapeWorldPickup pickup = SoulTapeWorldPickupFactory.Create(planned, _log);
                 if (pickup != null)
@@ -174,9 +197,6 @@ namespace SoulPlayer.World
 
             _spawnPending = false;
             _spawnCompleted = true;
-            _log.Info(
-                "SoulTape World Discovery spawned " + _pickups.Count +
-                " cassette pickups on " + mapId + " using seed " + _raidSeed + ".");
         }
 
         private void CompleteSpawnAttempt(string message)
@@ -611,20 +631,23 @@ namespace SoulPlayer.World
             {
                 case SoulTapeDiscoveryResult.NewUnlock:
                     _notificationTitle = "SOULTAPE DISCOVERED";
-                    _notificationDetail = discovered.Artist + " \u2014 " + discovered.Title +
-                                          "\n" + discovered.Rarity;
+                    _notificationTrack = discovered.Artist + " \u2014 " + discovered.Title;
+                    _notificationDetail = "Added to collection";
                     break;
                 case SoulTapeDiscoveryResult.AlreadyUnlocked:
-                    _notificationTitle = "Cassette already discovered";
-                    _notificationDetail = discovered.Artist + " \u2014 " + discovered.Title;
+                    _notificationTitle = "SOULTAPE ALREADY DISCOVERED";
+                    _notificationTrack = discovered.Artist + " \u2014 " + discovered.Title;
+                    _notificationDetail = "Already in collection";
                     break;
                 case SoulTapeDiscoveryResult.SaveFailed:
                     _notificationTitle = "CASSETTE NOT SAVED";
-                    _notificationDetail = "Collection save failed. Aim at the cassette and retry.";
+                    _notificationTrack = discovered.Artist + " \u2014 " + discovered.Title;
+                    _notificationDetail = "Collection save failed — aim and retry";
                     break;
                 default:
                     _notificationTitle = "CASSETTE NOT COLLECTED";
-                    _notificationDetail = "The cassette ID is not in the current catalog.";
+                    _notificationTrack = discovered.Artist + " \u2014 " + discovered.Title;
+                    _notificationDetail = "Cassette is not in the current catalog";
                     break;
             }
 
@@ -671,18 +694,7 @@ namespace SoulPlayer.World
                     _promptStyle);
             }
 
-            if (!string.IsNullOrEmpty(_notificationTitle) &&
-                Time.unscaledTime < _notificationUntil)
-            {
-                const float width = 520f;
-                float left = (Screen.width - width) * 0.5f;
-                float top = Screen.height * 0.18f;
-                GUI.Box(new Rect(left, top, width, 94f), GUIContent.none);
-                GUI.Label(
-                    new Rect(left + 10f, top + 8f, width - 20f, 78f),
-                    _notificationTitle + "\n" + _notificationDetail,
-                    _notificationStyle);
-            }
+            DrawDiscoveryNotification(Time.unscaledTime);
         }
 
         private void EnsureGuiStyles()
@@ -700,11 +712,45 @@ namespace SoulPlayer.World
                 wordWrap = true
             };
             _promptStyle.normal.textColor = Color.white;
-            _notificationStyle = new GUIStyle(_promptStyle)
+            _notificationHeadingStyle = new GUIStyle(GUI.skin.label)
             {
-                fontSize = 20
+                alignment = TextAnchor.MiddleLeft,
+                fontSize = 11,
+                fontStyle = FontStyle.Bold
             };
-            _notificationStyle.normal.textColor = new Color(0.95f, 0.78f, 0.3f, 1f);
+            _notificationHeadingStyle.normal.textColor =
+                new Color(0.48f, 0.73f, 0.69f, 1f);
+            _notificationTrackStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fontSize = 16,
+                fontStyle = FontStyle.Normal,
+                clipping = TextClipping.Clip
+            };
+            _notificationTrackStyle.normal.textColor =
+                new Color(0.94f, 0.96f, 0.96f, 1f);
+            _notificationDetailStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fontSize = 10,
+                fontStyle = FontStyle.Normal
+            };
+            _notificationDetailStyle.normal.textColor =
+                new Color(0.60f, 0.67f, 0.67f, 1f);
+            _notificationPanelTexture = CreateNotificationPanelTexture();
+            _notificationPanelStyle = new GUIStyle
+            {
+                normal = { background = _notificationPanelTexture },
+                border = new RectOffset(12, 12, 12, 12)
+            };
+            _notificationPixelTexture = new Texture2D(
+                1, 1, TextureFormat.RGBA32, false, false)
+            {
+                name = "SoulTape Discovery Pixel",
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            _notificationPixelTexture.SetPixel(0, 0, Color.white);
+            _notificationPixelTexture.Apply(false, true);
             _diagnosticStyle = new GUIStyle(GUI.skin.label)
             {
                 alignment = TextAnchor.UpperLeft,
@@ -713,6 +759,104 @@ namespace SoulPlayer.World
                 wordWrap = false
             };
             _diagnosticStyle.normal.textColor = Color.white;
+        }
+
+        private void DrawDiscoveryNotification(float now)
+        {
+            SoulRecorderStatusOverlayState desired =
+                !string.IsNullOrEmpty(_notificationTitle) &&
+                now < _notificationUntil
+                    ? SoulRecorderStatusOverlayState.Ready
+                    : SoulRecorderStatusOverlayState.Hidden;
+            SoulRecorderStatusOverlayFrame frame =
+                _notificationAnimation.Sample(desired, now);
+            if (frame.State == SoulRecorderStatusOverlayState.Hidden ||
+                frame.Alpha <= 0.001f)
+            {
+                if (desired == SoulRecorderStatusOverlayState.Hidden)
+                {
+                    _notificationTitle = string.Empty;
+                    _notificationTrack = string.Empty;
+                    _notificationDetail = string.Empty;
+                }
+                return;
+            }
+
+            SoulRecorderStatusOverlayLayoutResult layout =
+                SoulRecorderStatusOverlayLayout.Calculate(
+                    Screen.width, Screen.height, 0.18f);
+            float slide = frame.SlidePixels * layout.Scale;
+            Color previous = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, frame.Alpha);
+            GUI.Box(NotificationRect(layout.Panel, slide), GUIContent.none,
+                _notificationPanelStyle);
+            DrawNotificationRect(
+                new Rect(layout.Panel.X,
+                    layout.Panel.Y + 12f * layout.Scale + slide,
+                    2f * layout.Scale,
+                    layout.Panel.Height - 24f * layout.Scale),
+                new Color(0.34f, 0.65f, 0.62f, 0.78f));
+            GUI.Label(NotificationRect(layout.Heading, slide),
+                _notificationTitle, _notificationHeadingStyle);
+            GUI.Label(NotificationRect(layout.Track, slide),
+                _notificationTrack, _notificationTrackStyle);
+            GUI.Label(NotificationRect(layout.Status, slide),
+                _notificationDetail, _notificationDetailStyle);
+            DrawNotificationRect(NotificationRect(layout.ProgressTrack, slide),
+                new Color(0.34f, 0.58f, 0.56f, 0.45f));
+            GUI.color = previous;
+        }
+
+        private void DrawNotificationRect(Rect rect, Color color)
+        {
+            Color previous = GUI.color;
+            GUI.color = new Color(
+                color.r, color.g, color.b, color.a * previous.a);
+            GUI.DrawTexture(rect, _notificationPixelTexture,
+                ScaleMode.StretchToFill, false);
+            GUI.color = previous;
+        }
+
+        private static Rect NotificationRect(
+            SoulRecorderStatusOverlayRect rect,
+            float slide)
+        {
+            return new Rect(rect.X, rect.Y + slide, rect.Width, rect.Height);
+        }
+
+        private static Texture2D CreateNotificationPanelTexture()
+        {
+            const int size = 32;
+            const float radius = 8f;
+            Texture2D texture = new Texture2D(
+                size, size, TextureFormat.RGBA32, false, false)
+            {
+                name = "SoulTape Discovery Rounded Panel",
+                hideFlags = HideFlags.HideAndDontSave,
+                wrapMode = TextureWrapMode.Clamp,
+                filterMode = FilterMode.Bilinear
+            };
+            Color fill = new Color(0.025f, 0.035f, 0.038f, 0.90f);
+            Color border = new Color(0.27f, 0.47f, 0.46f, 0.64f);
+            float half = (size - 1f) * 0.5f;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float dx = Mathf.Max(Mathf.Abs(x - half) -
+                        (half - radius), 0f);
+                    float dy = Mathf.Max(Mathf.Abs(y - half) -
+                        (half - radius), 0f);
+                    float distance = Mathf.Sqrt(dx * dx + dy * dy) - radius;
+                    float edgeAlpha = Mathf.Clamp01(0.75f - distance);
+                    float borderBlend = Mathf.Clamp01(distance + 1.75f);
+                    Color pixel = Color.Lerp(fill, border, borderBlend);
+                    pixel.a *= edgeAlpha;
+                    texture.SetPixel(x, y, pixel);
+                }
+            }
+            texture.Apply(false, true);
+            return texture;
         }
 
         private void DrawTargetingDiagnostics()
@@ -890,7 +1034,10 @@ namespace SoulPlayer.World
             _spawnPending = false;
             _spawnCompleted = false;
             _notificationTitle = string.Empty;
+            _notificationTrack = string.Empty;
             _notificationDetail = string.Empty;
+            _notificationUntil = 0f;
+            _notificationAnimation.Reset();
             if (_log != null && !string.IsNullOrWhiteSpace(reason))
             {
                 _log.Info("SoulTape World Discovery cleaned up: " + reason + ".");
@@ -911,6 +1058,16 @@ namespace SoulPlayer.World
             {
                 Destroy(_interactionEyeTexture);
                 _interactionEyeTexture = null;
+            }
+            if (_notificationPanelTexture != null)
+            {
+                Destroy(_notificationPanelTexture);
+                _notificationPanelTexture = null;
+            }
+            if (_notificationPixelTexture != null)
+            {
+                Destroy(_notificationPixelTexture);
+                _notificationPixelTexture = null;
             }
             EndRaid("controller destroyed");
         }

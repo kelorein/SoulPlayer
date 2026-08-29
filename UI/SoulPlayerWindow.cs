@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using SoulPlayer.Library;
+using SoulPlayer.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SoulPlayer.UI
 {
+    [DefaultExecutionOrder(-32000)]
     internal sealed class SoulPlayerWindow : MonoBehaviour
     {
         private enum WindowPage
@@ -19,7 +22,17 @@ namespace SoulPlayer.UI
 
         private const string ObjectName = "SoulPlayerWindow";
         private const int TracksPerPage = 8;
+        private const string ConfigurationManagerTypeName =
+            "ConfigurationManager.ConfigurationManager, ConfigurationManager";
 
+        private static Type _configurationManagerType;
+        private static PropertyInfo _configurationManagerDisplayingWindow;
+        private static bool _configurationManagerContractResolved;
+
+        private readonly SoulPlayerWindowCloseController _closeController =
+            new SoulPlayerWindowCloseController();
+        private readonly SoulPlayerLibraryViewState _libraryViewState =
+            new SoulPlayerLibraryViewState();
         private readonly List<GameObject> _trackRows = new List<GameObject>();
         private readonly List<GameObject> _folderRows = new List<GameObject>();
         private TMP_Text _styleSource;
@@ -58,10 +71,10 @@ namespace SoulPlayer.UI
         private GameObject _libraryNavigationAccent;
         private GameObject _collectionNavigationAccent;
         private List<MusicTrack> _filteredTracks = new List<MusicTrack>();
-        private int _page;
         private WindowPage _activePage = WindowPage.Library;
         private bool _audioDirty = true;
         private bool _libraryDirty = true;
+        private bool _routingDirty;
         private bool _updatingProgress;
 
         internal static SoulPlayerWindow Create(Transform parent, TMP_Text styleSource)
@@ -95,15 +108,16 @@ namespace SoulPlayer.UI
 
         internal void Toggle()
         {
-            bool show = !gameObject.activeSelf;
-            gameObject.SetActive(show);
-            if (show)
+            if (gameObject.activeSelf)
             {
-                transform.SetAsLastSibling();
-                _libraryDirty = true;
+                Hide();
+                return;
             }
 
-            Plugin.Log.LogInfo(show ? "SoulPlayer window opened." : "SoulPlayer window closed.");
+            gameObject.SetActive(true);
+            transform.SetAsLastSibling();
+            _libraryDirty = true;
+            Plugin.Log.LogInfo("SoulPlayer window opened.");
         }
 
         internal void Close()
@@ -140,6 +154,7 @@ namespace SoulPlayer.UI
 
             Plugin.AudioPlayer.Changed += OnAudioChanged;
             Plugin.MusicLibrary.Changed += OnLibraryChanged;
+            Plugin.TrackRouting.Changed += OnRoutingChanged;
         }
 
         private void BuildSidebar()
@@ -169,7 +184,7 @@ namespace SoulPlayer.UI
             UIUtils.CreateLabel(
                 sidebar,
                 "Version",
-                "LOCAL MUSIC  •  0.8.0",
+                "LOCAL MUSIC  •  0.9.0",
                 _styleSource,
                 11f,
                 UIUtils.MutedText,
@@ -323,6 +338,7 @@ namespace SoulPlayer.UI
                 _styleSource,
                 Plugin.TapeCatalog,
                 Plugin.TapeCollection,
+                Plugin.TapeCollectionHost,
                 Hide);
         }
 
@@ -469,7 +485,7 @@ namespace SoulPlayer.UI
             Button autoRaid = UIUtils.CreateButton(
                 main,
                 "AutoRaidToggle",
-                "AUTOPLAY OFF",
+                "RAID AUTO OFF",
                 _styleSource,
                 new Vector2(1f, 1f),
                 new Vector2(1f, 1f),
@@ -533,13 +549,16 @@ namespace SoulPlayer.UI
                 new Vector2(42f, 24f), new Vector2(30f, -153f));
             UIUtils.CreateLabel(main, "TitleHeader", "TITLE", _styleSource, 12f, UIUtils.MutedText,
                 TextAlignmentOptions.Left, new Vector2(0f, 1f), new Vector2(0f, 1f),
-                new Vector2(365f, 24f), new Vector2(82f, -153f));
+                new Vector2(270f, 24f), new Vector2(82f, -153f));
             UIUtils.CreateLabel(main, "AlbumHeader", "ALBUM", _styleSource, 12f, UIUtils.MutedText,
                 TextAlignmentOptions.Left, new Vector2(0f, 1f), new Vector2(0f, 1f),
-                new Vector2(350f, 24f), new Vector2(465f, -153f));
+                new Vector2(205f, 24f), new Vector2(365f, -153f));
+            UIUtils.CreateLabel(main, "RoutesHeader", "PLAYBACK ROUTES", _styleSource, 11f, UIUtils.MutedText,
+                TextAlignmentOptions.Center, new Vector2(0f, 1f), new Vector2(0f, 1f),
+                new Vector2(248f, 24f), new Vector2(580f, -153f));
             UIUtils.CreateLabel(main, "FormatHeader", "FORMAT", _styleSource, 12f, UIUtils.MutedText,
                 TextAlignmentOptions.Center, new Vector2(0f, 1f), new Vector2(0f, 1f),
-                new Vector2(80f, 24f), new Vector2(845f, -153f));
+                new Vector2(70f, 24f), new Vector2(840f, -153f));
             UIUtils.CreateLabel(main, "SizeHeader", "SIZE", _styleSource, 12f, UIUtils.MutedText,
                 TextAlignmentOptions.Right, new Vector2(0f, 1f), new Vector2(0f, 1f),
                 new Vector2(80f, 24f), new Vector2(950f, -153f));
@@ -713,13 +732,13 @@ namespace SoulPlayer.UI
                 new Vector2(530f, 35f), new Vector2(26f, -22f));
 
             UIUtils.CreateLabel(
-                dialog, "Help", "Paste a Windows folder path. Subfolders are included automatically.",
+                dialog, "Help", "Paste a Windows or Linux folder path. Subfolders are included automatically.",
                 _styleSource, 13f, UIUtils.MutedText, TextAlignmentOptions.Left,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(620f, 30f),
                 new Vector2(27f, -61f));
 
             _folderInput = UIUtils.CreateInput(
-                dialog, "FolderPath", @"Example: D:\Music", _styleSource,
+                dialog, "FolderPath", SoulPath.IsWindows ? @"Example: D:\Music" : "Example: /home/user/Music", _styleSource,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(628f, 46f),
                 new Vector2(26f, -104f));
 
@@ -772,13 +791,13 @@ namespace SoulPlayer.UI
 
             UIUtils.CreateLabel(
                 dialog, "Help",
-                "Choose separate playlists for successful and failed raids. Missing folders are created.",
+                "RAID AUTO must be ON. Main, Extract, and Death control each track's automatic playback.",
                 _styleSource, 13f, UIUtils.MutedText, TextAlignmentOptions.Left,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(730f, 28f),
                 new Vector2(27f, -60f));
 
             Button autoplay = UIUtils.CreateButton(
-                dialog, "Autoplay", "AUTOPLAY OFF", _styleSource,
+                dialog, "Autoplay", "RAID AUTO OFF", _styleSource,
                 new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(145f, 38f),
                 new Vector2(-24f, -22f), TogglePostRaidAutoplay, false, 11f);
             _modalAutoRaidLabel = autoplay.GetComponentInChildren<TextMeshProUGUI>();
@@ -790,7 +809,7 @@ namespace SoulPlayer.UI
                 new Vector2(27f, -104f));
 
             _survivedFolderInput = UIUtils.CreateInput(
-                dialog, "SurvivedPath", @"D:\Music\PostRaid\Survived", _styleSource,
+                dialog, "SurvivedPath", SoulPath.IsWindows ? @"D:\Music\PostRaid\Survived" : "/home/user/Music/PostRaid/Survived", _styleSource,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(736f, 44f),
                 new Vector2(27f, -132f));
 
@@ -801,13 +820,13 @@ namespace SoulPlayer.UI
                 new Vector2(27f, -201f));
 
             _deathFolderInput = UIUtils.CreateInput(
-                dialog, "DeathPath", @"D:\Music\PostRaid\Died", _styleSource,
+                dialog, "DeathPath", SoulPath.IsWindows ? @"D:\Music\PostRaid\Died" : "/home/user/Music/PostRaid/Died", _styleSource,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(736f, 44f),
                 new Vector2(27f, -229f));
 
             UIUtils.CreateLabel(
                 dialog, "Fallback",
-                "If a playlist is empty, SoulPlayer safely falls back to your full library.",
+                "These legacy folders are still scanned. Empty Extract or Death routes are skipped; excluded tracks are never used.",
                 _styleSource, 12f, UIUtils.MutedText, TextAlignmentOptions.Left,
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(600f, 24f),
                 new Vector2(27f, 79f));
@@ -832,10 +851,19 @@ namespace SoulPlayer.UI
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape) &&
+                _closeController.TryCloseFromEscape(
+                    HasEscapeOwnership(), HideImmediately))
+            {
+                // SoulPlayer owns this Escape press. Clear the legacy input edge
+                // before Tarkov's normal menu/back handlers run later this frame.
+                Input.ResetInputAxes();
+                return;
+            }
+
             ScanResult scan;
             if (Plugin.MusicLibrary.TryApplyCompletedScan(out scan))
             {
-                _page = 0;
                 RefreshEverything();
                 _statusLabel.text = scan.Tracks.Count + " tracks ready  •  " +
                                     scan.DuplicateCount + " duplicates ignored";
@@ -843,11 +871,18 @@ namespace SoulPlayer.UI
 
             if (_libraryDirty)
             {
-                _page = 0;
                 RefreshFolders();
                 RefreshTracks();
                 RefreshSettingsControls();
                 _libraryDirty = false;
+            }
+
+            if (_routingDirty)
+            {
+                // Routing does not change the Library result set. Rebuild visible
+                // route state without resetting query, ordering, tab, or page.
+                RefreshTracks();
+                _routingDirty = false;
             }
 
             if (_audioDirty)
@@ -875,7 +910,7 @@ namespace SoulPlayer.UI
                 _miniPlayerLabel.color = Plugin.Settings.ShowMiniPlayer ? UIUtils.Accent : UIUtils.Text;
             }
 
-            string autoplayText = Plugin.Settings.AutoPlayAfterRaid ? "AUTOPLAY ON" : "AUTOPLAY OFF";
+            string autoplayText = Plugin.Settings.AutoPlayAfterRaid ? "RAID AUTO ON" : "RAID AUTO OFF";
             Color autoplayColor = Plugin.Settings.AutoPlayAfterRaid ? UIUtils.Accent : UIUtils.Text;
             if (_autoRaidLabel != null)
             {
@@ -942,15 +977,18 @@ namespace SoulPlayer.UI
 
         private void RefreshTracks()
         {
-            string query = _searchInput == null ? string.Empty : (_searchInput.text ?? string.Empty).Trim().ToLowerInvariant();
+            string query = (_libraryViewState.SearchQuery ?? string.Empty)
+                .Trim()
+                .ToLowerInvariant();
             IReadOnlyList<MusicTrack> all = Plugin.MusicLibrary.Tracks;
             _filteredTracks = string.IsNullOrWhiteSpace(query)
                 ? all.ToList()
                 : all.Where(track => track.SearchText.Contains(query)).ToList();
 
             int pages = Math.Max(1, (int)Math.Ceiling(_filteredTracks.Count / (double)TracksPerPage));
-            _page = Math.Max(0, Math.Min(_page, pages - 1));
-            _pageLabel.text = (_page + 1) + " / " + pages;
+            _libraryViewState.ClampToResults(_filteredTracks.Count, TracksPerPage);
+            int page = _libraryViewState.PageIndex;
+            _pageLabel.text = (page + 1) + " / " + pages;
             _libraryCount.text = Plugin.MusicLibrary.IsScanning
                 ? "SCANNING..."
                 : all.Count + " TRACKS";
@@ -965,14 +1003,14 @@ namespace SoulPlayer.UI
             _trackRows.Clear();
 
             List<MusicTrack> pageTracks = _filteredTracks
-                .Skip(_page * TracksPerPage)
+                .Skip(page * TracksPerPage)
                 .Take(TracksPerPage)
                 .ToList();
 
             for (int index = 0; index < pageTracks.Count; index++)
             {
                 MusicTrack track = pageTracks[index];
-                int absoluteIndex = _page * TracksPerPage + index + 1;
+                int absoluteIndex = page * TracksPerPage + index + 1;
                 CreateTrackRow(track, absoluteIndex, index);
             }
 
@@ -1022,20 +1060,87 @@ namespace SoulPlayer.UI
                 new Vector2(42f, 38f), Vector2.zero);
             UIUtils.CreateLabel(row, "Title", track.Title, _styleSource, 14f, UIUtils.Text,
                 TextAlignmentOptions.Left, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-                new Vector2(365f, 21f), new Vector2(52f, 8f));
+                new Vector2(270f, 21f), new Vector2(52f, 8f));
             UIUtils.CreateLabel(row, "Artist", track.Artist, _styleSource, 11f, UIUtils.MutedText,
                 TextAlignmentOptions.Left, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-                new Vector2(365f, 18f), new Vector2(52f, -10f));
+                new Vector2(270f, 18f), new Vector2(52f, -10f));
             UIUtils.CreateLabel(row, "Album", track.Album, _styleSource, 12f, UIUtils.MutedText,
                 TextAlignmentOptions.Left, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-                new Vector2(350f, 36f), new Vector2(435f, 0f));
+                new Vector2(205f, 36f), new Vector2(335f, 0f));
+            CreateRouteButton(row, track, TrackRoute.Main, "Main", 550f, 72f);
+            CreateRouteButton(row, track, TrackRoute.Extract, "Extract", 626f, 90f);
+            CreateRouteButton(row, track, TrackRoute.Death, "Death", 720f, 78f);
             UIUtils.CreateLabel(row, "Format", track.Extension, _styleSource, 11f,
                 track.Extension == "FLAC" ? UIUtils.Accent : UIUtils.MutedText,
                 TextAlignmentOptions.Center, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-                new Vector2(80f, 36f), new Vector2(815f, 0f));
+                new Vector2(70f, 36f), new Vector2(810f, 0f));
             UIUtils.CreateLabel(row, "Size", FormatSize(track.SizeBytes), _styleSource, 11f, UIUtils.MutedText,
                 TextAlignmentOptions.Right, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-                new Vector2(90f, 36f), new Vector2(910f, 0f));
+                new Vector2(100f, 36f), new Vector2(900f, 0f));
+        }
+
+        private void CreateRouteButton(
+            GameObject row,
+            MusicTrack track,
+            TrackRoute route,
+            string caption,
+            float x,
+            float width)
+        {
+            TextMeshProUGUI label = null;
+            Button routeButton = UIUtils.CreateButton(
+                row,
+                "Route" + caption,
+                caption,
+                _styleSource,
+                new Vector2(0f, 0.5f),
+                new Vector2(0f, 0.5f),
+                new Vector2(width, 28f),
+                new Vector2(x, 0f),
+                delegate { ToggleRoute(track, route, caption, label); },
+                false,
+                10f);
+            label = routeButton.GetComponentInChildren<TextMeshProUGUI>();
+            ApplyRouteButtonState(track, route, caption, label);
+        }
+
+        private void ToggleRoute(
+            MusicTrack track,
+            TrackRoute route,
+            string caption,
+            TextMeshProUGUI label)
+        {
+            bool enabled = Plugin.TrackRouting.IsEligible(track, route);
+            Plugin.TrackRouting.SetRoute(track, route, !enabled);
+            ApplyRouteButtonState(track, route, caption, label);
+
+            _statusLabel.color = Plugin.Settings.AutoPlayAfterRaid || route == TrackRoute.Main
+                ? UIUtils.MutedText
+                : new Color(1f, 0.67f, 0.28f, 1f);
+            _statusLabel.text = !Plugin.Settings.AutoPlayAfterRaid && route != TrackRoute.Main
+                ? "Route saved. RAID AUTO is OFF, so Extract and Death routes will not start after raids."
+                : "Route saved immediately.";
+
+            // SetRoute raises Changed synchronously. This row has already been
+            // updated, so consume that routing-only refresh without rebuilding
+            // the Library model or touching pagination.
+            _routingDirty = false;
+        }
+
+        private static void ApplyRouteButtonState(
+            MusicTrack track,
+            TrackRoute route,
+            string caption,
+            TextMeshProUGUI label)
+        {
+            if (label == null)
+            {
+                return;
+            }
+
+            bool enabled = Plugin.TrackRouting.IsEligible(track, route);
+            label.text = enabled ? caption + " ON" : caption;
+            label.color = enabled ? UIUtils.Accent : UIUtils.MutedText;
         }
 
         private void RefreshPlayer()
@@ -1087,31 +1192,34 @@ namespace SoulPlayer.UI
 
         private void PlayTrack(MusicTrack track)
         {
-            Plugin.AudioPlayer.Play(track, _filteredTracks);
+            if (TrackRoutingService.AllowsDirectPlayback(track))
+            {
+                Plugin.AudioPlayer.Play(track, _filteredTracks);
+            }
             _audioDirty = true;
         }
 
         private void OnSearchChanged(string value)
         {
-            _page = 0;
+            _libraryViewState.SetSearchQuery(value);
             RefreshTracks();
         }
 
         private void PreviousPage()
         {
-            if (_page > 0)
+            if (_libraryViewState.PageIndex > 0)
             {
-                _page--;
+                _libraryViewState.MovePrevious();
                 RefreshTracks();
             }
         }
 
         private void NextPage()
         {
-            int pages = Math.Max(1, (int)Math.Ceiling(_filteredTracks.Count / (double)TracksPerPage));
-            if (_page < pages - 1)
+            int previousPage = _libraryViewState.PageIndex;
+            _libraryViewState.MoveNext(_filteredTracks.Count, TracksPerPage);
+            if (_libraryViewState.PageIndex != previousPage)
             {
-                _page++;
                 RefreshTracks();
             }
         }
@@ -1126,7 +1234,9 @@ namespace SoulPlayer.UI
 
         private void ShowFolderModal()
         {
-            _folderInput.text = @"D:\soulseek_share";
+            _folderInput.text = SoulPath.IsWindows
+                ? @"D:\soulseek_share"
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "SoulPlayer");
             _modalStatus.text = string.Empty;
             _folderModal.SetActive(true);
             _folderModal.transform.SetAsLastSibling();
@@ -1247,11 +1357,85 @@ namespace SoulPlayer.UI
             _libraryDirty = true;
         }
 
+        private void OnRoutingChanged()
+        {
+            _routingDirty = true;
+        }
+
         private void Hide()
+        {
+            _closeController.TryCloseFromButton(HideImmediately);
+        }
+
+        private bool HasEscapeOwnership()
+        {
+            return _closeController.IsOpen &&
+                gameObject.activeInHierarchy && _panel != null &&
+                _panel.activeInHierarchy &&
+                !GameState.ShouldSuspendMenuMusic() &&
+                !IsConfigurationManagerOpen();
+        }
+
+        private static bool IsConfigurationManagerOpen()
+        {
+            try
+            {
+                if (!_configurationManagerContractResolved)
+                {
+                    _configurationManagerContractResolved = true;
+                    _configurationManagerType = Type.GetType(
+                        ConfigurationManagerTypeName, false);
+                    if (_configurationManagerType != null)
+                    {
+                        _configurationManagerDisplayingWindow =
+                            _configurationManagerType.GetProperty(
+                                "DisplayingWindow",
+                                BindingFlags.Instance | BindingFlags.Public);
+                    }
+                }
+
+                if (_configurationManagerType == null ||
+                    _configurationManagerDisplayingWindow == null)
+                {
+                    return false;
+                }
+
+                UnityEngine.Object manager =
+                    UnityEngine.Object.FindObjectOfType(_configurationManagerType);
+                return manager != null &&
+                    (bool)_configurationManagerDisplayingWindow.GetValue(
+                        manager, null);
+            }
+            catch
+            {
+                // ConfigurationManager is optional. A missing or changed plugin
+                // contract must never prevent SoulPlayer from closing normally.
+                return false;
+            }
+        }
+
+        private void HideImmediately()
         {
             _folderModal.SetActive(false);
             _postRaidModal.SetActive(false);
             gameObject.SetActive(false);
+            Plugin.Log.LogInfo("SoulPlayer window closed.");
+        }
+
+        private void OnEnable()
+        {
+            // Unity can disable and re-enable the persistent menu hierarchy
+            // independently from the MUSIC button. Keep the one-shot controller
+            // synchronized with the actually visible modal window.
+            if (_panel != null && gameObject.activeInHierarchy)
+            {
+                _closeController.MarkOpened();
+            }
+        }
+
+        private void OnDisable()
+        {
+            _closeController.MarkClosed();
         }
 
         private void OnDestroy()
@@ -1264,6 +1448,11 @@ namespace SoulPlayer.UI
             if (Plugin.MusicLibrary != null)
             {
                 Plugin.MusicLibrary.Changed -= OnLibraryChanged;
+            }
+
+            if (Plugin.TrackRouting != null)
+            {
+                Plugin.TrackRouting.Changed -= OnRoutingChanged;
             }
         }
 

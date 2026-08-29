@@ -175,22 +175,40 @@ namespace SoulPlayer.CollectionTests
 
         [Fact]
         [Trait("Validation", "WorldDiscovery")]
-        public void CommittedFactoryResourceContainsExactlyTenEnabledDayAnchors()
+        public void CommittedResourceContainsAllEnabledCuratedMapAnchors()
         {
             OfflineTestLog log = new OfflineTestLog();
             SoulTapeSpawnAnchorCatalog catalog = new SoulTapeSpawnAnchorCatalog(
                 typeof(SoulTapeCatalog).Assembly,
                 log);
 
-            IReadOnlyList<SoulTapeSpawnAnchor> day = catalog.GetForMap("factory4_day");
-
-            Assert.Equal(10, day.Count);
-            Assert.All(day, anchor =>
+            Dictionary<string, int> expectedByMap = new Dictionary<string, int>(
+                StringComparer.OrdinalIgnoreCase)
             {
-                Assert.True(anchor.Enabled);
-                Assert.Equal("factory4_day", anchor.MapId);
-                Assert.Equal(SoulTapeSpawnAnchorSource.Curated, anchor.Source);
-            });
+                ["bigmap"] = 9,
+                ["factory4_day"] = 10,
+                ["Interchange"] = 10,
+                ["laboratory"] = 9,
+                ["Lighthouse"] = 11,
+                ["RezervBase"] = 9,
+                ["Sandbox_high"] = 7,
+                ["Shoreline"] = 14,
+                ["TarkovStreets"] = 14,
+                ["Woods"] = 15
+            };
+
+            Assert.Equal(108, catalog.GetAll().Count);
+            foreach (KeyValuePair<string, int> expected in expectedByMap)
+            {
+                IReadOnlyList<SoulTapeSpawnAnchor> anchors = catalog.GetForMap(expected.Key);
+                Assert.Equal(expected.Value, anchors.Count);
+                Assert.All(anchors, anchor =>
+                {
+                    Assert.True(anchor.Enabled);
+                    Assert.Equal(expected.Key, anchor.MapId, ignoreCase: true);
+                    Assert.Equal(SoulTapeSpawnAnchorSource.Curated, anchor.Source);
+                });
+            }
             Assert.Empty(catalog.GetForMap("factory4_night"));
             Assert.Empty(log.Errors);
         }

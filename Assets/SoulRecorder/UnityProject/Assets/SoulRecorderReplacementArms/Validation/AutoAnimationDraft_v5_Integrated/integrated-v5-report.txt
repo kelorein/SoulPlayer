@@ -1,0 +1,8 @@
+SoulRecorder approved V5 runtime integration
+FOV: 70
+Insertion: Enter 0.62s + Insert 2.12s + StartExit 0.46s
+Ejection: StopEnter 0.46s + Eject 1.78s + StopExit 0.62s
+Insert transfer: 1.84s inside Insert
+Eject transfer: 0.48s inside Eject
+Cassette reorientation: 165.371 degrees
+Animation curves: skeletal local rotation only

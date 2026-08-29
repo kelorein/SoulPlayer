@@ -77,7 +77,20 @@ namespace SoulPlayer.CollectionTests
                 ProfileId = data.ProfileId,
                 UnlockedCassetteIds = data.UnlockedCassetteIds.ToList(),
                 FavoriteCassetteIds = data.FavoriteCassetteIds.ToList(),
-                SelectedRecorderCassetteId = data.SelectedRecorderCassetteId
+                SelectedRecorderCassetteId = data.SelectedRecorderCassetteId,
+                DiscoveredCassetteMetadata =
+                    (data.DiscoveredCassetteMetadata ??
+                        new Dictionary<string, SoulTapeDiscoveredCassetteMetadata>())
+                    .ToDictionary(
+                        pair => pair.Key,
+                        pair => new SoulTapeDiscoveredCassetteMetadata
+                        {
+                            Artist = pair.Value.Artist,
+                            Title = pair.Value.Title,
+                            AudioReference = pair.Value.AudioReference,
+                            Rarity = pair.Value.Rarity
+                        },
+                        StringComparer.Ordinal)
             };
         }
     }

@@ -93,6 +93,23 @@ function Invoke-ValidationGroup {
     }
 }
 
+function Invoke-PackageAssetAudit {
+    $script = Join-Path $repoRoot 'tools\Test-SoulPlayerPackageAssets.ps1'
+    try {
+        $lines = @(& $script 2>&1)
+        return [pscustomobject]@{
+            Passed = $true
+            Output = ($lines | ForEach-Object { $_.ToString() }) -join [Environment]::NewLine
+        }
+    }
+    catch {
+        return [pscustomobject]@{
+            Passed = $false
+            Output = $_.Exception.Message
+        }
+    }
+}
+
 $restore = Invoke-DotNetCaptured @(
     'restore',
     $testProject,
@@ -100,18 +117,33 @@ $restore = Invoke-DotNetCaptured @(
     '--ignore-failed-sources'
 )
 
-$unit = if ($restore.ExitCode -eq 0) {
+$testBuild = if ($restore.ExitCode -eq 0) {
+    Invoke-DotNetCaptured @(
+        'build',
+        $testProject,
+        '-c', 'Release',
+        "-p:SptRoot=$SptRoot",
+        '--no-restore',
+        '--no-incremental'
+    )
+}
+else {
+    [pscustomobject]@{ ExitCode = $restore.ExitCode; Text = $restore.Text }
+}
+
+$unit = if ($testBuild.ExitCode -eq 0) {
     Invoke-DotNetCaptured @(
         'test',
         $testProject,
         '-c', 'Release',
         "-p:SptRoot=$SptRoot",
         '--no-restore',
+        '--no-build',
         '--logger', 'console;verbosity=minimal'
     )
 }
 else {
-    [pscustomobject]@{ ExitCode = $restore.ExitCode; Text = $restore.Text }
+    [pscustomobject]@{ ExitCode = $testBuild.ExitCode; Text = $testBuild.Text }
 }
 
 $unitCounts = Get-TestCounts $unit.Text
@@ -140,9 +172,18 @@ if ($unitPassed) {
     $groups += Invoke-ValidationGroup 'PersistenceRecovery' 'Persistence/recovery'
     $groups += Invoke-ValidationGroup 'RecorderSelection' 'Recorder selection'
     $groups += Invoke-ValidationGroup 'RecorderPresentation' 'Recorder presentation'
+    $groups += Invoke-ValidationGroup 'NativeHands' 'Native EFT hands'
+    $groups += Invoke-ValidationGroup 'AssetPipeline' 'Asset pipeline'
     $groups += Invoke-ValidationGroup 'SptApiContracts' 'SPT API contracts'
     $groups += Invoke-ValidationGroup 'PlacementAuthoring' 'Placement authoring'
     $groups += Invoke-ValidationGroup 'WorldDiscovery' 'World discovery'
+    $groups += Invoke-ValidationGroup 'WorldCassetteVisual' 'World cassette visual'
+    $groups += Invoke-ValidationGroup 'TrackRouting' 'Track routing/playlists'
+    $groups += Invoke-ValidationGroup 'PostRaidRouting' 'Extract/death routing'
+    $groups += Invoke-ValidationGroup 'PostRaidLifecycle' 'Post-raid lifecycle'
+    $groups += Invoke-ValidationGroup 'PlaybackSelection' 'Exact playback selection'
+    $groups += Invoke-ValidationGroup 'LibraryPaths' 'Library/path compatibility'
+    $groups += Invoke-ValidationGroup 'LibraryUi' 'Library UI'
 }
 else {
     foreach ($label in @(
@@ -152,12 +193,25 @@ else {
         'Persistence/recovery',
         'Recorder selection',
         'Recorder presentation',
+        'Native EFT hands',
+        'Asset pipeline',
         'SPT API contracts',
         'Placement authoring',
-        'World discovery')) {
+        'World discovery',
+        'World cassette visual',
+        'Track routing/playlists',
+        'Extract/death routing',
+        'Post-raid lifecycle',
+        'Exact playback selection',
+        'Library/path compatibility',
+        'Library UI')) {
         Write-ValidationLine $false $label 'NOT RUN'
     }
 }
+
+$packageAudit = Invoke-PackageAssetAudit
+Write-ValidationLine $packageAudit.Passed 'Package asset audit' $(
+    if ($packageAudit.Passed) { 'PASS' } else { 'FAIL' })
 
 $placementBuild = Invoke-DotNetCaptured @(
     'build',
@@ -206,11 +260,32 @@ else {
 $buildPassed = $build.ExitCode -eq 0 -and $errorCount -eq 0
 Write-ValidationLine $buildPassed 'Release build' $(if ($errorCount -ge 0) { "$errorCount errors" } else { 'FAILED' })
 
+$assetBundlePath = Join-Path $repoRoot 'Assets\SoulRecorder\bundle\soulplayer_assets.bundle'
+if (Test-Path -LiteralPath $assetBundlePath -PathType Leaf) {
+    $assetBundleBytes = (Get-Item -LiteralPath $assetBundlePath).Length
+    Write-ValidationLine $true 'Asset bundle artifact' "$assetBundleBytes bytes"
+}
+else {
+    Write-ValidationLine $true 'Asset bundle artifact' 'OPTIONAL - editor step not run'
+}
+
+$worldCassetteBundlePath = Join-Path $repoRoot 'Assets\SoulRecorder\bundle\soultape_world.bundle'
+$worldCassetteBundlePassed = Test-Path -LiteralPath $worldCassetteBundlePath -PathType Leaf
+if ($worldCassetteBundlePassed) {
+    $worldCassetteBundleBytes = (Get-Item -LiteralPath $worldCassetteBundlePath).Length
+    Write-ValidationLine $true 'World cassette bundle' "$worldCassetteBundleBytes bytes"
+}
+else {
+    Write-ValidationLine $false 'World cassette bundle' 'MISSING'
+}
+
 $allGroupsPassed = $unitPassed
 foreach ($group in $groups) {
     $allGroupsPassed = $allGroupsPassed -and $group.Passed
 }
-$allPassed = $allGroupsPassed -and $placementBuildPassed -and $buildPassed
+$allPassed = $allGroupsPassed -and $packageAudit.Passed -and
+             $placementBuildPassed -and $buildPassed -and
+             $worldCassetteBundlePassed
 
 Write-Host ''
 Write-Host "Warnings: $warningCount existing UnityWebRequest deprecation warnings"
@@ -224,7 +299,15 @@ $changedFiles = @(
 
 $runtimeRequired = $false
 $runtimeReason = 'no runtime-specific systems changed'
-if ($changedFiles -contains 'Recorder/ProceduralSoulRecorderHandsView.cs' -or
+if ($changedFiles | Where-Object {
+    $_ -match '^Assets/SoulRecorder/Overlay/' -or
+    $_ -eq 'Recorder/SoulRecorderOverlayView.cs' -or
+    $_ -eq 'Recorder/SoulRecorderScreenOverlayTransition.cs'
+}) {
+    $runtimeRequired = $true
+    $runtimeReason = 'SoulRecorder screen-space Unity presentation changed'
+}
+elseif ($changedFiles -contains 'Recorder/ProceduralSoulRecorderHandsView.cs' -or
     $changedFiles -contains 'Recorder/SoulRecorderPresentationState.cs' -or
     $changedFiles -contains 'Recorder/SoulRecorderPresentationTuning.cs' -or
     $changedFiles -contains 'World/SoulTapeCassetteVisual.cs') {
@@ -254,7 +337,7 @@ elseif ($changedFiles -contains 'World/SoulTapeWorldDiscoveryController.cs' -or
 }
 elseif ($changedFiles -contains 'World/DevelopmentSoulTapeSpawnMarker.cs') {
     $runtimeRequired = $true
-    $runtimeReason = 'placement-mode movement/raycast/Unity authoring integration changed'
+    $runtimeReason = 'one-shot placement camera/raycast/Unity authoring integration changed'
 }
 elseif ($changedFiles -contains 'Cassettes/IProfileIdProvider.cs' -or
     $changedFiles -contains 'Cassettes/SoulTapeCollectionController.cs') {
@@ -289,6 +372,9 @@ if (-not $allPassed) {
     }
     if (-not $placementBuildPassed) {
         Write-Host $placementBuild.Text
+    }
+    if (-not $packageAudit.Passed) {
+        Write-Host $packageAudit.Output
     }
     if (-not $buildPassed) {
         Write-Host $build.Text

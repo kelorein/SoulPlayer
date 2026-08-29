@@ -1,0 +1,99 @@
+{
+  "SchemaVersion": 1,
+  "RequiredUnityVersion": "2022.3.43f1",
+  "BundleFileName": "soulplayer_assets.bundle",
+  "BuildTarget": "StandaloneWindows64",
+  "TexturePolicy": "Five required recorder source maps at 2048x2048 PNG plus Unity-ready flap-alpha and metallic-smoothness derivatives; generated unbranded cassette materials; BAMEN CC BY 4.0 arm and hand base-color, normal, and roughness maps with Unity metallic-smoothness derivatives",
+  "Assets": [
+    {
+      "LogicalName": "soulrecorder_fp",
+      "UpstreamSource": "https://polyhaven.com/a/cassette_player",
+      "Author": "Oday Abuzaeed",
+      "License": "CC0",
+      "LicenseRecordPath": "recorder/licenses/polyhaven-cassette-player.txt",
+      "ExternalSourcePath": "recorder/models/polyhaven-cassette-player/cassette_player_4k.blend.zip",
+      "SourceArchiveSha256": "C6B84808C8AFF29E1798022BCF0C50AFD02E5838E394BC19BC381CF6B97467A2",
+      "DerivedOutputName": "soulrecorder_fp.prefab",
+      "Redistributed": true,
+      "Transformations": [
+        "Keep the external 4K archive immutable",
+        "Remove source cassette and any non-mesh scene helpers",
+        "Normalize pivot, orientation, and first-person scale",
+        "Replace source identity with charcoal materials and restrained amber accent",
+        "Downsample shipped recorder textures to a maximum of 2048 pixels",
+        "Remove the Dixons TR12 source wordmark from the derived base-color atlas",
+        "Add named cassette bay, insertion, window, LED, and reel-window transforms"
+      ],
+      "Inspection": {
+        "BlendVersion": "2.93",
+        "ObjectNamesObserved": [ "cassette_player_body", "cassette_player_tape" ],
+        "MaterialNamesObserved": [ "cassette_player_body", "cassette_player_flap", "cassette_player_tape" ],
+        "TextureCount": 9,
+        "TextureDimensions": "4096x4096",
+        "GeometryAuditStatus": "Blender 5.2 audit passed: SoulRecorderBody, 2068 vertices, 1971 polygons, 2 materials; source tape removed"
+      }
+    },
+    {
+      "LogicalName": "soultape_cassette",
+      "UpstreamSource": "https://blendswap.com/blend/10633",
+      "Author": "comeinandburn",
+      "License": "CC0",
+      "LicenseRecordPath": "Assets/SoulRecorder/licenses/BLENDSWAP-CASSETTE-CC0.txt",
+      "ExternalSourcePath": "cassette/models/blendswap-cc0-cassette/Cassette Tape.zip",
+      "SourceArchiveSha256": "4E1CA41FFE39921B7B10B4CB0CD8BCC43FECB79D97D2DEACC5A6439216BA6246",
+      "DerivedOutputName": "soultape_cassette.prefab",
+      "Redistributed": true,
+      "Transformations": [
+        "Keep the external source archive immutable",
+        "Remove source Maxell label/branding and external-path texture dependencies",
+        "Normalize source X/Y/Z to 0.110m width, 0.070m height, and 0.018m depth",
+        "Use a dark shell, aged label, and restrained amber SoulPlayer accent",
+        "Split the two six-cog hubs in WheelCogs.001 into ReelLeft and ReelRight with centered pivots",
+        "Remove colliders, cameras, lights, rigidbodies, and scene-only helpers"
+      ],
+      "Inspection": {
+        "BlendVersion": "2.69",
+        "ObjectNamesObserved": [
+          "Axle", "CassetteCase_Hero", "CassetteTape_Group", "Plastic Cover",
+          "Screws", "ScrewsCenter", "tape", "Tape off spool", "Tape on Spool",
+          "TapeHeadPadR", "WheelCogs"
+        ],
+        "MaterialNamesObserved": [
+          "Clear Plastic", "Plastic Case", "screws black", "tape", "white sponge", "WhitePlastic"
+        ],
+        "TextureCount": 0,
+        "TextureDimensions": "Source contains packed/legacy image references; derivative replaces branded label dependencies",
+        "GeometryAuditStatus": "Blender 5.2 audit passed: selected Collection 2 .001 assembly, removed alternate/helper geometry, 7336 vertices, 6884 polygons, 0.110 x 0.070 x 0.0182m"
+      }
+    },
+    {
+      "LogicalName": "soulrecorder_animated_hands",
+      "UpstreamSource": "https://sketchfab.com/3d-models/free-fps-arms-gameready-rigged-296d30fc705b4dff85c2c8a2d2724e7f",
+      "Author": "BAMEN (Sketchfab user bamenwo05)",
+      "License": "CC BY 4.0",
+      "LicenseRecordPath": "Assets/SoulRecorder/licenses/BAMEN-FPS-Arms-CC-BY-4.0.txt",
+      "ExternalSourcePath": "BAMEN-FPS-Arms/free-fps-arms-gameready-rigged.zip",
+      "SourceArchiveSha256": "8585C328BF9E0872DBE28E08D7B72BF675411CCF8C49F26F804CF97096592BBE",
+      "DerivedOutputName": "soulrecorder_animated_hands.prefab",
+      "Redistributed": true,
+      "Transformations": [
+        "Keep the external Sketchfab archive and source FBX immutable",
+        "Preserve the complete BAMEN articulated arm, hand, thumb, and finger skeleton",
+        "Normalize stable runtime names and retain the original skin weights and bind pose",
+        "Derive an FPS-only mesh by cropping the proximal 48 percent of each upper-arm sleeve and extending the sleeve termination below the camera with hands-root-weighted geometry while preserving all retained source weights",
+        "Add RecorderGrip, CassetteGrip, and CassetteContact sockets",
+        "Add non-deforming SupportSleeveCutoff and CassetteSleeveCutoff camera-audit markers",
+        "Author and bake SoulRecorder enter, insert, exit, eject, cancel, and hold clips",
+        "Rewire the six supplied PBR textures and generate Unity metallic-smoothness derivatives"
+      ],
+      "Inspection": {
+        "BlendVersion": "FBX 7400; audited in Blender 5.2",
+        "ObjectNamesObserved": [ "FPS Arms", "FRPS Arms Armature" ],
+        "MaterialNamesObserved": [ "FPS Arm", "FPS Hand" ],
+        "TextureCount": 6,
+        "TextureDimensions": "1024x1024 PNG",
+        "GeometryAuditStatus": "Blender 5.2 source audit passed: 6942 vertices, 6864 polygons, and 13728 triangles; FPS derivative removes 406 source vertices, adds 52 hands-root-weighted off-screen sleeve endpoint vertices, and contains 6588 vertices, 6510 polygons, 13064 triangles, and the complete shared-root articulated skeleton"
+      }
+    }
+  ]
+}

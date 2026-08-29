@@ -1,0 +1,35 @@
+SoulRecorder AutoAnimationDraft_v4
+Runtime integration: BLOCKED pending human MP4 approval
+Carry: StaticMaster_v1
+Interaction/contact: PhysicalGrip_L3
+Cassette ownership: RIGHT_HAND -> RECORDER_SLOT -> RIGHT_HAND
+Quaternion interpolation: explicit shortest path
+Carry-to-contact cassette rotation: 165.371 deg
+Axis sign: CORRECT
+L3 cassette contacts thumb/index/middle: 1.325 / 0.673 / 0.556 mm
+L3 slot contact error: 0.000 mm / 0.0000 deg
+Insertion choreography:
+- Draw 0.42s owner=Hand
+- MoveInward 0.32s owner=Hand
+- VisibleReorientationClearOfRecorder 0.58s owner=Hand
+- Align 0.28s owner=Hand
+- Contact 0.20s owner=Hand
+- InsertHalf 0.18s owner=Hand
+- InsertSeated 0.18s owner=Hand
+- TransferToSlot 0.04s owner=Recorder
+- Release 0.24s owner=Recorder
+- Exit 0.42s owner=Recorder
+Ejection choreography:
+- DrawSeated 0.42s owner=Recorder
+- EmptyHandApproach 0.24s owner=Recorder
+- EstablishL3Grip 0.24s owner=Recorder
+- TransferToHand 0.04s owner=Hand
+- PullStraightClear 0.28s owner=Hand
+- ReorientToCarryOnlyAfterClear 0.58s owner=Hand
+- ReturnCarry 0.30s owner=Hand
+- Exit 0.42s owner=Hand
+Insertion after Contact: constant orientation, exact slot axis, frozen L3 grip
+Ownership transfers: identical world pose / zero snap
+Fixed skeletal local positions/scales: PASS
+AUTO ANIMATION DRAFT V4: PASS
+VISUAL APPROVAL: PENDING USER REVIEW OF BOTH MP4 FILES

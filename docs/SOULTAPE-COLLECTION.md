@@ -9,14 +9,15 @@ world cassette
     -> discover and pick up in a raid
     -> unlock its stable cassette ID permanently for the active SPT profile
     -> browse it in the collection
-    -> favorite and select it
-    -> play the unlocked cassette through SoulRecorder
+    -> optionally favorite it
+    -> let SoulRecorder shuffle eligible discovered cassettes in raids
 ```
 
 Collection v1 implements the catalog and permanent progression underneath that loop.
 World Discovery v1 supplies the first curated raid spawns and direct pickup path.
 Collection + Favorites UI v1 exposes that progression in the existing MUSIC window.
-SoulRecorder Cassette Selection UX v1 adds an explicit per-profile recorder tape.
+SoulRecorder's raid shuffle UX selects from permanent discoveries and favorites without
+requiring a manually loaded recorder tape.
 
 ## Cassette catalog
 
@@ -72,9 +73,6 @@ UnlockTape(id)
 IsUnlocked(id)
 SetFavorite(id, bool)
 IsFavorite(id)
-SetRecorderTape(id)
-GetSelectedRecorderTapeId()
-IsRecorderTape(id)
 GetUnlockedTapes()
 GetFavoriteTapes()
 ```
@@ -88,11 +86,11 @@ same `SoulTapeCollectionHost`. Collection data is stored under:
 BepInEx/config/SoulPlayer/collections/<profile-id>.json
 ```
 
-Each profile file contains a schema version, profile ID, unlocked cassette IDs, favorite
-cassette IDs, and an optional `SelectedRecorderCassetteId`. Mutations save immediately
-and log collection load, save, unlock, favorite, and recorder-selection operations.
-Version-1 JSON created before recorder selection remains valid: a missing field means no
-explicit selection and does not cause an automatic rewrite.
+Each profile file contains a schema version, profile ID, unlocked cassette IDs, and
+favorite cassette IDs. Older files may still contain `SelectedRecorderCassetteId`;
+SoulPlayer reads that legacy field without deleting it, but it no longer affects the UI
+or SoulRecorder playback. Mutations save immediately and log collection load, save,
+unlock, and favorite operations.
 
 A profile with no existing collection is granted
 `soul-tape.scott-buckley.the-long-dark` and saved immediately.
@@ -114,43 +112,61 @@ under a renamed file, reconnects the generated cassette ID automatically.
 
 ## Recorder integration
 
-SoulRecorder's validated usable-item lifecycle is unchanged. Its entry step now:
+SoulRecorder's validated usable-item and anti-stutter audio lifecycle is unchanged. The
+persisted `Raid cassette playback mode` config controls its eligible pool:
 
-1. ensures the active profile collection is loaded;
-2. uses the explicitly selected unlocked cassette when its audio is available;
-3. if selected audio is missing, uses another unlocked available cassette for that
-   interaction only and preserves the saved selection;
-4. when there is no explicit selection, retains the legacy starter-first fallback;
-5. refuses playback when no unlocked cassette can resolve to an audio file.
+- `FavoritesOnly`: discovered, favorited cassettes with available audio;
+- `Discovered`: every discovered cassette with available audio;
+- `FavoritesFirst` (default): favorites when at least one is available, otherwise all
+  discovered cassettes.
 
-The recorder never selects a locked library track and never overwrites selection because
-of temporary audio loss. See `SOULRECORDER-SELECTION.md`.
+An in-memory per-raid shuffle bag plays every eligible stable ID once before reshuffling
+and avoids repeating the boundary tape. Favorites, discoveries, and restored/missing
+audio are reconciled for the next selection without interrupting the current track. The
+bag is intentionally not profile persistence and starts fresh with each raid/restart.
+Undiscovered and unavailable tracks are never selected.
+
+`Next raid cassette hotkey` defaults to `N` and is separate from the normal Library
+`Next track hotkey`. While stopped it starts the next bag entry through the normal hidden
+audio-preparation and insertion flow. While playing it reserves the next eligible entry,
+runs the existing eject/stop transition, waits for presentation ownership to release,
+then prepares and inserts the reserved cassette. One request may wait behind an active
+prepare/insert/eject transition; repeated requests are ignored until that request has
+completed.
 
 ## Curated authoring milestone
 
 The opt-in placement-tools build supports an in-raid workflow for creating anchors
-without copying coordinates manually. It moves the local player in a safe flight mode,
-raycasts from the first-person view, previews a SoulPlayer-owned placeholder cassette,
-solves surface clearance/collision, and appends the valid result to editable JSON.
+without copying coordinates manually. The author walks normally, aims the full-screen
+gameplay camera at a surface, and presses F9. SoulPlayer solves surface alignment,
+clearance, collision, nudging, and duplicates; it immediately saves a valid anchor and
+briefly previews the exact result with a SoulPlayer-owned placeholder cassette.
 
-See `SOULTAPE-AUTHORING.md` for the build command, controls, output location, and safety
-behavior. Normal Release builds exclude active placement behavior.
+The tool never teleports the player or changes player movement/collider state. See
+`SOULTAPE-AUTHORING.md` for the build command, controls, output location, and safety
+behavior. Normal Release builds exclude active authoring behavior.
 
 ## World Discovery v1
 
-Factory Day currently has ten committed anchors. At raid startup SoulPlayer activates
-one to three of them, limited by the number of eligible locked cassettes. The starter,
-unlocked tapes, unavailable audio, and personal/generated entries without explicit
-rarity are excluded.
+The release contains 108 committed anchors across ten curated maps. At raid startup SoulPlayer activates
+one to three of them, limited by the number of available mode-eligible songs and anchors.
+Anchor-to-track pairs exist only for that raid. Undiscovered songs are selected before
+already discovered songs; discovered songs become fallback candidates only when too few
+locked songs remain. Generated personal-library entries are eligible without a rarity,
+allowing a large library to rotate through a much smaller reusable anchor set over many
+raids.
+
+The old per-profile `assignments/<profile>.json` mapping is legacy data. Runtime does not
+read or update it and never deletes it automatically. Collection unlocks and historical
+metadata remain independent and continue to persist under `collections/`.
 
 Collecting a cassette calls `UnlockTape(id)` immediately. The profile JSON is saved at
 pickup time: extraction is not required and dying later does not revoke the discovery.
 The pickup does not enter stash inventory. The temporary world cassette and discovery
 notification use SoulPlayer-owned presentation that can be replaced by final art later.
 
-Explicit recorder tape selection, final art, and duplicate rewards remain later
-milestones. Collection browsing and favorites are implemented in the existing MUSIC
-window.
+Final art and duplicate rewards remain later milestones. Collection browsing and
+favorites are implemented in the existing MUSIC window.
 
 ## Collection browser
 
@@ -159,23 +175,20 @@ Collection page without restarting scans or changing playback. The Collection is
 eight-card page (four columns by two rows) with ALL, DISCOVERED, FAVORITES, and
 UNDISCOVERED filters plus `DISCOVERED n / total` progress.
 
-Only catalog entries with an explicit rarity become collectible slots. Generated and
-personal-library entries with null rarity never enter the grid or progress total. A
-pure `SoulTapeCollectionProjection` applies that rule and removes artist, title, rarity,
-favorite, and audio metadata from locked cards before Unity rendering receives them.
-Locked cards therefore show only `SOULTAPE`, `???`, and `UNDISCOVERED`.
+The runtime collection catalog is the union of the current mode-eligible track IDs and
+the profile's historically unlocked IDs. It is not capped by the number of anchors.
+Generated and personal-library entries with null rarity remain collectible slots, while
+historically discovered tracks remain visible even if their file or current mode changes.
+A pure `SoulTapeCollectionProjection` removes artist, title, rarity, favorite, and audio
+metadata from locked cards before Unity rendering receives them. Locked cards therefore
+show only `SOULTAPE`, `???`, and `UNDISCOVERED`.
 
 Discovered cards show artist, title, a restrained centralized rarity accent, favorite
-state, recorder-selected state, and `AUDIO MISSING` when the current file cannot be
-resolved. Missing audio never removes discovery, favorite, or recorder selection.
+state, and `AUDIO MISSING` when the current file cannot be resolved. Missing audio never
+removes discovery or favorite progression.
 Favorite buttons call the existing
 transactional `SetFavorite(id, bool)` API and immediately re-project actual collection
 state; a failed save leaves the card unchanged and reports that it was not saved.
-
-Discovered cards also offer `LOAD RECORDER`; the selected card shows `RECORDER TAPE` and
-a restrained outline. The header names the selected collectible tape. Null-rarity
-personal entries remain excluded from the collectible grid and cannot leak metadata
-through the header.
 
 The page listens to both collection and catalog change events. Unlocks, profile changes,
 favorite mutations, and delayed library refreshes mark the view dirty and refresh it
@@ -197,6 +210,10 @@ Automated tests cover:
 - preservation of missing catalog IDs;
 - generated ID stability after a file rename;
 - recovery from a valid backup after primary-file corruption;
-- World Discovery eligibility and deterministic rarity-weighted planning;
+- per-raid seeded World Discovery selection with undiscovered-first priority;
+- unique track/anchor selection across libraries much larger than the anchor set;
 - committed Factory Day anchor packaging;
 - immediate discovery persistence, reload, rollback, events, and profile separation.
+- FavoritesOnly, Discovered, and FavoritesFirst pool behavior;
+- non-repeating shuffle cycles, boundary repeat avoidance, and live pool reconciliation;
+- graceful empty favorite/discovery feedback and legacy selection isolation.

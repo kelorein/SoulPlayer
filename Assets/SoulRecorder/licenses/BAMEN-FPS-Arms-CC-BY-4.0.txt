@@ -1,0 +1,28 @@
+Asset: FREE [FPS Arms] GameReady - RIGGED
+Creator: BAMEN (Sketchfab user bamenwo05)
+Source: https://sketchfab.com/3d-models/free-fps-arms-gameready-rigged-296d30fc705b4dff85c2c8a2d2724e7f
+Sketchfab model ID: 296d30fc705b4dff85c2c8a2d2724e7f
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+License URL: https://creativecommons.org/licenses/by/4.0/
+
+Original download archive:
+  free-fps-arms-gameready-rigged.zip
+  SHA-256: 8585C328BF9E0872DBE28E08D7B72BF675411CCF8C49F26F804CF97096592BBE
+
+Original source FBX:
+  source/FPS Arms.fbx
+  SHA-256: 4E1FC02D9EBB61C6C5CC59BCD02B63DA09F95C8DB3C0F7457724C75BCA89B14A
+
+SoulPlayer changes:
+  - normalized and renamed the runtime armature and skinned mesh;
+  - retained the complete articulated arm/hand/finger skeleton and skin weights;
+  - derived a first-person runtime mesh by cropping and capping the proximal 48 percent
+    of each upper-arm sleeve while preserving all retained vertex groups and weights;
+  - added RecorderGrip, CassetteGrip, and CassetteContact sockets;
+  - added non-deforming sleeve-cutoff audit markers for offline camera validation;
+  - authored original SoulRecorder first-person poses and animation clips;
+  - rewired and repackaged the supplied base-color, normal, and roughness maps;
+  - generated Unity metallic/smoothness maps from supplied roughness data;
+  - bundled the derivative solely for use by SoulPlayer.
+
+No Battlestate Games or Escape from Tarkov content is included in this derivative.

@@ -1,0 +1,19 @@
+SoulRecorder manual rig binding: PASS
+Visible arm renderer: SoulRecorderArms (pose control: NO)
+Left: upper=Arm_1.L; forearm=Arm_2.L; wrist=Hand_1.L; palm=Hand_2.L
+  digits: Thumb=Finger_1_1.L/Finger_1_2.L/Finger_1_3.L/Finger_1_4.L; Index=Finger_2_1.L/Finger_2_2.L/Finger_2_3.L; Middle=Finger_3_1.L/Finger_3_2.L/Finger_3_3.L; Ring=Finger_4_1.L/Finger_4_2.L/Finger_4_3.L; Pinky=Finger_5_1.L/Finger_5_2.L/Finger_5_3.L
+Right: upper=Arm_1.R; forearm=Arm_2.R; wrist=Hand_1.R; palm=Hand_2.R
+  digits: Thumb=Finger_1_1.R/Finger_1_2.R/Finger_1_3.R/Finger_1_4.R; Index=Finger_2_1.R/Finger_2_2.R/Finger_2_3.R; Middle=Finger_3_1.R/Finger_3_2.R/Finger_3_3.R; Ring=Finger_4_1.R/Finger_4_2.R/Finger_4_3.R; Pinky=Finger_5_1.R/Finger_5_2.R/Finger_5_3.R
+Arm skeleton control validation:
+  Left expandable hierarchy: PASS — Arm_1.L -> Arm_2.L -> Hand_1.L; palm/fingers below wrist=yes
+  Right expandable hierarchy: PASS — Arm_1.R -> Arm_2.R -> Hand_1.R; palm/fingers below wrist=yes
+  Left Upper arm (Arm_1.L): PASS — visibleMesh=yes, carriesApprovedPose=yes, temporaryRotation=yes, childLocalPosePreserved=yes, exactRestore=yes
+  Left Forearm / elbow (Arm_2.L): PASS — visibleMesh=yes, carriesApprovedPose=yes, temporaryRotation=yes, childLocalPosePreserved=yes, exactRestore=yes
+  Left Wrist (Hand_1.L): PASS — visibleMesh=yes, carriesApprovedPose=yes, temporaryRotation=yes, childLocalPosePreserved=yes, exactRestore=yes
+  Right Upper arm (Arm_1.R): PASS — visibleMesh=yes, carriesApprovedPose=yes, temporaryRotation=yes, childLocalPosePreserved=yes, exactRestore=yes
+  Right Forearm / elbow (Arm_2.R): PASS — visibleMesh=yes, carriesApprovedPose=yes, temporaryRotation=yes, childLocalPosePreserved=yes, exactRestore=yes
+  Right Wrist (Hand_1.R): PASS — visibleMesh=yes, carriesApprovedPose=yes, temporaryRotation=yes, childLocalPosePreserved=yes, exactRestore=yes
+  SoulRecorderArms pose-control exclusion: PASS
+READY FOR MANUAL AUTHORING: YES
+AUTHORING POSE RESTORED: YES
+Approved SupportHold + CassetteCarry restored from JSON (42/42 transforms).

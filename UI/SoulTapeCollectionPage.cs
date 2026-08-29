@@ -20,10 +20,10 @@ namespace SoulPlayer.UI
         private TMP_Text _styleSource;
         private SoulTapeCatalog _catalog;
         private SoulTapeCollection _collection;
+        private ISoulTapeEligibleCatalogProvider _eligibleCatalog;
         private SoulTapeCollectionProjection _projection;
         private GameObject _cardArea;
         private TextMeshProUGUI _progressLabel;
-        private TextMeshProUGUI _recorderLabel;
         private TextMeshProUGUI _pageLabel;
         private TextMeshProUGUI _statusLabel;
         private SoulTapeCollectionFilter _filter = SoulTapeCollectionFilter.All;
@@ -36,6 +36,7 @@ namespace SoulPlayer.UI
             TMP_Text styleSource,
             SoulTapeCatalog catalog,
             SoulTapeCollection collection,
+            ISoulTapeEligibleCatalogProvider eligibleCatalog,
             Action close)
         {
             GameObject root = UIUtils.CreatePanel(
@@ -47,7 +48,8 @@ namespace SoulPlayer.UI
                 new Vector2(1070f, 628f),
                 new Vector2(250f, 0f));
             SoulTapeCollectionPage page = root.AddComponent<SoulTapeCollectionPage>();
-            page.Initialize(styleSource, catalog, collection, close);
+            page.Initialize(
+                styleSource, catalog, collection, eligibleCatalog, close);
             root.SetActive(false);
             return page;
         }
@@ -67,15 +69,22 @@ namespace SoulPlayer.UI
             TMP_Text styleSource,
             SoulTapeCatalog catalog,
             SoulTapeCollection collection,
+            ISoulTapeEligibleCatalogProvider eligibleCatalog,
             Action close)
         {
             _styleSource = styleSource;
             _catalog = catalog;
             _collection = collection;
-            _projection = new SoulTapeCollectionProjection(catalog, collection);
+            _eligibleCatalog = eligibleCatalog;
+            _projection = new SoulTapeCollectionProjection(
+                catalog, collection, eligibleCatalog);
             Build(close);
             _catalog.Changed += OnSourceChanged;
             _collection.Changed += OnSourceChanged;
+            if (_eligibleCatalog != null)
+            {
+                _eligibleCatalog.EligibleCatalogChanged += OnSourceChanged;
+            }
             _initialized = true;
         }
 
@@ -119,19 +128,6 @@ namespace SoulPlayer.UI
                 new Vector2(1f, 1f),
                 new Vector2(300f, 38f),
                 new Vector2(-124f, -24f));
-
-            _recorderLabel = UIUtils.CreateLabel(
-                gameObject,
-                "RecorderSelection",
-                "RECORDER: NONE",
-                _styleSource,
-                12f,
-                UIUtils.MutedText,
-                TextAlignmentOptions.Right,
-                new Vector2(1f, 1f),
-                new Vector2(1f, 1f),
-                new Vector2(400f, 24f),
-                new Vector2(-124f, -58f));
 
             UIUtils.CreateButton(
                 gameObject,
@@ -279,7 +275,6 @@ namespace SoulPlayer.UI
             {
                 _page = 0;
                 _progressLabel.text = "DISCOVERED -- / --";
-                _recorderLabel.text = "RECORDER: NONE";
                 _pageLabel.text = "-- / --";
                 _statusLabel.color = UIUtils.MutedText;
                 _statusLabel.text = "COLLECTION UNAVAILABLE";
@@ -290,11 +285,6 @@ namespace SoulPlayer.UI
 
             _progressLabel.text = "DISCOVERED " + snapshot.DiscoveredCount +
                                   " / " + snapshot.TotalCount;
-            _recorderLabel.text = snapshot.HasVisibleRecorderSelection
-                ? "RECORDER: " + snapshot.RecorderArtist + " — " + snapshot.RecorderTitle
-                : snapshot.HasRecorderSelection
-                    ? "RECORDER: SELECTED TAPE"
-                    : "RECORDER: NONE";
             int pageCount = Math.Max(
                 1,
                 (int)Math.Ceiling(snapshot.Entries.Count / (double)CardsPerPage));
@@ -331,9 +321,7 @@ namespace SoulPlayer.UI
                 column * (cardWidth + columnGap),
                 -row * (cardHeight + rowGap));
             Color background = card.IsDiscovered
-                ? card.IsRecorderSelected
-                    ? new Color(0.064f, 0.078f, 0.077f, 1f)
-                    : new Color(0.052f, 0.058f, 0.062f, 1f)
+                ? new Color(0.052f, 0.058f, 0.062f, 1f)
                 : new Color(0.031f, 0.034f, 0.037f, 1f);
             GameObject panel = UIUtils.CreatePanel(
                 _cardArea,
@@ -344,17 +332,6 @@ namespace SoulPlayer.UI
                 new Vector2(cardWidth, cardHeight),
                 position);
             _cards.Add(panel);
-            if (card.IsRecorderSelected)
-            {
-                Outline selectedOutline = panel.AddComponent<Outline>();
-                selectedOutline.effectColor = new Color(
-                    UIUtils.Accent.r,
-                    UIUtils.Accent.g,
-                    UIUtils.Accent.b,
-                    0.85f);
-                selectedOutline.effectDistance = new Vector2(1.5f, -1.5f);
-            }
-
             UIUtils.CreateLabel(
                 panel,
                 "Brand",
@@ -440,26 +417,6 @@ namespace SoulPlayer.UI
             }
 
             string cassetteId = card.Id;
-            bool recorderSelected = card.IsRecorderSelected;
-            Button recorderButton = UIUtils.CreateButton(
-                panel,
-                "RecorderSelection",
-                recorderSelected ? "RECORDER TAPE" : "LOAD RECORDER",
-                _styleSource,
-                new Vector2(0f, 0f),
-                new Vector2(0f, 0f),
-                new Vector2(122f, 28f),
-                new Vector2(12f, 9f),
-                () => SelectRecorderTape(cassetteId, recorderSelected),
-                recorderSelected,
-                9f);
-            TextMeshProUGUI recorderButtonLabel =
-                recorderButton.GetComponentInChildren<TextMeshProUGUI>();
-            if (recorderButtonLabel != null)
-            {
-                recorderButtonLabel.color = recorderSelected ? UIUtils.Accent : UIUtils.Text;
-            }
-
             bool favorite = card.IsFavorite;
             Button favoriteButton = UIUtils.CreateButton(
                 panel,
@@ -588,30 +545,6 @@ namespace SoulPlayer.UI
             }
         }
 
-        private void SelectRecorderTape(string id, bool wasSelected)
-        {
-            if (wasSelected)
-            {
-                _statusLabel.color = UIUtils.MutedText;
-                _statusLabel.text = "This cassette is already loaded in SoulRecorder";
-                return;
-            }
-
-            bool changed = _collection.SetRecorderTape(id);
-            RefreshNow();
-            if (changed)
-            {
-                _statusLabel.color = UIUtils.Accent;
-                _statusLabel.text = "SoulRecorder cassette selection saved";
-            }
-            else
-            {
-                _statusLabel.color = new Color(0.88f, 0.48f, 0.38f, 1f);
-                _statusLabel.text =
-                    "RECORDER SELECTION NOT SAVED — collection state was unchanged";
-            }
-        }
-
         private void PreviousPage()
         {
             if (_page > 0)
@@ -658,6 +591,10 @@ namespace SoulPlayer.UI
             if (_collection != null)
             {
                 _collection.Changed -= OnSourceChanged;
+            }
+            if (_eligibleCatalog != null)
+            {
+                _eligibleCatalog.EligibleCatalogChanged -= OnSourceChanged;
             }
         }
     }

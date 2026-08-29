@@ -1,0 +1,2381 @@
+{
+  "version": 1,
+  "anchors": [
+    {
+      "id": "curated-factory4-day-20260823-060206170-6c0bb418",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": 30.14269,
+        "y": 8.084869,
+        "z": 38.8967857
+      },
+      "rotationEuler": {
+        "x": 6.67152153E-06,
+        "y": 236.264923,
+        "z": 5.680083E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-060257044-bddef346",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": -22.2735481,
+        "y": 1.05590773,
+        "z": 39.17135
+      },
+      "rotationEuler": {
+        "x": -6.096926E-06,
+        "y": 301.675476,
+        "z": 5.81273753E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.192093E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-062433846-652915d2",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": 21.81351,
+        "y": 4.59425068,
+        "z": 45.614502
+      },
+      "rotationEuler": {
+        "x": 352.17572,
+        "y": 166.926849,
+        "z": 7.49922848
+      },
+      "surfaceNormal": {
+        "x": 0.09660048,
+        "y": 0.982216537,
+        "z": 0.160994217
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-062548400-e972728f",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": 42.47387,
+        "y": 0.05416915,
+        "z": -7.000003
+      },
+      "rotationEuler": {
+        "x": 5.13560553E-05,
+        "y": 26.4524,
+        "z": -9.759102E-08
+      },
+      "surfaceNormal": {
+        "x": 3.874301E-07,
+        "y": 1.0,
+        "z": 7.748602E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-062604954-3f29164f",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": 27.3742275,
+        "y": 0.6233759,
+        "z": 18.9524117
+      },
+      "rotationEuler": {
+        "x": -0.000200439958,
+        "y": 281.370361,
+        "z": 6.54425E-05
+      },
+      "surfaceNormal": {
+        "x": 3.21865059E-06,
+        "y": 1.0,
+        "z": -1.81231371E-06
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-062610435-f4229dc6",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": 32.4241829,
+        "y": 0.582215667,
+        "z": 19.4867516
+      },
+      "rotationEuler": {
+        "x": 359.579468,
+        "y": 126.046036,
+        "z": 0.274811536
+      },
+      "surfaceNormal": {
+        "x": -0.00311211916,
+        "y": 0.9999616,
+        "z": 0.008196986
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-062620571-bff0734f",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": 38.9846077,
+        "y": 5.146867,
+        "z": 40.294857
+      },
+      "rotationEuler": {
+        "x": 4.458653E-06,
+        "y": 232.6133,
+        "z": 5.426964E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-062725869-e57dc170",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": -15.8589325,
+        "y": 0.6700931,
+        "z": -28.8026466
+      },
+      "rotationEuler": {
+        "x": 8.70416352E-06,
+        "y": 243.468018,
+        "z": -6.73883733E-06
+      },
+      "surfaceNormal": {
+        "x": -1.98526678E-07,
+        "y": 1.0,
+        "z": 3.233939E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-062728444-4fc656c0",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": -15.1327133,
+        "y": 0.397254318,
+        "z": -30.74596
+      },
+      "rotationEuler": {
+        "x": 4.85907359E-09,
+        "y": 272.5877,
+        "z": 6.82322343E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-factory4-day-20260823-062737501-09645754",
+      "mapId": "factory4_day",
+      "semanticTag": "",
+      "position": {
+        "x": -18.5656033,
+        "y": 0.0431367978,
+        "z": -17.225481
+      },
+      "rotationEuler": {
+        "x": 4.56808266E-06,
+        "y": 134.098068,
+        "z": -4.905099E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.192093E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131226977-4191164f",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": 145.330078,
+        "y": 3.841793,
+        "z": -136.659714
+      },
+      "rotationEuler": {
+        "x": 0.000148937223,
+        "y": 170.18248,
+        "z": -2.59164062E-05
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -2.65277572E-06
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131256120-aa7b78d7",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": 138.070877,
+        "y": 3.84477639,
+        "z": -193.5778
+      },
+      "rotationEuler": {
+        "x": 7.767397E-06,
+        "y": 176.604111,
+        "z": 1.42007525E-06
+      },
+      "surfaceNormal": {
+        "x": 2.980232E-08,
+        "y": 1.0,
+        "z": -8.38190246E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131319351-e1107eac",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": 90.9563141,
+        "y": 7.98729,
+        "z": -130.740173
+      },
+      "rotationEuler": {
+        "x": 0.454549462,
+        "y": 203.6283,
+        "z": 359.709167
+      },
+      "surfaceNormal": {
+        "x": -0.007829964,
+        "y": 0.9999557,
+        "z": -0.00523377955
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131353419-075b65dc",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": -80.1962662,
+        "y": 22.42882,
+        "z": -91.92997
+      },
+      "rotationEuler": {
+        "x": 359.7334,
+        "y": 209.465927,
+        "z": 334.139282
+      },
+      "surfaceNormal": {
+        "x": -0.377704352,
+        "y": 0.8998472,
+        "z": 0.218207449
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131447784-d8dbdab2",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": -72.79687,
+        "y": 22.6695328,
+        "z": -61.19973
+      },
+      "rotationEuler": {
+        "x": 1.85069384E-05,
+        "y": 162.672409,
+        "z": -9.0865467E-07
+      },
+      "surfaceNormal": {
+        "x": 7.636843E-08,
+        "y": 1.0,
+        "z": -2.98023167E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131457641-db2979e1",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": -81.4087448,
+        "y": 22.7032223,
+        "z": -57.7963676
+      },
+      "rotationEuler": {
+        "x": -1.92322168E-05,
+        "y": 279.5645,
+        "z": 3.6446695E-06
+      },
+      "surfaceNormal": {
+        "x": 3.24632339E-07,
+        "y": 1.0,
+        "z": -1.19208934E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131607158-7d1b65e0",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": -79.11841,
+        "y": 9.909838,
+        "z": -291.381622
+      },
+      "rotationEuler": {
+        "x": 1.7454875E-05,
+        "y": 301.112061,
+        "z": -5.67067332E-07
+      },
+      "surfaceNormal": {
+        "x": -2.61050843E-07,
+        "y": 1.0,
+        "z": 1.69110947E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131614298-1ab8e277",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": -74.93899,
+        "y": 9.598049,
+        "z": -294.916473
+      },
+      "rotationEuler": {
+        "x": -8.14222E-13,
+        "y": 281.08728,
+        "z": -1.66523787E-05
+      },
+      "surfaceNormal": {
+        "x": 3.76305849E-08,
+        "y": 1.0,
+        "z": 2.88792535E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131659905-58a56de1",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": 9.53585148,
+        "y": 2.3053298,
+        "z": -474.0341
+      },
+      "rotationEuler": {
+        "x": 0.00157441758,
+        "y": 297.919678,
+        "z": 0.00325436867
+      },
+      "surfaceNormal": {
+        "x": -5.091067E-05,
+        "y": 1.0,
+        "z": -3.73032963E-05
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-131712373-b3b3bd63",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": 8.879675,
+        "y": 2.559129,
+        "z": -503.458282
+      },
+      "rotationEuler": {
+        "x": -1.31375527E-05,
+        "y": 260.473816,
+        "z": -1.40363572E-05
+      },
+      "surfaceNormal": {
+        "x": 2.00677476E-07,
+        "y": 1.0,
+        "z": 2.820823E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-lighthouse-20260826-232507055-47e3127e",
+      "mapId": "Lighthouse",
+      "semanticTag": "",
+      "position": {
+        "x": -127.0343,
+        "y": 40.4320259,
+        "z": 131.0222
+      },
+      "rotationEuler": {
+        "x": -1.25795041E-05,
+        "y": 356.5367,
+        "z": 8.25210464E-07
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -2.38418522E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001403347-cfbe6c93",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -507.529144,
+        "y": 19.0338268,
+        "z": -390.393341
+      },
+      "rotationEuler": {
+        "x": 359.738678,
+        "y": 15.3562222,
+        "z": 359.928223
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 0.999988854,
+        "z": -0.004729688
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001411643-e82da726",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -513.4636,
+        "y": 19.0115986,
+        "z": -392.740479
+      },
+      "rotationEuler": {
+        "x": 359.941956,
+        "y": 296.420746,
+        "z": 0.1167949
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 0.999997437,
+        "z": -0.00227620173
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001426662-69ec4789",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -455.6138,
+        "y": 15.8700008,
+        "z": -388.309265
+      },
+      "rotationEuler": {
+        "x": -7.40437054E-06,
+        "y": 6.727553,
+        "z": -2.14914917E-06
+      },
+      "surfaceNormal": {
+        "x": 2.37077984E-08,
+        "y": 1.0,
+        "z": -1.1920929E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001430835-6cc535bd",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -454.610474,
+        "y": 16.2208023,
+        "z": -388.51413
+      },
+      "rotationEuler": {
+        "x": 3.78929726E-05,
+        "y": 29.0135612,
+        "z": 1.95734283E-05
+      },
+      "surfaceNormal": {
+        "x": 2.37075461E-08,
+        "y": 1.0,
+        "z": 7.470943E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001531102-0931560a",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -271.296753,
+        "y": 8.278299,
+        "z": -417.306274
+      },
+      "rotationEuler": {
+        "x": -2.670835E-05,
+        "y": 131.831009,
+        "z": 3.171972E-05
+      },
+      "surfaceNormal": {
+        "x": 2.278671E-08,
+        "y": 1.0,
+        "z": 7.225947E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001535797-eaeb4408",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -270.874969,
+        "y": 8.51254,
+        "z": -414.485748
+      },
+      "rotationEuler": {
+        "x": -2.591661E-05,
+        "y": 48.6124763,
+        "z": 1.71877375E-07
+      },
+      "surfaceNormal": {
+        "x": -3.42726651E-07,
+        "y": 1.0,
+        "z": -2.980232E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001546632-1f02b3b6",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -267.398163,
+        "y": 8.220682,
+        "z": -409.868042
+      },
+      "rotationEuler": {
+        "x": -4.48319443E-05,
+        "y": 53.4474373,
+        "z": 3.92499E-05
+      },
+      "surfaceNormal": {
+        "x": -1.03004265E-06,
+        "y": 1.0,
+        "z": 8.91159146E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001639495-bacf0811",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -550.4308,
+        "y": 18.8786812,
+        "z": -205.100708
+      },
+      "rotationEuler": {
+        "x": -1.81697715E-06,
+        "y": 292.9487,
+        "z": 3.14480462E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -5.96046448E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001753772-20666e0d",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -175.412766,
+        "y": -0.962031841,
+        "z": 264.106
+      },
+      "rotationEuler": {
+        "x": -5.48700446E-05,
+        "y": 79.97652,
+        "z": 4.75761881E-05
+      },
+      "surfaceNormal": {
+        "x": -1.09598216E-06,
+        "y": 1.0,
+        "z": 6.49517347E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001807761-fa294d61",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -167.79129,
+        "y": -1.56258917,
+        "z": 257.539337
+      },
+      "rotationEuler": {
+        "x": 5.520619E-06,
+        "y": 19.6326046,
+        "z": 2.29485863E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001842308-7cb56362",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": -1.26965261,
+        "y": -1.69402707,
+        "z": 45.08814
+      },
+      "rotationEuler": {
+        "x": -3.81666575E-14,
+        "y": 294.087067,
+        "z": -3.897162E-07
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 7.450581E-09
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-001905448-dd133405",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": 24.7343941,
+        "y": -1.33999979,
+        "z": -29.6642284
+      },
+      "rotationEuler": {
+        "x": 5.18881825E-06,
+        "y": 95.16111,
+        "z": -1.66990321E-05
+      },
+      "surfaceNormal": {
+        "x": 5.96046377E-08,
+        "y": 1.0,
+        "z": -2.980232E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-002012305-3e8534d5",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": 286.291565,
+        "y": 22.8952084,
+        "z": -517.627441
+      },
+      "rotationEuler": {
+        "x": 0.0,
+        "y": 25.0619431,
+        "z": 0.0
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-002019772-c39fe1e1",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": 287.265564,
+        "y": 23.9653263,
+        "z": -517.5353
+      },
+      "rotationEuler": {
+        "x": 1.78559048E-06,
+        "y": 152.196,
+        "z": 4.63673459E-05
+      },
+      "surfaceNormal": {
+        "x": 7.24853464E-07,
+        "y": 1.0,
+        "z": 3.60371757E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-woods-20260827-002023401-010140b0",
+      "mapId": "Woods",
+      "semanticTag": "",
+      "position": {
+        "x": 286.012115,
+        "y": 23.6556816,
+        "z": -517.4758
+      },
+      "rotationEuler": {
+        "x": 1.95816233E-06,
+        "y": 195.918625,
+        "z": -9.34105337E-05
+      },
+      "surfaceNormal": {
+        "x": -1.57952275E-06,
+        "y": 1.0,
+        "z": 4.06056557E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002349419-fa7350ff",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": -42.5761261,
+        "y": 19.4047,
+        "z": 168.145935
+      },
+      "rotationEuler": {
+        "x": 3.60058016E-06,
+        "y": 246.863281,
+        "z": 2.29201561E-07
+      },
+      "surfaceNormal": {
+        "x": -6.582315E-08,
+        "y": 1.0,
+        "z": -3.247603E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002455872-158b97ec",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": -62.8785,
+        "y": 3.05835581,
+        "z": 9.832072
+      },
+      "rotationEuler": {
+        "x": 3.03302622E-05,
+        "y": 192.846,
+        "z": 2.90075222E-05
+      },
+      "surfaceNormal": {
+        "x": 3.746338E-07,
+        "y": 1.0,
+        "z": -6.342771E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002539413-9924687f",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": -48.4947929,
+        "y": -6.33539,
+        "z": -6.118699
+      },
+      "rotationEuler": {
+        "x": 1.663654E-05,
+        "y": 118.431168,
+        "z": 7.844662E-05
+      },
+      "surfaceNormal": {
+        "x": 8.940697E-07,
+        "y": 1.0,
+        "z": 1.07288361E-06
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002608598-0a65f10d",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": 21.436491,
+        "y": -0.08383133,
+        "z": -14.7715359
+      },
+      "rotationEuler": {
+        "x": 4.39235373E-06,
+        "y": 101.405426,
+        "z": -1.21431253E-06
+      },
+      "surfaceNormal": {
+        "x": 7.173498E-08,
+        "y": 1.0,
+        "z": -3.60920751E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002624331-22e0b852",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": 80.36785,
+        "y": -6.319872,
+        "z": -36.04091
+      },
+      "rotationEuler": {
+        "x": -4.13031967E-06,
+        "y": 345.749542,
+        "z": 1.20316818E-05
+      },
+      "surfaceNormal": {
+        "x": -1.7881392E-07,
+        "y": 1.0,
+        "z": -1.490116E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002650060-7a8fa4c7",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": 60.670887,
+        "y": -4.36901331,
+        "z": -107.650887
+      },
+      "rotationEuler": {
+        "x": -5.809794E-05,
+        "y": 8.87746048,
+        "z": -7.27230372E-06
+      },
+      "surfaceNormal": {
+        "x": -2.98023224E-08,
+        "y": 1.0,
+        "z": -1.013279E-06
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002805763-228d55db",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": -42.4555664,
+        "y": -13.9161758,
+        "z": 133.338654
+      },
+      "rotationEuler": {
+        "x": -9.351982E-06,
+        "y": 82.32561,
+        "z": -1.26258974E-05
+      },
+      "surfaceNormal": {
+        "x": -1.1920929E-07,
+        "y": 1.0,
+        "z": -2.38418579E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002810538-c2b8904c",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": -47.104744,
+        "y": -13.6694241,
+        "z": 130.746155
+      },
+      "rotationEuler": {
+        "x": -1.84204862E-06,
+        "y": 259.099823,
+        "z": 1.15155781E-05
+      },
+      "surfaceNormal": {
+        "x": 6.91223647E-08,
+        "y": 1.0,
+        "z": -1.91366439E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-rezervbase-20260827-002811568-983b026a",
+      "mapId": "RezervBase",
+      "semanticTag": "",
+      "position": {
+        "x": -47.5274124,
+        "y": -13.672204,
+        "z": 129.966141
+      },
+      "rotationEuler": {
+        "x": 1.59253068E-05,
+        "y": 240.859131,
+        "z": 3.175377E-05
+      },
+      "surfaceNormal": {
+        "x": 3.07032444E-08,
+        "y": 1.0,
+        "z": -6.174044E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003105462-4e4b14cb",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -515.7999,
+        "y": -22.2511139,
+        "z": 235.5869
+      },
+      "rotationEuler": {
+        "x": 2.035555E-13,
+        "y": 252.441055,
+        "z": 6.51195069E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003116547-30883fcb",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -512.253662,
+        "y": -21.4758968,
+        "z": 236.939148
+      },
+      "rotationEuler": {
+        "x": -3.97985059E-06,
+        "y": 302.792084,
+        "z": 5.721265E-06
+      },
+      "surfaceNormal": {
+        "x": 6.59838351E-10,
+        "y": 1.0,
+        "z": -1.19209282E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003216009-f16fd30d",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -598.335449,
+        "y": -28.9427471,
+        "z": -176.064514
+      },
+      "rotationEuler": {
+        "x": 1.922704E-06,
+        "y": 187.280762,
+        "z": 2.91328047E-06
+      },
+      "surfaceNormal": {
+        "x": 4.44116282E-08,
+        "y": 1.0,
+        "z": -5.35999121E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003240953-cc359628",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -629.9327,
+        "y": -26.0695457,
+        "z": -240.4803
+      },
+      "rotationEuler": {
+        "x": 4.20072774E-06,
+        "y": 254.794525,
+        "z": 1.2734291E-05
+      },
+      "surfaceNormal": {
+        "x": -2.98023224E-08,
+        "y": 1.0,
+        "z": -2.38418579E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003243449-839a8fac",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -630.2434,
+        "y": -26.0695477,
+        "z": -241.764969
+      },
+      "rotationEuler": {
+        "x": 1.08836512E-05,
+        "y": 222.434,
+        "z": 7.956947E-06
+      },
+      "surfaceNormal": {
+        "x": -2.98023224E-08,
+        "y": 1.0,
+        "z": -2.38418579E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003328389-7058b9a4",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -553.854065,
+        "y": -31.57785,
+        "z": -128.5145
+      },
+      "rotationEuler": {
+        "x": 0.82764554,
+        "y": 4.113673,
+        "z": 0.7690589
+      },
+      "surfaceNormal": {
+        "x": -0.0123515138,
+        "y": 0.9998057,
+        "z": 0.0153691471
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003410970-f9074ae3",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -251.987732,
+        "y": -2.78501749,
+        "z": -163.717377
+      },
+      "rotationEuler": {
+        "x": -1.27222189E-14,
+        "y": 116.952553,
+        "z": -1.42694731E-07
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -2.793968E-09
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003434337-97a801e3",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -243.403336,
+        "y": 0.363097757,
+        "z": -130.680161
+      },
+      "rotationEuler": {
+        "x": 1.782287E-06,
+        "y": 103.929672,
+        "z": -6.62932644E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003439374-71fd1616",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -243.320953,
+        "y": 0.292274237,
+        "z": -126.769737
+      },
+      "rotationEuler": {
+        "x": 4.07111E-13,
+        "y": 79.50245,
+        "z": -6.71586849E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003516296-6e3c4c01",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -358.9995,
+        "y": 2.86812973,
+        "z": -75.78013
+      },
+      "rotationEuler": {
+        "x": -3.76018556E-06,
+        "y": 296.06958,
+        "z": 9.202939E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.7881392E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003541106-d4350957",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -224.410187,
+        "y": 2.80718541,
+        "z": -103.313828
+      },
+      "rotationEuler": {
+        "x": -8.001661E-05,
+        "y": 201.3049,
+        "z": -8.437615E-06
+      },
+      "surfaceNormal": {
+        "x": 3.64723E-07,
+        "y": 1.0,
+        "z": 1.3405471E-06
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003544881-c0aebf8a",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": -225.103821,
+        "y": 2.86812139,
+        "z": -101.7472
+      },
+      "rotationEuler": {
+        "x": -0.00032467136,
+        "y": 270.004578,
+        "z": 1.2436295E-05
+      },
+      "surfaceNormal": {
+        "x": 5.663372E-06,
+        "y": 1.0,
+        "z": -2.17507463E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003712291-3ee166d8",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": 93.5343,
+        "y": -45.0501022,
+        "z": 108.963448
+      },
+      "rotationEuler": {
+        "x": 330.024628,
+        "y": 161.834442,
+        "z": 358.572235
+      },
+      "surfaceNormal": {
+        "x": -0.179392323,
+        "y": 0.865971148,
+        "z": 0.466810822
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-shoreline-20260827-003714303-402bd2ea",
+      "mapId": "Shoreline",
+      "semanticTag": "",
+      "position": {
+        "x": 93.97,
+        "y": -44.6413231,
+        "z": 112.066048
+      },
+      "rotationEuler": {
+        "x": -1.62142223E-05,
+        "y": 29.7110577,
+        "z": 1.26347559E-05
+      },
+      "surfaceNormal": {
+        "x": -3.2459846E-07,
+        "y": 1.0,
+        "z": -1.23898445E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004124796-776b1804",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": -202.034348,
+        "y": 7.83456039,
+        "z": -101.906319
+      },
+      "rotationEuler": {
+        "x": -1.83638656E-06,
+        "y": 125.943459,
+        "z": 2.77514232E-06
+      },
+      "surfaceNormal": {
+        "x": 3.06073361E-10,
+        "y": 1.0,
+        "z": 5.96046377E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004144860-8751773c",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": -184.853958,
+        "y": 2.59004736,
+        "z": -185.082123
+      },
+      "rotationEuler": {
+        "x": -1.902781E-06,
+        "y": 58.00693,
+        "z": -2.89638342E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -5.96046448E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004229541-982888fc",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": 65.7308044,
+        "y": 8.50056,
+        "z": -63.9131851
+      },
+      "rotationEuler": {
+        "x": -7.26226926E-06,
+        "y": 2.37904024,
+        "z": 1.42255317E-06
+      },
+      "surfaceNormal": {
+        "x": -2.98023224E-08,
+        "y": 1.0,
+        "z": -1.1920929E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004314963-f528cc2c",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": 207.8652,
+        "y": 7.964251,
+        "z": -96.8548
+      },
+      "rotationEuler": {
+        "x": 0.0,
+        "y": 31.4622726,
+        "z": -3.54861845E-06
+      },
+      "surfaceNormal": {
+        "x": 4.04186231E-08,
+        "y": 1.0,
+        "z": -5.260909E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004332913-e70048f0",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": 271.756775,
+        "y": 7.456572,
+        "z": -32.95627
+      },
+      "rotationEuler": {
+        "x": 3.74351725E-06,
+        "y": 37.9536972,
+        "z": 1.33630977E-06
+      },
+      "surfaceNormal": {
+        "x": 1.4850114E-08,
+        "y": 1.0,
+        "z": 5.69610457E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004403440-8dfe0693",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": 183.772537,
+        "y": 5.8435936,
+        "z": 183.657013
+      },
+      "rotationEuler": {
+        "x": 4.234417E-06,
+        "y": 95.85108,
+        "z": 7.091305E-06
+      },
+      "surfaceNormal": {
+        "x": 7.33324939E-08,
+        "y": 1.0,
+        "z": 1.16899905E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004403980-e8dc4bfa",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": 184.552734,
+        "y": 5.8435936,
+        "z": 183.251633
+      },
+      "rotationEuler": {
+        "x": 3.77950732E-06,
+        "y": 102.483849,
+        "z": 6.6044463E-06
+      },
+      "surfaceNormal": {
+        "x": 7.62828662E-08,
+        "y": 1.0,
+        "z": 1.01171686E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004404521-64ea0878",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": 183.960159,
+        "y": 5.8435936,
+        "z": 182.996948
+      },
+      "rotationEuler": {
+        "x": -4.07111E-13,
+        "y": 112.075951,
+        "z": 7.01439149E-06
+      },
+      "surfaceNormal": {
+        "x": 7.62828662E-08,
+        "y": 1.0,
+        "z": 1.01171686E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-bigmap-20260827-004441931-c4e69ba7",
+      "mapId": "bigmap",
+      "semanticTag": "",
+      "position": {
+        "x": 413.178925,
+        "y": 2.01307225,
+        "z": 41.1817856
+      },
+      "rotationEuler": {
+        "x": 1.79089147E-06,
+        "y": 11.5590019,
+        "z": 3.687986E-06
+      },
+      "surfaceNormal": {
+        "x": -5.96046448E-08,
+        "y": 1.0,
+        "z": 2.98023224E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-084230333-6d114303",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": -47.8428841,
+        "y": 21.5459023,
+        "z": 46.89689
+      },
+      "rotationEuler": {
+        "x": 7.97160646E-06,
+        "y": 182.779633,
+        "z": 3.31228961E-07
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-084306901-c75e29ca",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": -25.5790329,
+        "y": 27.9570084,
+        "z": -10.2141562
+      },
+      "rotationEuler": {
+        "x": 7.256735E-06,
+        "y": 36.5242958,
+        "z": -1.03945031E-05
+      },
+      "surfaceNormal": {
+        "x": 2.21745054E-07,
+        "y": 1.0,
+        "z": -5.41526424E-09
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-084309359-7058c33f",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": -27.17387,
+        "y": 27.9570084,
+        "z": -10.2968845
+      },
+      "rotationEuler": {
+        "x": -3.820719E-06,
+        "y": 344.7148,
+        "z": -1.22185065E-05
+      },
+      "surfaceNormal": {
+        "x": 2.2179546E-07,
+        "y": 1.0,
+        "z": -2.641636E-09
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-084806264-f41618ab",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": 60.9239349,
+        "y": 27.8504181,
+        "z": -32.46598
+      },
+      "rotationEuler": {
+        "x": 8.095839E-06,
+        "y": 59.6609573,
+        "z": 1.17988E-05
+      },
+      "surfaceNormal": {
+        "x": 2.98020222E-08,
+        "y": 1.0,
+        "z": 2.56046548E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-084917791-f9d0bfeb",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": 70.7568054,
+        "y": 37.6017952,
+        "z": 39.4938774
+      },
+      "rotationEuler": {
+        "x": 7.374618E-06,
+        "y": 197.883728,
+        "z": 2.09745735E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209282E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-084952050-fb9f1f28",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": 93.7857361,
+        "y": 37.5730247,
+        "z": 34.9647064
+      },
+      "rotationEuler": {
+        "x": 5.362046E-06,
+        "y": 219.846985,
+        "z": 4.376373E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-085016840-9ccc5d06",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": 72.12122,
+        "y": 27.9640083,
+        "z": 41.84588
+      },
+      "rotationEuler": {
+        "x": 1.73334447E-05,
+        "y": 163.044861,
+        "z": -4.47214961E-06
+      },
+      "surfaceNormal": {
+        "x": 1.27534774E-08,
+        "y": 1.0,
+        "z": -3.09484818E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-085024021-a8b8edfd",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": 52.5615158,
+        "y": 27.9591465,
+        "z": 41.93137
+      },
+      "rotationEuler": {
+        "x": 5.869707E-06,
+        "y": 198.7122,
+        "z": 3.57553085E-06
+      },
+      "surfaceNormal": {
+        "x": 2.550902E-08,
+        "y": 1.0,
+        "z": -1.19209417E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-085054697-9932fbc3",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": 29.6155376,
+        "y": 28.1525154,
+        "z": 64.2159
+      },
+      "rotationEuler": {
+        "x": 5.57975864E-06,
+        "y": 136.116516,
+        "z": -4.50306652E-06
+      },
+      "surfaceNormal": {
+        "x": 1.35703155E-08,
+        "y": 1.0,
+        "z": -1.27488363E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-interchange-20260827-085118469-8eb7d1a8",
+      "mapId": "Interchange",
+      "semanticTag": "",
+      "position": {
+        "x": 40.90226,
+        "y": 27.95209,
+        "z": 147.960419
+      },
+      "rotationEuler": {
+        "x": -4.418813E-06,
+        "y": 136.922714,
+        "z": -6.23624373E-06
+      },
+      "surfaceNormal": {
+        "x": -1.49011584E-07,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-085734177-891f7bfb",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": -110.188034,
+        "y": 1.69932139,
+        "z": -26.84576
+      },
+      "rotationEuler": {
+        "x": 8.118874E-06,
+        "y": 328.376434,
+        "z": -5.260055E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 1.7508863E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-085746604-a70438b0",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": -89.7273941,
+        "y": 1.1218679,
+        "z": -25.7036057
+      },
+      "rotationEuler": {
+        "x": 4.07111E-13,
+        "y": 282.851624,
+        "z": 6.65908874E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209282E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-090511990-1fee581c",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": -187.0557,
+        "y": 9.065635,
+        "z": 393.897919
+      },
+      "rotationEuler": {
+        "x": 4.41372252,
+        "y": 119.072083,
+        "z": 1.78526247
+      },
+      "surfaceNormal": {
+        "x": 0.08236708,
+        "y": 0.996550441,
+        "z": -0.0101478035
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-090542382-266d00ad",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": -175.645721,
+        "y": 15.1307783,
+        "z": 400.35318
+      },
+      "rotationEuler": {
+        "x": 0.0,
+        "y": 296.1715,
+        "z": -1.084149E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 2.10834958E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-090621840-4495b159",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": -64.48015,
+        "y": 3.58233023,
+        "z": 455.519073
+      },
+      "rotationEuler": {
+        "x": 5.68296537E-06,
+        "y": 52.4258461,
+        "z": -1.18504822E-05
+      },
+      "surfaceNormal": {
+        "x": 1.98428253E-07,
+        "y": 1.0,
+        "z": -1.08295E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-090630392-4c81f1e6",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": -51.4712219,
+        "y": 3.15230918,
+        "z": 462.294556
+      },
+      "rotationEuler": {
+        "x": 5.91873468E-05,
+        "y": 50.156723,
+        "z": 0.00147422636
+      },
+      "surfaceNormal": {
+        "x": -1.569646E-05,
+        "y": 1.0,
+        "z": 2.04135758E-05
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-090643995-7dd68ba2",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": -46.1475449,
+        "y": 6.87165833,
+        "z": 452.843323
+      },
+      "rotationEuler": {
+        "x": 9.788012E-06,
+        "y": 160.370224,
+        "z": 4.46180138E-06
+      },
+      "surfaceNormal": {
+        "x": 1.25196465E-07,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-090739173-9e8f614e",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": 44.3173065,
+        "y": 4.05759335,
+        "z": 398.031677
+      },
+      "rotationEuler": {
+        "x": -5.08888755E-14,
+        "y": 156.883362,
+        "z": -3.30205216E-06
+      },
+      "surfaceNormal": {
+        "x": -4.780413E-08,
+        "y": 1.0,
+        "z": -3.480825E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-090851835-6414a949",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": 8.213729,
+        "y": 4.09317541,
+        "z": 217.345932
+      },
+      "rotationEuler": {
+        "x": 355.1041,
+        "y": 355.112579,
+        "z": 356.438354
+      },
+      "surfaceNormal": {
+        "x": 0.0691535845,
+        "y": 0.994427,
+        "z": -0.0795783848
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-090935251-cab22384",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": 47.8093643,
+        "y": 6.57013273,
+        "z": 155.6776
+      },
+      "rotationEuler": {
+        "x": 359.93988,
+        "y": 81.92098,
+        "z": 0.008508232
+      },
+      "surfaceNormal": {
+        "x": -0.00105960271,
+        "y": 0.999999464,
+        "z": -4.2270193E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-091013560-f0385554",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": 79.3364639,
+        "y": 1.63855994,
+        "z": 141.180557
+      },
+      "rotationEuler": {
+        "x": 8.093757E-06,
+        "y": 136.286942,
+        "z": -1.9396366E-05
+      },
+      "surfaceNormal": {
+        "x": -1.26440654E-07,
+        "y": 1.0,
+        "z": -3.576281E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-091020999-fb392df3",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": 76.85067,
+        "y": 1.6385597,
+        "z": 131.5387
+      },
+      "rotationEuler": {
+        "x": 5.52385063E-05,
+        "y": 305.530518,
+        "z": 1.3094198E-05
+      },
+      "surfaceNormal": {
+        "x": -8.940697E-07,
+        "y": 1.0,
+        "z": 3.57627869E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-091112986-ef5018c6",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": 171.569992,
+        "y": 1.74636,
+        "z": 164.88446
+      },
+      "rotationEuler": {
+        "x": 350.5237,
+        "y": 59.27499,
+        "z": 352.2171
+      },
+      "surfaceNormal": {
+        "x": -0.0710366741,
+        "y": 0.977267861,
+        "z": -0.199752986
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-tarkovstreets-20260827-091119165-6334fc78",
+      "mapId": "TarkovStreets",
+      "semanticTag": "",
+      "position": {
+        "x": 171.859528,
+        "y": 1.46906507,
+        "z": 163.104828
+      },
+      "rotationEuler": {
+        "x": 3.97380745E-06,
+        "y": 146.822815,
+        "z": 6.04097768E-05
+      },
+      "surfaceNormal": {
+        "x": 9.089707E-07,
+        "y": 1.0,
+        "z": 5.36441746E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-sandbox-high-20260827-091436718-bea1122b",
+      "mapId": "Sandbox_high",
+      "semanticTag": "",
+      "position": {
+        "x": 101.01638,
+        "y": 23.642,
+        "z": 220.902969
+      },
+      "rotationEuler": {
+        "x": 1.16985138E-05,
+        "y": 176.345566,
+        "z": -1.26903833E-05
+      },
+      "surfaceNormal": {
+        "x": -2.08616228E-07,
+        "y": 1.0,
+        "z": -2.08616228E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-sandbox-high-20260827-091503180-c552590f",
+      "mapId": "Sandbox_high",
+      "semanticTag": "",
+      "position": {
+        "x": 56.982254,
+        "y": 24.3742828,
+        "z": 149.9882
+      },
+      "rotationEuler": {
+        "x": 1.88663887E-06,
+        "y": 255.085114,
+        "z": 6.60007527E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.1920929E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-sandbox-high-20260827-091547328-a467898b",
+      "mapId": "Sandbox_high",
+      "semanticTag": "",
+      "position": {
+        "x": 119.122238,
+        "y": 29.84289,
+        "z": 149.952
+      },
+      "rotationEuler": {
+        "x": -7.462343E-06,
+        "y": 24.5409145,
+        "z": -1.60396235E-06
+      },
+      "surfaceNormal": {
+        "x": -2.607703E-08,
+        "y": 1.0,
+        "z": -1.24513463E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-sandbox-high-20260827-091650224-a805c964",
+      "mapId": "Sandbox_high",
+      "semanticTag": "",
+      "position": {
+        "x": 187.187988,
+        "y": 23.5315762,
+        "z": 102.246819
+      },
+      "rotationEuler": {
+        "x": 4.07111E-13,
+        "y": 74.46387,
+        "z": -6.580627E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.192093E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-sandbox-high-20260827-091740618-3472c7bf",
+      "mapId": "Sandbox_high",
+      "semanticTag": "",
+      "position": {
+        "x": 147.421082,
+        "y": 17.3698463,
+        "z": -10.6353445
+      },
+      "rotationEuler": {
+        "x": 3.81666575E-14,
+        "y": 242.321182,
+        "z": 3.780362E-07
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -7.450581E-09
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-sandbox-high-20260827-091827065-09e66c87",
+      "mapId": "Sandbox_high",
+      "semanticTag": "",
+      "position": {
+        "x": 21.8406,
+        "y": 23.8278255,
+        "z": -49.4629555
+      },
+      "rotationEuler": {
+        "x": 5.4895213E-06,
+        "y": 152.3978,
+        "z": -3.07995356E-06
+      },
+      "surfaceNormal": {
+        "x": 1.66776581E-09,
+        "y": 1.0,
+        "z": -1.192093E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-sandbox-high-20260827-091859130-57a44884",
+      "mapId": "Sandbox_high",
+      "semanticTag": "",
+      "position": {
+        "x": -31.4216022,
+        "y": 24.9222488,
+        "z": 32.8525848
+      },
+      "rotationEuler": {
+        "x": 2.035555E-13,
+        "y": 93.31654,
+        "z": -4.41225666E-06
+      },
+      "surfaceNormal": {
+        "x": 2.35682016E-08,
+        "y": 1.0,
+        "z": -7.850336E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-092658273-bc2a313e",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -126.98246,
+        "y": 0.59364754,
+        "z": -362.72522
+      },
+      "rotationEuler": {
+        "x": 8.423947E-06,
+        "y": 186.367081,
+        "z": 7.57454131E-07
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-092743919-977158ab",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -133.1609,
+        "y": 0.86571455,
+        "z": -399.7142
+      },
+      "rotationEuler": {
+        "x": 3.92369338E-06,
+        "y": 285.296783,
+        "z": 7.193444E-05
+      },
+      "surfaceNormal": {
+        "x": -4.00399983E-07,
+        "y": 1.0,
+        "z": -1.19209278E-06
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-092843213-1abe5323",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -119.619652,
+        "y": 0.88673234,
+        "z": -445.0945
+      },
+      "rotationEuler": {
+        "x": 1.16555648E-05,
+        "y": 200.2185,
+        "z": -1.670316E-06
+      },
+      "surfaceNormal": {
+        "x": -9.93418752E-08,
+        "y": 1.0,
+        "z": -1.853814E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-092946248-3bcd42c2",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -171.920517,
+        "y": 1.2806443,
+        "z": -374.4176
+      },
+      "rotationEuler": {
+        "x": 2.641849E-06,
+        "y": 178.227753,
+        "z": -7.261212E-08
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -4.09781933E-08
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-092956467-b425683d",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -167.907883,
+        "y": 1.0229845,
+        "z": -359.243439
+      },
+      "rotationEuler": {
+        "x": 1.66587488E-05,
+        "y": 155.90947,
+        "z": 9.683896E-06
+      },
+      "surfaceNormal": {
+        "x": 2.82683459E-07,
+        "y": 1.0,
+        "z": -2.18154668E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-093152379-94a5def6",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -121.732658,
+        "y": 5.01584864,
+        "z": -361.3236
+      },
+      "rotationEuler": {
+        "x": 1.62802044E-05,
+        "y": 121.597862,
+        "z": -2.218318E-05
+      },
+      "surfaceNormal": {
+        "x": 9.106388E-09,
+        "y": 1.0,
+        "z": -4.601613E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-093210122-70107c54",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -139.54657,
+        "y": 5.023744,
+        "z": -367.7534
+      },
+      "rotationEuler": {
+        "x": -3.93426353E-06,
+        "y": 275.854126,
+        "z": 3.914506E-05
+      },
+      "surfaceNormal": {
+        "x": -1.30717446E-08,
+        "y": 1.0,
+        "z": -6.85451653E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-093354656-871312fc",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -252.5125,
+        "y": 4.965638,
+        "z": -322.497772
+      },
+      "rotationEuler": {
+        "x": 6.106665E-13,
+        "y": 102.42688,
+        "z": -6.67016775E-06
+      },
+      "surfaceNormal": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": -1.19209275E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    },
+    {
+      "id": "curated-laboratory-20260827-093410107-de0e13e0",
+      "mapId": "laboratory",
+      "semanticTag": "",
+      "position": {
+        "x": -266.5375,
+        "y": 4.963659,
+        "z": -316.8305
+      },
+      "rotationEuler": {
+        "x": -8.517562E-06,
+        "y": 6.577571,
+        "z": 9.1392144E-07
+      },
+      "surfaceNormal": {
+        "x": -2.98023224E-08,
+        "y": 1.0,
+        "z": -1.1920929E-07
+      },
+      "source": "Curated",
+      "enabled": true
+    }
+  ]
+}

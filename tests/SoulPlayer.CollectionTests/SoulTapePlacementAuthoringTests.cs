@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using SoulPlayer.Cassettes;
 using Xunit;
@@ -167,6 +168,192 @@ namespace SoulPlayer.CollectionTests
                 new[] { existing },
                 otherMap,
                 SoulTapeSpawnAnchorStore.DuplicateDistanceMetres));
+        }
+
+        [Fact]
+        [Trait("Validation", "PlacementAuthoring")]
+        public void PlacementToolsTogglePlayerBasedNoclip()
+        {
+            string repositoryRoot = FindRepositoryRoot();
+            string marker = File.ReadAllText(Path.Combine(
+                repositoryRoot,
+                "World",
+                "DevelopmentSoulTapeSpawnMarker.cs")).Replace("\r\n", "\n");
+            string plugin = File.ReadAllText(Path.Combine(repositoryRoot, "Plugin.cs"));
+            string documentation = File.ReadAllText(Path.Combine(
+                repositoryRoot,
+                "docs",
+                "SOULTAPE-AUTHORING.md"));
+
+            Assert.Contains("KeyCode.F8", marker);
+            Assert.Contains("KeyCode.LeftControl", marker);
+            Assert.Contains("KeyCode.LeftShift", marker);
+            Assert.Contains("TryEnableNoclip();", marker);
+            Assert.Contains("DisableNoclip(\"author toggle\", true);", marker);
+            Assert.Contains("SoulPlayer Noclip: ON", marker);
+            Assert.Contains("SoulPlayer Noclip: OFF", marker);
+            Assert.DoesNotContain("SoulPlayer Authoring Freecam", marker);
+            Assert.DoesNotContain("GamePlayerOwner.SetIgnoreInput", marker);
+            Assert.Contains("SoulPlayer Hybrid Authoring Camera", marker);
+
+            Assert.Contains("hybrid player/camera authoring noclip", plugin);
+            Assert.Contains("Ctrl+Shift+F8", documentation);
+            Assert.Contains("Hybrid", documentation);
+        }
+
+        [Fact]
+        [Trait("Validation", "PlacementAuthoring")]
+        public void PlayerNoclipAccumulatesHorizontalMovementAndTeleportsAtFixedRate()
+        {
+            string marker = ReadRepositoryFile(
+                "World",
+                "DevelopmentSoulTapeSpawnMarker.cs");
+
+            Assert.Contains("private void UpdateMovementTarget()", marker);
+            Assert.Contains("gameplayCamera.transform.forward", marker);
+            Assert.Contains("gameplayCamera.transform.right", marker);
+            Assert.Contains("ShiftHeld()", marker);
+            Assert.Contains("forward.y = 0f", marker);
+            Assert.Contains("right.y = 0f", marker);
+            Assert.Contains("_movementTarget.x += horizontalStep.x", marker);
+            Assert.Contains("_movementTarget.z += horizontalStep.z", marker);
+            Assert.Contains("Time.unscaledDeltaTime", marker);
+            Assert.Contains("private void FixedUpdate()", marker);
+            Assert.Contains("MoveTowardsHorizontal", marker);
+            Assert.Contains("_authoringPlayer.Teleport(next, false);", marker);
+            Assert.Contains("_movementTargetDirty", marker);
+            Assert.DoesNotContain("_authoringPlayer.transform.position =", marker);
+            Assert.DoesNotContain("UpdatePlayerFlight", marker);
+        }
+
+        [Fact]
+        [Trait("Validation", "PlacementAuthoring")]
+        public void SpaceAndControlChangeOnlyClampedAuthoringCameraHeight()
+        {
+            string marker = ReadRepositoryFile(
+                "World",
+                "DevelopmentSoulTapeSpawnMarker.cs");
+
+            Assert.Contains("KeyCode.Space", marker);
+            Assert.Contains("ControlHeld()", marker);
+            Assert.Contains("_verticalCameraOffset + verticalDirection * speed", marker);
+            Assert.Contains("ClampVerticalCameraOffset", marker);
+            Assert.Contains("MaximumVerticalCameraOffset = 25f", marker);
+            Assert.Contains("Vector3.up * _verticalCameraOffset", marker);
+            Assert.DoesNotContain("_movementTarget.y +=", marker);
+        }
+
+        [Fact]
+        [Trait("Validation", "PlacementAuthoring")]
+        public void PlayerNoclipRestoresMovementCollisionAndProtection()
+        {
+            string marker = ReadRepositoryFile(
+                "World",
+                "DevelopmentSoulTapeSpawnMarker.cs");
+
+            Assert.Contains("_originalIgnoreDeltaMovement = _movementContext.IgnoreDeltaMovement", marker);
+            Assert.Contains("_movementContext.IgnoreDeltaMovement = true", marker);
+            Assert.Contains("_movementContext.IgnoreDeltaMovement = _originalIgnoreDeltaMovement", marker);
+            Assert.Contains("GetComponentsInChildren<Collider>(true)", marker);
+            Assert.Contains("collider.isTrigger || !collider.enabled", marker);
+            Assert.Contains("state.Collider.enabled = state.WasEnabled", marker);
+            Assert.Contains("_authoringPlayer.Teleport(_safeEntryPosition, false);", marker);
+
+            Assert.Contains("_originalDamageCoefficient = _healthController.DamageCoeff", marker);
+            Assert.Contains("_originalFallSafeHeight = _healthController.FallSafeHeight", marker);
+            Assert.Contains("_healthController.SetDamageCoeff(0f)", marker);
+            Assert.Contains("_healthController.FallSafeHeight = float.MaxValue", marker);
+            Assert.Contains("_healthController.SetDamageCoeff(_originalDamageCoefficient)", marker);
+            Assert.Contains("_healthController.FallSafeHeight = _originalFallSafeHeight", marker);
+            Assert.DoesNotContain("RestoreFullHealth", marker);
+            Assert.DoesNotContain("MaintainAuthorProtection", marker);
+            Assert.Equal(
+                1,
+                marker.Split(
+                    new[] { "ApplyAuthorProtection();" },
+                    StringSplitOptions.None).Length - 1);
+            Assert.Equal(
+                1,
+                marker.Split(
+                    new[] { "GetComponentsInChildren<Collider>(true)" },
+                    StringSplitOptions.None).Length - 1);
+
+            Assert.Contains("OnIPlayerDeadOrUnspawn", marker);
+            Assert.Contains("SceneManager.activeSceneChanged", marker);
+            Assert.Contains("internal void Shutdown(string reason)", marker);
+            Assert.Contains("OnApplicationQuit", marker);
+            Assert.Contains("DisableNoclip(\"component destroyed\", true)", marker);
+        }
+
+        [Fact]
+        [Trait("Validation", "PlacementAuthoring")]
+        public void PlayerNoclipLeavesTriggerCollidersEnabled()
+        {
+            string marker = ReadRepositoryFile(
+                "World",
+                "DevelopmentSoulTapeSpawnMarker.cs");
+
+            Assert.Contains(
+                "collider == null || collider.isTrigger || !collider.enabled",
+                marker);
+            Assert.Contains("collider.enabled = false;", marker);
+            Assert.Contains("state.Collider.enabled = state.WasEnabled", marker);
+        }
+
+        [Fact]
+        [Trait("Validation", "PlacementAuthoring")]
+        public void F9UsesOffsetCameraWithNoclipAndGameplayCameraWithoutIt()
+        {
+            string repositoryRoot = FindRepositoryRoot();
+            string marker = ReadRepositoryFile(
+                "World",
+                "DevelopmentSoulTapeSpawnMarker.cs");
+            string documentation = File.ReadAllText(Path.Combine(
+                repositoryRoot,
+                "docs",
+                "SOULTAPE-AUTHORING.md"));
+
+            Assert.Contains("new KeyboardShortcut(KeyCode.F9)", marker);
+            Assert.Contains("CaptureAndSaveAnchor();", marker);
+            Assert.Contains("Camera main = Camera.main", marker);
+            Assert.Contains("ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f))", marker);
+            Assert.Contains("if (_noclipEnabled)", marker);
+            Assert.Contains("SyncAuthoringCamera()", marker);
+            Assert.Contains("camera = _authoringCamera", marker);
+            Assert.Contains("ray = _authoringCamera.ViewportPointToRay", marker);
+            Assert.Contains("return TryGetGameplayScreenCenterRay(out camera, out ray);", marker);
+            Assert.Contains("if (rayCamera == _authoringCamera)", marker);
+            Assert.Contains("viewModelCamera = originalGameplayCamera", marker);
+            Assert.Contains("QueryTriggerInteraction.Ignore", marker);
+            Assert.Contains("Physics.RaycastAll(", marker);
+            Assert.Contains("QueryTriggerInteraction.Collide", marker);
+            Assert.Contains(
+                "RejectWithoutPreview(\"No valid world surface is currently targeted.\")",
+                marker);
+            Assert.Contains("_preview = null;\n            SetGhostVisible(false);", marker);
+            Assert.Contains("SavePreview(mapId);\n            ShowSolvedGhost();", marker);
+            Assert.Contains("FeedbackDurationSeconds = 2f", marker);
+            Assert.Contains("Cassette anchor rotation degrees", marker);
+            Assert.Contains("Cassette anchor surface offset", marker);
+            Assert.Contains("Press **F9**", documentation);
+            Assert.Contains("normal Tarkov movement", documentation);
+            Assert.Contains("F9 works in both modes", documentation);
+            Assert.Contains("gameplay camera", documentation);
+        }
+
+        [Fact]
+        [Trait("Validation", "PlacementAuthoring")]
+        public void HybridNoclipCleanupRestoresNormalCamera()
+        {
+            string marker = ReadRepositoryFile(
+                "World",
+                "DevelopmentSoulTapeSpawnMarker.cs");
+
+            Assert.Contains("_authoringCamera.CopyFrom(gameplayCamera)", marker);
+            Assert.Contains("DestroyAuthoringCamera();", marker);
+            Assert.Contains("_authoringCamera.enabled = false", marker);
+            Assert.Contains("Destroy(_authoringCameraRoot)", marker);
+            Assert.Contains("_verticalCameraOffset = 0f", marker);
         }
 
         [Fact]
@@ -371,6 +558,30 @@ namespace SoulPlayer.CollectionTests
                 "SoulTapeAuthoring-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(folder);
             return folder;
+        }
+
+        private static string ReadRepositoryFile(params string[] relativeParts)
+        {
+            string path = relativeParts.Aggregate(
+                FindRepositoryRoot(),
+                Path.Combine);
+            return File.ReadAllText(path).Replace("\r\n", "\n");
+        }
+
+        private static string FindRepositoryRoot()
+        {
+            DirectoryInfo current = new DirectoryInfo(AppContext.BaseDirectory);
+            while (current != null)
+            {
+                if (File.Exists(Path.Combine(current.FullName, "SoulPlayer.csproj")))
+                {
+                    return current.FullName;
+                }
+                current = current.Parent;
+            }
+
+            throw new DirectoryNotFoundException(
+                "SoulPlayer repository root could not be located from the test output.");
         }
     }
 }

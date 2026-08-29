@@ -62,10 +62,23 @@ namespace SoulPlayer.Library
 
         internal void BeginScan(IEnumerable<string> folders)
         {
-            List<string> roots = folders
-                .Where(Directory.Exists)
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToList();
+            List<string> roots = new List<string>();
+            foreach (string folder in folders ?? Enumerable.Empty<string>())
+            {
+                string normalized = SoulPath.NormalizeConfiguredPath(
+                    folder,
+                    AppDomain.CurrentDomain.BaseDirectory);
+                if (string.IsNullOrWhiteSpace(normalized) || !Directory.Exists(normalized))
+                {
+                    _logInfo("SoulPlayer skipped a missing or inaccessible music folder: " + folder);
+                    continue;
+                }
+
+                if (!roots.Contains(normalized, SoulPath.Comparer))
+                {
+                    roots.Add(normalized);
+                }
+            }
 
             if (IsScanning)
             {
@@ -97,7 +110,8 @@ namespace SoulPlayer.Library
 
                 _logInfo(
                     "SoulPlayer library scan finished: " + result.Tracks.Count +
-                    " tracks, " + result.DuplicateCount + " duplicates ignored.");
+                    " tracks, " + result.DuplicateCount + " duplicates ignored, " +
+                    result.InaccessibleCount + " inaccessible folders skipped.");
 
                 Action changed = Changed;
                 if (changed != null)
@@ -123,7 +137,7 @@ namespace SoulPlayer.Library
             return true;
         }
 
-        private static ScanResult Scan(IReadOnlyList<string> roots)
+        internal static ScanResult Scan(IReadOnlyList<string> roots)
         {
             List<MusicTrack> tracks = new List<MusicTrack>();
             HashSet<string> duplicateKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
