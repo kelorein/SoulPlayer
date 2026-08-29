@@ -1,5 +1,5 @@
-SoulPlayer 0.6.5 for SPT 3.9.8
-================================
+SoulPlayer 0.9.0 for SPT 4.1.x
+==============================
 
 INSTALL OR UPDATE
 1. Close Escape from Tarkov, the SPT Launcher, and the SPT Server.
@@ -10,13 +10,15 @@ INSTALL OR UPDATE
 The final plugin path must be:
 <SPT>\BepInEx\plugins\SoulPlayer\Soulplayer.dll
 
+SoulRecorder now uses a fully two-dimensional screen overlay embedded in Soulplayer.dll.
+The separate soultape_world.bundle contains only SoulPlayer's redistribution-safe CC0 world
+cassette visual. No recorder or hand model is loaded from it. SoulRecorder does not manipulate Tarkov
+hands, weapons, first-person skeletons, or world-space models for its presentation.
+No EFT or Battlestate model, texture, animation, prefab, or AssetBundle file is included.
+
 Your configuration is stored separately under BepInEx\config and is preserved
 when updating the plugin.
 
-IMPORTANT
-SoulPlayer 0.6.5 fixes rhythmic raid-time stutter present in version 0.6.4.
-Do not use an older build.
-
 Source, issues, and release notes:
-https://github.com/kelorein7/soulplayer
+https://github.com/kelorein/SoulPlayer
 

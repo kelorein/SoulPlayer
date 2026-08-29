@@ -1,0 +1,49 @@
+SoulRecorder focused visual pose repair A-C
+All candidates depict the same Contact moment.
+StaticMaster_v1: LOCKED / unchanged
+PhysicalGrip_L3: mechanical contact reference only
+Left fingers: bit-exact StaticMaster_v1 rotations
+Right ring/pinky: bit-exact StaticMaster_v1 rotations
+No animation or runtime integration generated.
+Human visual selection required; no automatic winner.
+
+PoseRepair_A:
+  slot contact: 0.000 mm / 0.0000 deg
+  left finger max delta: 0.0000 deg
+  right finger/distal max delta: 20.41 / 9.60 deg
+  right wrist delta: 66.93 deg
+  thumb/index/middle contact errors: 14.575 / 6.324 / 22.708 mm
+  index-middle tip separation: 6.705 mm
+  right-arm extension: 51.45%
+  viewport recorder/cassette: (0.590, 0.322, 0.367) / (0.556, 0.360, 0.351)
+  viewport wrists L/R: (0.742, 0.277, 0.259) / (0.891, 0.278, 0.220)
+  viewport skinned bounds center: (0.515, 0.341, 0.200)
+  warnings: right wrist differs from StaticMaster_v1 by more than 55 degrees
+
+PoseRepair_B:
+  slot contact: 0.000 mm / 0.0000 deg
+  left finger max delta: 0.0000 deg
+  right finger/distal max delta: 27.22 / 12.81 deg
+  right wrist delta: 66.74 deg
+  thumb/index/middle contact errors: 12.224 / 3.471 / 23.670 mm
+  index-middle tip separation: 5.496 mm
+  right-arm extension: 53.68%
+  viewport recorder/cassette: (0.562, 0.340, 0.363) / (0.523, 0.379, 0.349)
+  viewport wrists L/R: (0.696, 0.317, 0.253) / (0.859, 0.313, 0.234)
+  viewport skinned bounds center: (0.515, 0.341, 0.200)
+  warnings: right wrist differs from StaticMaster_v1 by more than 55 degrees; index and middle fingertips are too close
+
+PoseRepair_C:
+  slot contact: 0.000 mm / 0.0000 deg
+  left finger max delta: 0.0000 deg
+  right finger/distal max delta: 34.00 / 16.01 deg
+  right wrist delta: 59.14 deg
+  thumb/index/middle contact errors: 7.403 / 5.804 / 14.679 mm
+  index-middle tip separation: 11.103 mm
+  right-arm extension: 57.84%
+  viewport recorder/cassette: (0.611, 0.309, 0.371) / (0.577, 0.340, 0.353)
+  viewport wrists L/R: (0.773, 0.259, 0.264) / (0.919, 0.273, 0.254)
+  viewport skinned bounds center: (0.515, 0.341, 0.200)
+  warnings: right wrist differs from StaticMaster_v1 by more than 55 degrees
+
+VISUAL APPROVAL: PENDING HUMAN REVIEW

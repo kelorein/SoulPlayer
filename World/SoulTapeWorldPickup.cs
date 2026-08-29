@@ -94,14 +94,6 @@ namespace SoulPlayer.World
             SoulTapeSpawnPlanEntry planned,
             ISoulTapeLog log)
         {
-            Shader shader = SoulPlayerVisualShader.FindOpaque();
-            if (shader == null)
-            {
-                log.Error(
-                    "SoulTape world cassette could not be created because no supported placeholder shader is available.");
-                return null;
-            }
-
             GameObject root = null;
             try
             {
@@ -118,16 +110,29 @@ namespace SoulPlayer.World
                     return null;
                 }
 
-                SoulTapeCassetteVisual visual = SoulTapeCassetteVisual.Create(
-                    root.transform,
-                    shader,
-                    "SoulTape cassette visual");
-                if (visual == null)
+                GameObject packagedVisual;
+                if (Plugin.WorldCassetteVisualAssets != null &&
+                    Plugin.WorldCassetteVisualAssets.TryCreate(
+                        root.transform,
+                        out packagedVisual))
+                {
+                    return pickup;
+                }
+
+                Shader shader = SoulPlayerVisualShader.FindOpaque();
+                SoulTapeCassetteVisual fallback = shader == null
+                    ? null
+                    : SoulTapeCassetteVisual.Create(
+                        root.transform,
+                        shader,
+                        SoulTapeWorldVisualTuning.VisualChildName);
+                if (fallback == null)
                 {
                     Object.Destroy(root);
                     log.Error("SoulTape world cassette visual factory returned no visual.");
                     return null;
                 }
+                SoulTapeWorldVisualTuning.Apply(fallback.transform);
                 return pickup;
             }
             catch (System.Exception ex)

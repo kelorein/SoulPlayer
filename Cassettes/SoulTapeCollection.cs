@@ -13,6 +13,10 @@ namespace SoulPlayer.Cassettes
         private HashSet<string> _unlocked = new HashSet<string>(StringComparer.Ordinal);
         private HashSet<string> _favorites = new HashSet<string>(StringComparer.Ordinal);
         private string _selectedRecorderCassetteId = string.Empty;
+        private Dictionary<string, SoulTapeDiscoveredCassetteMetadata>
+            _discoveredMetadata =
+                new Dictionary<string, SoulTapeDiscoveredCassetteMetadata>(
+                    StringComparer.Ordinal);
         private string _profileId = string.Empty;
         private bool _loaded;
 
@@ -70,6 +74,7 @@ namespace SoulPlayer.Cassettes
                 _unlocked.Clear();
                 _favorites.Clear();
                 _selectedRecorderCassetteId = string.Empty;
+                _discoveredMetadata.Clear();
                 _log.Error(
                     "SoulTape collection load failed for profile " + profileId + ": " +
                     ex.GetBaseException().Message);
@@ -83,6 +88,7 @@ namespace SoulPlayer.Cassettes
                 _unlocked.Clear();
                 _favorites.Clear();
                 _selectedRecorderCassetteId = string.Empty;
+                _discoveredMetadata.Clear();
                 _log.Error(
                     "SoulTape collection is unreadable and was left untouched for profile " +
                     profileId + ": " + result.Error);
@@ -93,11 +99,23 @@ namespace SoulPlayer.Cassettes
             _unlocked = new HashSet<string>(StringComparer.Ordinal);
             _favorites = new HashSet<string>(StringComparer.Ordinal);
             _selectedRecorderCassetteId = string.Empty;
+            _discoveredMetadata =
+                new Dictionary<string, SoulTapeDiscoveredCassetteMetadata>(
+                    StringComparer.Ordinal);
 
             if (result.Data != null)
             {
                 AddValidIds(_unlocked, result.Data.UnlockedCassetteIds);
                 AddValidIds(_favorites, result.Data.FavoriteCassetteIds);
+                foreach (KeyValuePair<string, SoulTapeDiscoveredCassetteMetadata> pair
+                         in result.Data.DiscoveredCassetteMetadata ??
+                            new Dictionary<string, SoulTapeDiscoveredCassetteMetadata>())
+                {
+                    if (_unlocked.Contains(pair.Key) && pair.Value != null)
+                    {
+                        _discoveredMetadata[pair.Key] = CloneMetadata(pair.Value);
+                    }
+                }
                 _favorites.IntersectWith(_unlocked);
                 string selected = (result.Data.SelectedRecorderCassetteId ?? string.Empty).Trim();
                 if (!string.IsNullOrEmpty(selected))
@@ -120,6 +138,7 @@ namespace SoulPlayer.Cassettes
             if (result.Status == SoulTapeLoadStatus.Missing)
             {
                 _unlocked.Add(SoulTapeCatalog.StarterTapeId);
+                CaptureMetadataLocked(SoulTapeCatalog.StarterTapeId);
                 _log.Info(
                     "SoulTape granted starter cassette " + SoulTapeCatalog.StarterTapeId +
                     " to new profile " + profileId + ".");
@@ -129,6 +148,7 @@ namespace SoulPlayer.Cassettes
                     _unlocked.Clear();
                     _favorites.Clear();
                     _selectedRecorderCassetteId = string.Empty;
+                    _discoveredMetadata.Clear();
                     return false;
                 }
             }
@@ -151,7 +171,7 @@ namespace SoulPlayer.Cassettes
 
         internal bool UnlockTape(string id)
         {
-            SoulTapeCatalogEntry ignored;
+            SoulTapeCatalogEntry tape;
             lock (_sync)
             {
                 if (!_loaded)
@@ -160,7 +180,7 @@ namespace SoulPlayer.Cassettes
                     return false;
                 }
 
-                if (!_catalog.TryGetTape(id, out ignored))
+                if (!_catalog.TryGetTape(id, out tape))
                 {
                     _log.Warning("SoulTape unlock rejected unknown cassette ID '" + id + "'.");
                     return false;
@@ -172,9 +192,22 @@ namespace SoulPlayer.Cassettes
                     return false;
                 }
 
+                SoulTapeDiscoveredCassetteMetadata previousMetadata;
+                bool hadMetadata = _discoveredMetadata.TryGetValue(
+                    id, out previousMetadata);
+                CaptureMetadataLocked(tape);
+
                 if (!SaveLocked("unlock " + id))
                 {
                     _unlocked.Remove(id);
+                    if (hadMetadata)
+                    {
+                        _discoveredMetadata[id] = previousMetadata;
+                    }
+                    else
+                    {
+                        _discoveredMetadata.Remove(id);
+                    }
                     return false;
                 }
 
@@ -336,6 +369,81 @@ namespace SoulPlayer.Cassettes
             }
         }
 
+        internal IReadOnlyList<string> GetUnlockedTapeIds()
+        {
+            lock (_sync)
+            {
+                return _loaded
+                    ? _unlocked.OrderBy(id => id, StringComparer.Ordinal).ToList()
+                    : new List<string>();
+            }
+        }
+
+        internal bool RefreshDiscoveredMetadata()
+        {
+            lock (_sync)
+            {
+                if (!_loaded)
+                {
+                    return false;
+                }
+
+                bool changed = false;
+                foreach (string id in _unlocked)
+                {
+                    SoulTapeCatalogEntry tape;
+                    if (!_catalog.TryGetTape(id, out tape) || tape == null)
+                    {
+                        continue;
+                    }
+                    SoulTapeDiscoveredCassetteMetadata existing;
+                    if (_discoveredMetadata.TryGetValue(id, out existing) &&
+                        MetadataMatches(existing, tape))
+                    {
+                        continue;
+                    }
+                    CaptureMetadataLocked(tape);
+                    changed = true;
+                }
+
+                return !changed || SaveLocked("discovery metadata refresh");
+            }
+        }
+
+        internal bool TryResolveHistoricalTape(
+            string id,
+            out SoulTapeCatalogEntry tape)
+        {
+            lock (_sync)
+            {
+                tape = null;
+                if (!_loaded || !_unlocked.Contains(id))
+                {
+                    return false;
+                }
+                if (_catalog.TryGetTape(id, out tape))
+                {
+                    return true;
+                }
+
+                SoulTapeDiscoveredCassetteMetadata metadata;
+                if (!_discoveredMetadata.TryGetValue(id, out metadata) ||
+                    metadata == null)
+                {
+                    return false;
+                }
+                tape = new SoulTapeCatalogEntry(
+                    id,
+                    metadata.Artist,
+                    metadata.Title,
+                    metadata.AudioReference,
+                    metadata.Rarity,
+                    null,
+                    null);
+                return true;
+            }
+        }
+
         private List<SoulTapeCatalogEntry> ResolveLocked(IEnumerable<string> ids)
         {
             List<SoulTapeCatalogEntry> result = new List<SoulTapeCatalogEntry>();
@@ -345,6 +453,22 @@ namespace SoulPlayer.Cassettes
                 if (_catalog.TryGetTape(id, out tape))
                 {
                     result.Add(tape);
+                }
+                else
+                {
+                    SoulTapeDiscoveredCassetteMetadata metadata;
+                    if (_discoveredMetadata.TryGetValue(id, out metadata) &&
+                        metadata != null)
+                    {
+                        result.Add(new SoulTapeCatalogEntry(
+                            id,
+                            metadata.Artist,
+                            metadata.Title,
+                            metadata.AudioReference,
+                            metadata.Rarity,
+                            null,
+                            null));
+                    }
                 }
             }
 
@@ -361,7 +485,14 @@ namespace SoulPlayer.Cassettes
                 ProfileId = _profileId,
                 UnlockedCassetteIds = _unlocked.OrderBy(id => id, StringComparer.Ordinal).ToList(),
                 FavoriteCassetteIds = _favorites.OrderBy(id => id, StringComparer.Ordinal).ToList(),
-                SelectedRecorderCassetteId = _selectedRecorderCassetteId
+                SelectedRecorderCassetteId = _selectedRecorderCassetteId,
+                DiscoveredCassetteMetadata = _discoveredMetadata
+                    .Where(pair => _unlocked.Contains(pair.Key))
+                    .OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                    .ToDictionary(
+                        pair => pair.Key,
+                        pair => CloneMetadata(pair.Value),
+                        StringComparer.Ordinal)
             };
 
             try
@@ -392,6 +523,59 @@ namespace SoulPlayer.Cassettes
                     target.Add(id.Trim());
                 }
             }
+        }
+
+        private void CaptureMetadataLocked(string id)
+        {
+            SoulTapeCatalogEntry tape;
+            if (_catalog.TryGetTape(id, out tape))
+            {
+                CaptureMetadataLocked(tape);
+            }
+        }
+
+        private void CaptureMetadataLocked(SoulTapeCatalogEntry tape)
+        {
+            if (tape == null || string.IsNullOrWhiteSpace(tape.Id))
+            {
+                return;
+            }
+            _discoveredMetadata[tape.Id] =
+                new SoulTapeDiscoveredCassetteMetadata
+                {
+                    Artist = tape.Artist,
+                    Title = tape.Title,
+                    AudioReference = tape.AudioReference,
+                    Rarity = tape.Rarity
+                };
+        }
+
+        private static SoulTapeDiscoveredCassetteMetadata CloneMetadata(
+            SoulTapeDiscoveredCassetteMetadata metadata)
+        {
+            return metadata == null
+                ? new SoulTapeDiscoveredCassetteMetadata()
+                : new SoulTapeDiscoveredCassetteMetadata
+                {
+                    Artist = metadata.Artist ?? string.Empty,
+                    Title = metadata.Title ?? string.Empty,
+                    AudioReference = metadata.AudioReference ?? string.Empty,
+                    Rarity = metadata.Rarity
+                };
+        }
+
+        private static bool MetadataMatches(
+            SoulTapeDiscoveredCassetteMetadata metadata,
+            SoulTapeCatalogEntry tape)
+        {
+            return metadata != null && tape != null &&
+                   string.Equals(metadata.Artist, tape.Artist, StringComparison.Ordinal) &&
+                   string.Equals(metadata.Title, tape.Title, StringComparison.Ordinal) &&
+                   string.Equals(
+                       metadata.AudioReference,
+                       tape.AudioReference,
+                       StringComparison.Ordinal) &&
+                   metadata.Rarity == tape.Rarity;
         }
 
         private void RaiseChanged()

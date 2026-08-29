@@ -22,6 +22,10 @@
     <Compile Remove="SoulTapeSpawnPlannerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="BepInEx">
+      <HintPath>$(SptRoot)\BepInEx\core\BepInEx.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>true</Private>
@@ -36,6 +40,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
       <Private>true</Private>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">

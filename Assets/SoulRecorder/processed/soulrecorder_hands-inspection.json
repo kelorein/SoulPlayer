@@ -1,0 +1,1647 @@
+{
+  "logicalName": "soulrecorder_hands",
+  "preparedWith": "Blender 5.2.0 LTS",
+  "sourceArchiveEntry": "arms_low_poly.blend",
+  "before": {
+    "objects": [
+      {
+        "name": "Arm",
+        "vertices": 265,
+        "polygons": 292,
+        "triangles": 520,
+        "materials": [
+          "Material.001"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.263982,
+          1.467706,
+          0.188605
+        ]
+      },
+      {
+        "name": "WGT-rig_VIS_upper_arm_ik_pole.L",
+        "vertices": 2,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          1.123548,
+          1.123548,
+          1.123548
+        ],
+        "dimensions": [
+          0.0,
+          0.0,
+          1.123548
+        ]
+      },
+      {
+        "name": "WGT-rig_VIS_upper_arm_ik_pole.R",
+        "vertices": 2,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -1.123548,
+          -1.123548,
+          -1.123548
+        ],
+        "dimensions": [
+          0.0,
+          0.0,
+          1.123548
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.01.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.050198,
+          0.050198,
+          0.050198
+        ],
+        "dimensions": [
+          0.030014,
+          0.001301,
+          0.030042
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.01.L.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.027955,
+          0.027955,
+          0.027955
+        ],
+        "dimensions": [
+          0.01671,
+          0.001139,
+          0.016681
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.01.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.050198,
+          -0.050198,
+          -0.050198
+        ],
+        "dimensions": [
+          0.030014,
+          0.001301,
+          0.030042
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.01.R.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.027955,
+          -0.027955,
+          -0.027955
+        ],
+        "dimensions": [
+          0.01671,
+          0.001139,
+          0.016681
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.01_master.L",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.246876,
+          0.246876,
+          0.246876
+        ],
+        "dimensions": [
+          0.024846,
+          0.271836,
+          0.006643
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.01_master.R",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.246876,
+          -0.246876,
+          -0.246876
+        ],
+        "dimensions": [
+          0.024846,
+          0.271836,
+          0.006643
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.02.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.051317,
+          0.051317,
+          0.051317
+        ],
+        "dimensions": [
+          0.030693,
+          0.0025,
+          0.030623
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.02.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.051317,
+          -0.051317,
+          -0.051317
+        ],
+        "dimensions": [
+          0.030693,
+          0.0025,
+          0.030623
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.03.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.055909,
+          0.055909,
+          0.05591
+        ],
+        "dimensions": [
+          0.033447,
+          0.002278,
+          0.033388
+        ]
+      },
+      {
+        "name": "WGT-rig_f_index.03.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.055909,
+          -0.055909,
+          -0.05591
+        ],
+        "dimensions": [
+          0.033447,
+          0.002278,
+          0.033388
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.01.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.061022,
+          0.061022,
+          0.061022
+        ],
+        "dimensions": [
+          0.036446,
+          0.001772,
+          0.036446
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.01.L.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.033308,
+          0.033308,
+          0.033308
+        ],
+        "dimensions": [
+          0.019944,
+          0.0017,
+          0.01988
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.01.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.061022,
+          -0.061022,
+          -0.061022
+        ],
+        "dimensions": [
+          0.036446,
+          0.001772,
+          0.036446
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.01.R.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.033308,
+          -0.033308,
+          -0.033308
+        ],
+        "dimensions": [
+          0.019944,
+          0.0017,
+          0.01988
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.01_master.L",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.288978,
+          0.288978,
+          0.288979
+        ],
+        "dimensions": [
+          0.028646,
+          0.318099,
+          0.015493
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.01_master.R",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.288978,
+          -0.288978,
+          -0.288979
+        ],
+        "dimensions": [
+          0.028646,
+          0.318099,
+          0.015493
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.02.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.054767,
+          0.054767,
+          0.054767
+        ],
+        "dimensions": [
+          0.032714,
+          0.001951,
+          0.032685
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.02.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.054767,
+          -0.054767,
+          -0.054767
+        ],
+        "dimensions": [
+          0.032714,
+          0.001951,
+          0.032685
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.03.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.066616,
+          0.066616,
+          0.066616
+        ],
+        "dimensions": [
+          0.039798,
+          0.0034,
+          0.039672
+        ]
+      },
+      {
+        "name": "WGT-rig_f_middle.03.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.066616,
+          -0.066616,
+          -0.066616
+        ],
+        "dimensions": [
+          0.039798,
+          0.0034,
+          0.039672
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.01.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.04376,
+          0.04376,
+          0.043761
+        ],
+        "dimensions": [
+          0.026175,
+          0.001131,
+          0.026198
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.01.L.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.019564,
+          0.019564,
+          0.019564
+        ],
+        "dimensions": [
+          0.011728,
+          0.001682,
+          0.011613
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.01.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.04376,
+          -0.04376,
+          -0.043761
+        ],
+        "dimensions": [
+          0.026175,
+          0.001131,
+          0.026198
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.01.R.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.019564,
+          -0.019564,
+          -0.019564
+        ],
+        "dimensions": [
+          0.011728,
+          0.001682,
+          0.011613
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.01_master.L",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.194803,
+          0.194803,
+          0.194803
+        ],
+        "dimensions": [
+          0.020246,
+          0.214501,
+          0.002407
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.01_master.R",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.194803,
+          -0.194803,
+          -0.194803
+        ],
+        "dimensions": [
+          0.020246,
+          0.214501,
+          0.002407
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.02.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.038138,
+          0.038138,
+          0.038138
+        ],
+        "dimensions": [
+          0.022804,
+          0.001648,
+          0.0228
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.02.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.038138,
+          -0.038138,
+          -0.038138
+        ],
+        "dimensions": [
+          0.022804,
+          0.001648,
+          0.0228
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.03.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.039128,
+          0.039128,
+          0.039128
+        ],
+        "dimensions": [
+          0.023409,
+          0.003364,
+          0.023188
+        ]
+      },
+      {
+        "name": "WGT-rig_f_pinky.03.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.039128,
+          -0.039128,
+          -0.039128
+        ],
+        "dimensions": [
+          0.023409,
+          0.003364,
+          0.023188
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.01.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.049521,
+          0.049521,
+          0.049522
+        ],
+        "dimensions": [
+          0.029681,
+          0.001347,
+          0.029709
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.01.L.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.026365,
+          0.026365,
+          0.026365
+        ],
+        "dimensions": [
+          0.015813,
+          0.001663,
+          0.015731
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.01.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.049521,
+          -0.049521,
+          -0.049522
+        ],
+        "dimensions": [
+          0.029681,
+          0.001347,
+          0.029709
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.01.R.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.026365,
+          -0.026365,
+          -0.026365
+        ],
+        "dimensions": [
+          0.015813,
+          0.001663,
+          0.015731
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.01_master.L",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.242088,
+          0.242088,
+          0.242088
+        ],
+        "dimensions": [
+          0.024735,
+          0.266526,
+          0.005251
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.01_master.R",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.242088,
+          -0.242088,
+          -0.242088
+        ],
+        "dimensions": [
+          0.024735,
+          0.266526,
+          0.005251
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.02.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.052016,
+          0.052016,
+          0.052016
+        ],
+        "dimensions": [
+          0.031198,
+          0.003173,
+          0.031053
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.02.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.052016,
+          -0.052016,
+          -0.052016
+        ],
+        "dimensions": [
+          0.031198,
+          0.003173,
+          0.031053
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.03.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.052731,
+          0.052731,
+          0.052731
+        ],
+        "dimensions": [
+          0.031629,
+          0.003325,
+          0.031466
+        ]
+      },
+      {
+        "name": "WGT-rig_f_ring.03.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.052731,
+          -0.052731,
+          -0.052731
+        ],
+        "dimensions": [
+          0.031629,
+          0.003325,
+          0.031466
+        ]
+      },
+      {
+        "name": "WGT-rig_forearm_fk.L",
+        "vertices": 34,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.504795,
+          0.504795,
+          0.504795
+        ],
+        "dimensions": [
+          0.251248,
+          0.504112,
+          0.251384
+        ]
+      },
+      {
+        "name": "WGT-rig_forearm_fk.R",
+        "vertices": 34,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.504795,
+          -0.504795,
+          -0.504795
+        ],
+        "dimensions": [
+          0.251248,
+          0.504112,
+          0.251384
+        ]
+      },
+      {
+        "name": "WGT-rig_forearm_tweak.L",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.126199,
+          0.126199,
+          0.126199
+        ],
+        "dimensions": [
+          0.125624,
+          0.126028,
+          0.125692
+        ]
+      },
+      {
+        "name": "WGT-rig_forearm_tweak.L.001",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.126199,
+          0.126199,
+          0.126199
+        ],
+        "dimensions": [
+          0.125624,
+          0.126028,
+          0.125692
+        ]
+      },
+      {
+        "name": "WGT-rig_forearm_tweak.R",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.126199,
+          -0.126199,
+          -0.126199
+        ],
+        "dimensions": [
+          0.125624,
+          0.126028,
+          0.125692
+        ]
+      },
+      {
+        "name": "WGT-rig_forearm_tweak.R.001",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.126199,
+          -0.126199,
+          -0.126199
+        ],
+        "dimensions": [
+          0.125624,
+          0.126028,
+          0.125692
+        ]
+      },
+      {
+        "name": "WGT-rig_hand_fk.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.137128,
+          0.137127,
+          0.137127
+        ],
+        "dimensions": [
+          0.109294,
+          0.007398,
+          0.109051
+        ]
+      },
+      {
+        "name": "WGT-rig_hand_fk.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.137128,
+          -0.137127,
+          -0.137127
+        ],
+        "dimensions": [
+          0.109294,
+          0.007398,
+          0.109051
+        ]
+      },
+      {
+        "name": "WGT-rig_hand_ik.L",
+        "vertices": 8,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.137127,
+          0.137127,
+          0.137128
+        ],
+        "dimensions": [
+          0.171665,
+          0.246281,
+          0.104331
+        ]
+      },
+      {
+        "name": "WGT-rig_hand_ik.R",
+        "vertices": 8,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.137127,
+          -0.137127,
+          -0.137128
+        ],
+        "dimensions": [
+          0.171665,
+          0.246281,
+          0.104331
+        ]
+      },
+      {
+        "name": "WGT-rig_hand_tweak.L",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.034282,
+          0.034282,
+          0.034282
+        ],
+        "dimensions": [
+          0.034154,
+          0.034204,
+          0.034078
+        ]
+      },
+      {
+        "name": "WGT-rig_hand_tweak.R",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.034282,
+          -0.034282,
+          -0.034282
+        ],
+        "dimensions": [
+          0.034154,
+          0.034204,
+          0.034078
+        ]
+      },
+      {
+        "name": "WGT-rig_palm.L",
+        "vertices": 16,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.11788,
+          0.11788,
+          0.11788
+        ],
+        "dimensions": [
+          0.064521,
+          0.128168,
+          0.09409
+        ]
+      },
+      {
+        "name": "WGT-rig_palm.R",
+        "vertices": 16,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.11788,
+          -0.11788,
+          -0.11788
+        ],
+        "dimensions": [
+          0.064521,
+          0.128168,
+          0.09409
+        ]
+      },
+      {
+        "name": "WGT-rig_root",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          1.242784,
+          1.242784,
+          1.242784
+        ],
+        "dimensions": [
+          3.929151,
+          3.92915,
+          0.0
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.01.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.037752,
+          0.037752,
+          0.037752
+        ],
+        "dimensions": [
+          0.019246,
+          0.013825,
+          0.021526
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.01.L.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.033092,
+          0.033092,
+          0.033092
+        ],
+        "dimensions": [
+          0.018837,
+          0.008839,
+          0.018802
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.01.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.037752,
+          -0.037752,
+          -0.037752
+        ],
+        "dimensions": [
+          0.019246,
+          0.013825,
+          0.021526
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.01.R.001",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.033092,
+          -0.033092,
+          -0.033092
+        ],
+        "dimensions": [
+          0.018837,
+          0.008839,
+          0.018802
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.01_master.L",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.251941,
+          0.251941,
+          0.251941
+        ],
+        "dimensions": [
+          0.147995,
+          0.222651,
+          0.098013
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.01_master.R",
+        "vertices": 6,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.251941,
+          -0.251941,
+          -0.251941
+        ],
+        "dimensions": [
+          0.147995,
+          0.22265,
+          0.098013
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.02.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.068577,
+          0.068577,
+          0.068577
+        ],
+        "dimensions": [
+          0.034889,
+          0.025005,
+          0.039244
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.02.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.068577,
+          -0.068577,
+          -0.068577
+        ],
+        "dimensions": [
+          0.034889,
+          0.025005,
+          0.039244
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.03.L",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.066185,
+          0.066185,
+          0.066185
+        ],
+        "dimensions": [
+          0.037684,
+          0.017678,
+          0.037591
+        ]
+      },
+      {
+        "name": "WGT-rig_thumb.03.R",
+        "vertices": 32,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.066185,
+          -0.066185,
+          -0.066185
+        ],
+        "dimensions": [
+          0.037684,
+          0.017678,
+          0.037591
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_fk.L",
+        "vertices": 34,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.620137,
+          0.620136,
+          0.620136
+        ],
+        "dimensions": [
+          0.308597,
+          0.619397,
+          0.308912
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_fk.R",
+        "vertices": 34,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.620137,
+          -0.620136,
+          -0.620136
+        ],
+        "dimensions": [
+          0.308597,
+          0.619397,
+          0.308912
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_ik.L",
+        "vertices": 14,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.620136,
+          0.620136,
+          0.620136
+        ],
+        "dimensions": [
+          0.444028,
+          0.637816,
+          0.391305
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_ik.R",
+        "vertices": 14,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.620136,
+          -0.620136,
+          -0.620136
+        ],
+        "dimensions": [
+          0.444028,
+          0.637816,
+          0.391305
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_ik_target.L",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.140444,
+          0.140444,
+          0.140444
+        ],
+        "dimensions": [
+          0.137241,
+          0.139933,
+          0.126927
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_ik_target.R",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.140444,
+          -0.140444,
+          -0.140444
+        ],
+        "dimensions": [
+          0.137241,
+          0.139933,
+          0.126927
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_parent.L",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.155034,
+          0.155034,
+          0.155034
+        ],
+        "dimensions": [
+          0.355897,
+          0.017263,
+          0.354678
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_parent.R",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.155034,
+          -0.155034,
+          -0.155034
+        ],
+        "dimensions": [
+          0.355897,
+          0.017263,
+          0.354678
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_tweak.L",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.155034,
+          0.155034,
+          0.155034
+        ],
+        "dimensions": [
+          0.154299,
+          0.154849,
+          0.154456
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_tweak.L.001",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          0.155034,
+          0.155034,
+          0.155034
+        ],
+        "dimensions": [
+          0.154299,
+          0.154849,
+          0.154456
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_tweak.R",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.155034,
+          -0.155034,
+          -0.155034
+        ],
+        "dimensions": [
+          0.154299,
+          0.154849,
+          0.154456
+        ]
+      },
+      {
+        "name": "WGT-rig_upper_arm_tweak.R.001",
+        "vertices": 48,
+        "polygons": 0,
+        "triangles": 0,
+        "materials": [],
+        "localScale": [
+          -0.155034,
+          -0.155034,
+          -0.155034
+        ],
+        "dimensions": [
+          0.154299,
+          0.154849,
+          0.154456
+        ]
+      }
+    ],
+    "objectNames": [
+      "Arm",
+      "WGT-rig_VIS_upper_arm_ik_pole.L",
+      "WGT-rig_VIS_upper_arm_ik_pole.R",
+      "WGT-rig_f_index.01.L",
+      "WGT-rig_f_index.01.L.001",
+      "WGT-rig_f_index.01.R",
+      "WGT-rig_f_index.01.R.001",
+      "WGT-rig_f_index.01_master.L",
+      "WGT-rig_f_index.01_master.R",
+      "WGT-rig_f_index.02.L",
+      "WGT-rig_f_index.02.R",
+      "WGT-rig_f_index.03.L",
+      "WGT-rig_f_index.03.R",
+      "WGT-rig_f_middle.01.L",
+      "WGT-rig_f_middle.01.L.001",
+      "WGT-rig_f_middle.01.R",
+      "WGT-rig_f_middle.01.R.001",
+      "WGT-rig_f_middle.01_master.L",
+      "WGT-rig_f_middle.01_master.R",
+      "WGT-rig_f_middle.02.L",
+      "WGT-rig_f_middle.02.R",
+      "WGT-rig_f_middle.03.L",
+      "WGT-rig_f_middle.03.R",
+      "WGT-rig_f_pinky.01.L",
+      "WGT-rig_f_pinky.01.L.001",
+      "WGT-rig_f_pinky.01.R",
+      "WGT-rig_f_pinky.01.R.001",
+      "WGT-rig_f_pinky.01_master.L",
+      "WGT-rig_f_pinky.01_master.R",
+      "WGT-rig_f_pinky.02.L",
+      "WGT-rig_f_pinky.02.R",
+      "WGT-rig_f_pinky.03.L",
+      "WGT-rig_f_pinky.03.R",
+      "WGT-rig_f_ring.01.L",
+      "WGT-rig_f_ring.01.L.001",
+      "WGT-rig_f_ring.01.R",
+      "WGT-rig_f_ring.01.R.001",
+      "WGT-rig_f_ring.01_master.L",
+      "WGT-rig_f_ring.01_master.R",
+      "WGT-rig_f_ring.02.L",
+      "WGT-rig_f_ring.02.R",
+      "WGT-rig_f_ring.03.L",
+      "WGT-rig_f_ring.03.R",
+      "WGT-rig_forearm_fk.L",
+      "WGT-rig_forearm_fk.R",
+      "WGT-rig_forearm_tweak.L",
+      "WGT-rig_forearm_tweak.L.001",
+      "WGT-rig_forearm_tweak.R",
+      "WGT-rig_forearm_tweak.R.001",
+      "WGT-rig_hand_fk.L",
+      "WGT-rig_hand_fk.R",
+      "WGT-rig_hand_ik.L",
+      "WGT-rig_hand_ik.R",
+      "WGT-rig_hand_tweak.L",
+      "WGT-rig_hand_tweak.R",
+      "WGT-rig_palm.L",
+      "WGT-rig_palm.R",
+      "WGT-rig_root",
+      "WGT-rig_thumb.01.L",
+      "WGT-rig_thumb.01.L.001",
+      "WGT-rig_thumb.01.R",
+      "WGT-rig_thumb.01.R.001",
+      "WGT-rig_thumb.01_master.L",
+      "WGT-rig_thumb.01_master.R",
+      "WGT-rig_thumb.02.L",
+      "WGT-rig_thumb.02.R",
+      "WGT-rig_thumb.03.L",
+      "WGT-rig_thumb.03.R",
+      "WGT-rig_upper_arm_fk.L",
+      "WGT-rig_upper_arm_fk.R",
+      "WGT-rig_upper_arm_ik.L",
+      "WGT-rig_upper_arm_ik.R",
+      "WGT-rig_upper_arm_ik_target.L",
+      "WGT-rig_upper_arm_ik_target.R",
+      "WGT-rig_upper_arm_parent.L",
+      "WGT-rig_upper_arm_parent.R",
+      "WGT-rig_upper_arm_tweak.L",
+      "WGT-rig_upper_arm_tweak.L.001",
+      "WGT-rig_upper_arm_tweak.R",
+      "WGT-rig_upper_arm_tweak.R.001"
+    ],
+    "meshObjectCount": 80,
+    "vertexCount": 2605,
+    "polygonCount": 292,
+    "triangleCount": 520,
+    "materialCount": 1,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -1.964575,
+        -1.964575,
+        0.0
+      ],
+      "maximum": [
+        1.964575,
+        1.964575,
+        1.619601
+      ],
+      "dimensions": [
+        3.929151,
+        3.92915,
+        1.619601
+      ]
+    }
+  },
+  "afterCleanup": {
+    "objects": [
+      {
+        "name": "SoulRecorderArms",
+        "vertices": 530,
+        "polygons": 584,
+        "triangles": 1040,
+        "materials": [
+          "SoulRecorder Hands Skin"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.291151,
+          0.396281,
+          0.050923
+        ]
+      }
+    ],
+    "objectNames": [
+      "SoulRecorderArms"
+    ],
+    "meshObjectCount": 1,
+    "vertexCount": 530,
+    "polygonCount": 584,
+    "triangleCount": 1040,
+    "materialCount": 1,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.145575,
+        -0.27772,
+        -0.070678
+      ],
+      "maximum": [
+        0.145575,
+        0.118561,
+        -0.019754
+      ],
+      "dimensions": [
+        0.291151,
+        0.396281,
+        0.050923
+      ]
+    }
+  },
+  "normalization": {
+    "axisMapping": {
+      "sourceX": "screen horizontal",
+      "sourceY": "inverted camera-local vertical",
+      "sourceZ": "camera-local depth"
+    },
+    "appliedScale": [
+      0.27,
+      0.27,
+      0.27
+    ],
+    "holdingPose": "curled Rigify finger controls baked before runtime-rig reduction"
+  },
+  "finalDerived": {
+    "objects": [
+      {
+        "name": "SoulRecorderArms",
+        "vertices": 530,
+        "polygons": 584,
+        "triangles": 1040,
+        "materials": [
+          "SoulRecorder Hands Skin"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.291151,
+          0.396281,
+          0.050923
+        ]
+      }
+    ],
+    "objectNames": [
+      "SoulRecorderArms"
+    ],
+    "meshObjectCount": 1,
+    "vertexCount": 530,
+    "polygonCount": 584,
+    "triangleCount": 1040,
+    "materialCount": 1,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.145575,
+        -0.27772,
+        -0.070678
+      ],
+      "maximum": [
+        0.145575,
+        0.118561,
+        -0.019754
+      ],
+      "dimensions": [
+        0.291151,
+        0.396281,
+        0.050923
+      ]
+    }
+  },
+  "requiredTransforms": {
+    "stage": "Blender FBX",
+    "required": [
+      "SoulRecorderHandsRig",
+      "SoulRecorderHandsRoot",
+      "HoldingHand",
+      "CassetteHand",
+      "SoulRecorderArms"
+    ],
+    "counts": {
+      "SoulRecorderHandsRig": 1,
+      "SoulRecorderHandsRoot": 1,
+      "HoldingHand": 1,
+      "CassetteHand": 1,
+      "SoulRecorderArms": 1
+    },
+    "allUnique": true
+  },
+  "reelPivots": {},
+  "retainedSourceObjects": [
+    {
+      "source": "Arm",
+      "derived": "SoulRecorderArms"
+    },
+    {
+      "source": "rig Rigify deformation",
+      "derived": "baked holding pose"
+    }
+  ],
+  "removedObjects": [
+    "metarig",
+    "Rigify controls",
+    "Rigify widgets"
+  ],
+  "removedSceneHelpers": [],
+  "removedLooseShellVertices": 0,
+  "reelSourceMapping": {},
+  "textureOutputs": [
+    {
+      "name": "soulrecorder_hands_basecolor.png",
+      "relativePath": "textures/soulrecorder_hands_basecolor.png",
+      "source": "Hand Texture.png",
+      "dimensions": [
+        128,
+        128
+      ],
+      "format": "PNG",
+      "sizeBytes": 1876
+    }
+  ],
+  "derivedOutput": "soulrecorder_hands.fbx",
+  "derivedFbxSizeBytes": 52108,
+  "validation": {
+    "passed": true,
+    "errors": [],
+    "warnings": []
+  }
+}

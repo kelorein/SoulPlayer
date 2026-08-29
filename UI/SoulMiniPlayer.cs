@@ -77,6 +77,35 @@ namespace SoulPlayer.UI
             }
         }
 
+        internal static bool TryGetScreenRect(
+            out SoulPlayerVolumeHudRect screenRect)
+        {
+            Instances.RemoveAll(instance => instance == null);
+            foreach (SoulMiniPlayer instance in Instances)
+            {
+                if (!instance.gameObject.activeInHierarchy ||
+                    instance._canvasGroup == null ||
+                    instance._canvasGroup.alpha <= 0.001f)
+                {
+                    continue;
+                }
+
+                Vector3[] corners = new Vector3[4];
+                ((RectTransform)instance.transform).GetWorldCorners(corners);
+                screenRect = new SoulPlayerVolumeHudRect
+                {
+                    X = corners[0].x,
+                    Y = Screen.height - corners[2].y,
+                    Width = corners[2].x - corners[0].x,
+                    Height = corners[2].y - corners[0].y
+                };
+                return screenRect.Width > 0f && screenRect.Height > 0f;
+            }
+
+            screenRect = new SoulPlayerVolumeHudRect();
+            return false;
+        }
+
         private void Awake()
         {
             Instances.Add(this);
@@ -216,7 +245,7 @@ namespace SoulPlayer.UI
 
         private void RefreshContent()
         {
-            MusicTrack track = Plugin.AudioPlayer.CurrentTrack;
+            MusicTrack track = Plugin.AudioPlayer.DisplayTrack;
             string marquee;
             if (track == null)
             {

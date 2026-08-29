@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BepInEx.Configuration;
+using SoulPlayer.Library;
 using UnityEngine;
 
 namespace SoulPlayer.Configuration
 {
+    // Configuration Manager discovers these optional fields by reflection from
+    // ConfigDescription.Tags, so SoulPlayer does not need a hard dependency on
+    // the F12 Configuration Manager assembly.
+    internal sealed class ConfigurationManagerAttributes
+    {
+        public string DispName;
+        public int? Order;
+    }
+
     internal enum LibrarySourceMode
     {
         IncludedOnly = 0,
@@ -19,6 +29,10 @@ namespace SoulPlayer.Configuration
         private readonly ConfigFile _config;
         private readonly ConfigEntry<string> _musicFolders;
         private readonly ConfigEntry<LibrarySourceMode> _librarySourceMode;
+        private readonly ConfigEntry<SoulPlayer.Cassettes.SoulTapeMusicMode>
+            _cassetteMusicMode;
+        private readonly ConfigEntry<SoulPlayer.Cassettes.SoulTapeRaidPlaybackMode>
+            _raidCassettePlaybackMode;
         private readonly ConfigEntry<float> _volume;
         private readonly ConfigEntry<bool> _shuffle;
         private readonly ConfigEntry<int> _repeatMode;
@@ -32,11 +46,31 @@ namespace SoulPlayer.Configuration
         private readonly ConfigEntry<KeyboardShortcut> _stopHotkey;
         private readonly ConfigEntry<KeyboardShortcut> _nextHotkey;
         private readonly ConfigEntry<KeyboardShortcut> _previousHotkey;
+        private readonly ConfigEntry<KeyboardShortcut> _volumeMutedHotkey;
+        private readonly ConfigEntry<KeyboardShortcut> _volumeQuarterHotkey;
+        private readonly ConfigEntry<KeyboardShortcut> _volumeHalfHotkey;
+        private readonly ConfigEntry<KeyboardShortcut> _volumeThreeQuartersHotkey;
+        private readonly ConfigEntry<KeyboardShortcut> _volumeFullHotkey;
+        private readonly ConfigEntry<KeyboardShortcut> _nextRaidCassetteHotkey;
         private readonly ConfigEntry<KeyboardShortcut> _collectCassetteHotkey;
         private readonly ConfigEntry<float> _cassetteInteractionDistance;
         private readonly ConfigEntry<bool> _soulTapeTargetingDiagnostics;
+        private readonly ConfigEntry<bool> _recorderOverlayEnabled;
+        private readonly ConfigEntry<SoulPlayer.Recorder.SoulRecorderOverlayCorner>
+            _recorderOverlayCorner;
+        private readonly ConfigEntry<float> _recorderOverlayScale;
+        private readonly ConfigEntry<float> _recorderOverlayHorizontalOffset;
+        private readonly ConfigEntry<float> _recorderOverlayVerticalOffset;
+        private readonly ConfigEntry<float> _recorderOverlayAnimationSpeed;
+        private readonly ConfigEntry<int> _recorderOverlayDefaultsVersion;
         private readonly ConfigEntry<float> _raidFadeSeconds;
         private readonly ConfigEntry<float> _postRaidTransitionSeconds;
+
+        internal event Action<float> VolumeChanged;
+        internal event Action<SoulPlayer.Cassettes.SoulTapeMusicMode>
+            CassetteMusicModeChanged;
+        internal event Action<SoulPlayer.Cassettes.SoulTapeRaidPlaybackMode>
+            RaidCassettePlaybackModeChanged;
 
         internal SoulPlayerSettings(ConfigFile config)
         {
@@ -44,8 +78,8 @@ namespace SoulPlayer.Configuration
             _musicFolders = config.Bind(
                 "Library",
                 "Music folders",
-                @"D:\soulseek_share",
-                "Windows folders scanned recursively. Separate multiple folders with |.");
+                DefaultPersonalMusicFolder(),
+                "Folders scanned recursively. Separate multiple folders with | or ;. Relative paths resolve from the SPT game root.");
 
             _librarySourceMode = config.Bind(
                 "Library",
@@ -53,11 +87,27 @@ namespace SoulPlayer.Configuration
                 LibrarySourceMode.IncludedAndPersonal,
                 "IncludedOnly = bundled CC0 music only, PersonalOnly = your folders only, IncludedAndPersonal = merge both libraries.");
 
+            _cassetteMusicMode = config.Bind(
+                "SoulTape discovery",
+                "Cassette music mode",
+                SoulPlayer.Cassettes.SoulTapeMusicMode.MergeBuiltInAndUser,
+                "BuiltInOnly = bundled copyright-free tracks, UserOnly = scanned personal-library tracks, MergeBuiltInAndUser = both pools with stable-ID deduplication.");
+            _cassetteMusicMode.SettingChanged += OnCassetteMusicModeSettingChanged;
+
+            _raidCassettePlaybackMode = config.Bind(
+                "SoulTape discovery",
+                "Raid cassette playback mode",
+                SoulPlayer.Cassettes.SoulTapeRaidPlaybackMode.FavoritesFirst,
+                "FavoritesOnly = discovered favorites only, Discovered = all discovered tapes, FavoritesFirst = favorites when available with discovered tapes as fallback.");
+            _raidCassettePlaybackMode.SettingChanged +=
+                OnRaidCassettePlaybackModeSettingChanged;
+
             _volume = config.Bind(
                 "Player",
                 "Volume",
                 0.65f,
                 new ConfigDescription("SoulPlayer volume.", new AcceptableValueRange<float>(0f, 1f)));
+            _volume.SettingChanged += OnVolumeSettingChanged;
 
             _shuffle = config.Bind("Player", "Shuffle", true, "Shuffle the current library queue.");
             _repeatMode = config.Bind("Player", "Repeat mode", 0, "0 = off, 1 = repeat queue, 2 = repeat one.");
@@ -82,14 +132,14 @@ namespace SoulPlayer.Configuration
             _survivedMusicFolder = config.Bind(
                 "Post-raid",
                 "Survived music folder",
-                @"D:\soulseek_share\PostRaid\Survived",
-                "Tracks under this folder are used after surviving a raid.");
+                DefaultPostRaidFolder("Survived"),
+                "Legacy folder scanned for tracks that can be routed to Extract in the Library.");
 
             _deathMusicFolder = config.Bind(
                 "Post-raid",
                 "Death music folder",
-                @"D:\soulseek_share\PostRaid\Died",
-                "Tracks under this folder are used after a failed raid.");
+                DefaultPostRaidFolder("Died"),
+                "Legacy folder scanned for tracks that can be routed to Death in the Library.");
 
             _enableMediaKeys = config.Bind(
                 "Global controls",
@@ -121,6 +171,57 @@ namespace SoulPlayer.Configuration
                 new KeyboardShortcut(KeyCode.None),
                 "Optional additional previous-track shortcut. The media Previous key works by default.");
 
+            _volumeMutedHotkey = config.Bind(
+                "Volume presets",
+                "Muted hotkey",
+                new KeyboardShortcut(KeyCode.Keypad0),
+                OrderedDescription(
+                    "Set SoulPlayer and SoulRecorder music volume to 0%.",
+                    500,
+                    "0% / Muted hotkey"));
+
+            _volumeQuarterHotkey = config.Bind(
+                "Volume presets",
+                "25% hotkey",
+                new KeyboardShortcut(KeyCode.Keypad1),
+                OrderedDescription(
+                    "Set SoulPlayer and SoulRecorder music volume to 25%.",
+                    400,
+                    "25% hotkey"));
+
+            _volumeHalfHotkey = config.Bind(
+                "Volume presets",
+                "50% hotkey",
+                new KeyboardShortcut(KeyCode.Keypad2),
+                OrderedDescription(
+                    "Set SoulPlayer and SoulRecorder music volume to 50%.",
+                    300,
+                    "50% hotkey"));
+
+            _volumeThreeQuartersHotkey = config.Bind(
+                "Volume presets",
+                "75% hotkey",
+                new KeyboardShortcut(KeyCode.Keypad3),
+                OrderedDescription(
+                    "Set SoulPlayer and SoulRecorder music volume to 75%.",
+                    200,
+                    "75% hotkey"));
+
+            _volumeFullHotkey = config.Bind(
+                "Volume presets",
+                "100% hotkey",
+                new KeyboardShortcut(KeyCode.Keypad4),
+                OrderedDescription(
+                    "Set SoulPlayer and SoulRecorder music volume to 100%.",
+                    100,
+                    "100% hotkey"));
+
+            _nextRaidCassetteHotkey = config.Bind(
+                "SoulTape discovery",
+                "Next raid cassette hotkey",
+                new KeyboardShortcut(KeyCode.N),
+                "Skip through SoulRecorder's in-raid cassette shuffle bag. This is independent from Global controls -> Next track hotkey.");
+
             _collectCassetteHotkey = config.Bind(
                 "SoulTape discovery",
                 "Collect cassette hotkey",
@@ -140,6 +241,51 @@ namespace SoulPlayer.Configuration
                 "Show targeting diagnostics",
                 false,
                 "Show a temporary on-screen SoulTape camera and targeting diagnostic panel during runtime acceptance testing.");
+
+            _recorderOverlayEnabled = config.Bind(
+                "SoulRecorder overlay",
+                "Recorder overlay enabled",
+                true,
+                "Show the two-dimensional SoulRecorder cassette animation. Music playback remains functional if this is disabled or its images cannot load.");
+            _recorderOverlayCorner = config.Bind(
+                "SoulRecorder overlay",
+                "Recorder corner",
+                SoulPlayer.Recorder.SoulRecorderOverlayCorner.BottomRight,
+                "Screen corner used by the recorder overlay.");
+            _recorderOverlayScale = config.Bind(
+                "SoulRecorder overlay",
+                "Recorder scale",
+                0.78f,
+                new ConfigDescription(
+                    "Recorder overlay scale.",
+                    new AcceptableValueRange<float>(0.65f, 1.5f)));
+            _recorderOverlayHorizontalOffset = config.Bind(
+                "SoulRecorder overlay",
+                "Recorder horizontal offset",
+                0f,
+                new ConfigDescription(
+                    "Additional pixels inward from the selected horizontal screen edge.",
+                    new AcceptableValueRange<float>(-400f, 400f)));
+            _recorderOverlayVerticalOffset = config.Bind(
+                "SoulRecorder overlay",
+                "Recorder vertical offset",
+                0f,
+                new ConfigDescription(
+                    "Additional pixels upward from the selected vertical screen edge.",
+                    new AcceptableValueRange<float>(-300f, 300f)));
+            _recorderOverlayAnimationSpeed = config.Bind(
+                "SoulRecorder overlay",
+                "Recorder animation speed",
+                1f,
+                new ConfigDescription(
+                    "SoulRecorder overlay animation speed multiplier.",
+                    new AcceptableValueRange<float>(0.5f, 2f)));
+            _recorderOverlayDefaultsVersion = config.Bind(
+                "SoulRecorder overlay",
+                "Overlay defaults version",
+                0,
+                "Internal migration version for SoulRecorder overlay defaults.");
+            ApplyRecorderOverlayDefaultMigration();
 
             _raidFadeSeconds = config.Bind(
                 "Transitions",
@@ -238,7 +384,9 @@ namespace SoulPlayer.Configuration
                     string pluginFolder = Path.GetDirectoryName(assemblyPath);
                     return string.IsNullOrWhiteSpace(pluginFolder)
                         ? string.Empty
-                        : Path.Combine(pluginFolder, "DefaultMusic");
+                        : SoulPath.NormalizeConfiguredPath(
+                            Path.Combine(pluginFolder, "DefaultMusic"),
+                            BepInEx.Paths.GameRootPath);
                 }
                 catch
                 {
@@ -282,6 +430,151 @@ namespace SoulPlayer.Configuration
             get { return _previousHotkey.Value; }
         }
 
+        internal KeyboardShortcut VolumeMutedHotkey
+        {
+            get { return _volumeMutedHotkey.Value; }
+        }
+
+        internal KeyboardShortcut VolumeQuarterHotkey
+        {
+            get { return _volumeQuarterHotkey.Value; }
+        }
+
+        internal KeyboardShortcut VolumeHalfHotkey
+        {
+            get { return _volumeHalfHotkey.Value; }
+        }
+
+        internal KeyboardShortcut VolumeThreeQuartersHotkey
+        {
+            get { return _volumeThreeQuartersHotkey.Value; }
+        }
+
+        internal KeyboardShortcut VolumeFullHotkey
+        {
+            get { return _volumeFullHotkey.Value; }
+        }
+
+        internal KeyboardShortcut NextRaidCassetteHotkey
+        {
+            get { return _nextRaidCassetteHotkey.Value; }
+        }
+
+        internal SoulPlayer.Cassettes.SoulTapeMusicMode CassetteMusicMode
+        {
+            get { return _cassetteMusicMode.Value; }
+        }
+
+        internal SoulPlayer.Cassettes.SoulTapeRaidPlaybackMode
+            RaidCassettePlaybackMode
+        {
+            get { return _raidCassettePlaybackMode.Value; }
+        }
+
+        private void OnVolumeSettingChanged(object sender, EventArgs eventArgs)
+        {
+            Action<float> handler = VolumeChanged;
+            if (handler == null)
+            {
+                return;
+            }
+
+            foreach (Action<float> subscriber in handler.GetInvocationList())
+            {
+                try
+                {
+                    subscriber(_volume.Value);
+                }
+                catch (Exception ex)
+                {
+                    if (Plugin.Log != null)
+                    {
+                        Plugin.Log.LogError(
+                            "SoulPlayer volume change subscriber failed: " +
+                            ex.GetBaseException().Message);
+                    }
+                }
+            }
+        }
+
+        private void OnCassetteMusicModeSettingChanged(
+            object sender,
+            EventArgs eventArgs)
+        {
+            Action<SoulPlayer.Cassettes.SoulTapeMusicMode> handler =
+                CassetteMusicModeChanged;
+            if (handler == null)
+            {
+                return;
+            }
+
+            foreach (Action<SoulPlayer.Cassettes.SoulTapeMusicMode> subscriber
+                     in handler.GetInvocationList())
+            {
+                try
+                {
+                    subscriber(_cassetteMusicMode.Value);
+                }
+                catch (Exception ex)
+                {
+                    if (Plugin.Log != null)
+                    {
+                        Plugin.Log.LogError(
+                            "SoulTape music-mode change subscriber failed: " +
+                            ex.GetBaseException().Message);
+                    }
+                }
+            }
+        }
+
+        private void OnRaidCassettePlaybackModeSettingChanged(
+            object sender,
+            EventArgs eventArgs)
+        {
+            Action<SoulPlayer.Cassettes.SoulTapeRaidPlaybackMode> handler =
+                RaidCassettePlaybackModeChanged;
+            if (handler == null)
+            {
+                return;
+            }
+
+            foreach (Action<SoulPlayer.Cassettes.SoulTapeRaidPlaybackMode> subscriber
+                     in handler.GetInvocationList())
+            {
+                try
+                {
+                    subscriber(_raidCassettePlaybackMode.Value);
+                }
+                catch (Exception ex)
+                {
+                    if (Plugin.Log != null)
+                    {
+                        Plugin.Log.LogError(
+                            "SoulTape raid-playback-mode subscriber failed: " +
+                            ex.GetBaseException().Message);
+                    }
+                }
+            }
+        }
+
+        private void ApplyRecorderOverlayDefaultMigration()
+        {
+            if (_recorderOverlayDefaultsVersion.Value >= 1)
+            {
+                return;
+            }
+
+            // Version 0 shipped 1.0 as the default. Move that exact legacy
+            // default to the approved 0.78 presentation while preserving every
+            // deliberately customized scale.
+            if (Math.Abs(_recorderOverlayScale.Value - 1f) < 0.0001f)
+            {
+                _recorderOverlayScale.Value = 0.78f;
+            }
+            _recorderOverlayDefaultsVersion.Value = 1;
+            _config.Save();
+        }
+
         internal KeyboardShortcut CollectCassetteHotkey
         {
             get { return _collectCassetteHotkey.Value; }
@@ -297,6 +590,30 @@ namespace SoulPlayer.Configuration
             get { return _soulTapeTargetingDiagnostics.Value; }
         }
 
+        internal bool RecorderOverlayEnabled
+        {
+            get { return _recorderOverlayEnabled.Value; }
+        }
+
+        internal SoulPlayer.Recorder.SoulRecorderOverlaySettings RecorderOverlaySettings
+        {
+            get
+            {
+                return new SoulPlayer.Recorder.SoulRecorderOverlaySettings
+                {
+                    Corner = _recorderOverlayCorner.Value,
+                    Scale = Math.Max(0.65f, Math.Min(1.5f,
+                        _recorderOverlayScale.Value)),
+                    HorizontalOffset = Math.Max(-400f, Math.Min(400f,
+                        _recorderOverlayHorizontalOffset.Value)),
+                    VerticalOffset = Math.Max(-300f, Math.Min(300f,
+                        _recorderOverlayVerticalOffset.Value)),
+                    AnimationSpeed = Math.Max(0.5f, Math.Min(2f,
+                        _recorderOverlayAnimationSpeed.Value))
+                };
+            }
+        }
+
         internal float RaidFadeSeconds
         {
             get { return Math.Max(0f, Math.Min(10f, _raidFadeSeconds.Value)); }
@@ -307,13 +624,28 @@ namespace SoulPlayer.Configuration
             get { return Math.Max(0f, Math.Min(6f, _postRaidTransitionSeconds.Value)); }
         }
 
+        private static ConfigDescription OrderedDescription(
+            string description,
+            int order,
+            string displayName = null)
+        {
+            return new ConfigDescription(
+                description,
+                null,
+                new ConfigurationManagerAttributes
+                {
+                    DispName = displayName,
+                    Order = order
+                });
+        }
+
         internal IReadOnlyList<string> GetFolders()
         {
             return (_musicFolders.Value ?? string.Empty)
-                .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                .Split(new[] { '|', ';' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(NormalizePath)
                 .Where(path => !string.IsNullOrWhiteSpace(path))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Distinct(SoulPath.Comparer)
                 .ToList();
         }
 
@@ -333,7 +665,7 @@ namespace SoulPlayer.Configuration
 
             return folders
                 .Where(path => !string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Distinct(SoulPath.Comparer)
                 .ToList();
         }
 
@@ -347,7 +679,7 @@ namespace SoulPlayer.Configuration
 
             return folders
                 .Where(path => !string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Distinct(SoulPath.Comparer)
                 .ToList();
         }
 
@@ -414,7 +746,7 @@ namespace SoulPlayer.Configuration
             }
 
             List<string> folders = GetFolders().ToList();
-            if (folders.Contains(normalized, StringComparer.OrdinalIgnoreCase))
+            if (folders.Contains(normalized, SoulPath.Comparer))
             {
                 message = "That folder is already in your library.";
                 return false;
@@ -432,7 +764,7 @@ namespace SoulPlayer.Configuration
         {
             string normalized = NormalizePath(path);
             List<string> folders = GetFolders()
-                .Where(folder => !string.Equals(folder, normalized, StringComparison.OrdinalIgnoreCase))
+                .Where(folder => !string.Equals(folder, normalized, SoulPath.Comparison))
                 .ToList();
 
             if (folders.Count == GetFolders().Count)
@@ -452,20 +784,25 @@ namespace SoulPlayer.Configuration
 
         private static string NormalizePath(string path)
         {
-            if (string.IsNullOrWhiteSpace(path))
+            return SoulPath.NormalizeConfiguredPath(path, BepInEx.Paths.GameRootPath);
+        }
+
+        private static string DefaultPersonalMusicFolder()
+        {
+            if (SoulPath.IsWindows)
             {
-                return string.Empty;
+                return @"D:\soulseek_share";
             }
 
-            try
-            {
-                string cleaned = Environment.ExpandEnvironmentVariables(path.Trim().Trim('"'));
-                return Path.GetFullPath(cleaned).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            }
-            catch
-            {
-                return string.Empty;
-            }
+            string music = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            return string.IsNullOrWhiteSpace(music)
+                ? "Music/SoulPlayer"
+                : Path.Combine(music, "SoulPlayer");
+        }
+
+        private static string DefaultPostRaidFolder(string outcome)
+        {
+            return Path.Combine(DefaultPersonalMusicFolder(), "PostRaid", outcome);
         }
     }
 }

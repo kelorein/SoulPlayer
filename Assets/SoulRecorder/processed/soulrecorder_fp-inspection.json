@@ -1,0 +1,366 @@
+{
+  "logicalName": "soulrecorder_fp",
+  "preparedWith": "Blender 5.2.0 LTS",
+  "sourceArchiveEntry": "cassette_player_4k.blend",
+  "before": {
+    "objects": [
+      {
+        "name": "cassette_player_body",
+        "vertices": 2068,
+        "polygons": 1971,
+        "triangles": 3794,
+        "materials": [
+          "cassette_player_body",
+          "cassette_player_flap"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.12946,
+          0.04888,
+          0.236818
+        ]
+      },
+      {
+        "name": "cassette_player_tape",
+        "vertices": 544,
+        "polygons": 554,
+        "triangles": 1036,
+        "materials": [
+          "cassette_player_tape"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.1005,
+          0.007092,
+          0.064719
+        ]
+      }
+    ],
+    "objectNames": [
+      "cassette_player_body",
+      "cassette_player_tape"
+    ],
+    "meshObjectCount": 2,
+    "vertexCount": 2612,
+    "polygonCount": 2525,
+    "triangleCount": 4830,
+    "materialCount": 3,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.064994,
+        -0.04888,
+        -0.11076
+      ],
+      "maximum": [
+        0.064466,
+        0.0,
+        0.126057
+      ],
+      "dimensions": [
+        0.12946,
+        0.04888,
+        0.236818
+      ]
+    }
+  },
+  "afterCleanup": {
+    "objects": [
+      {
+        "name": "SoulRecorderBody",
+        "vertices": 2068,
+        "polygons": 1971,
+        "triangles": 3794,
+        "materials": [
+          "cassette_player_body",
+          "cassette_player_flap"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.12946,
+          0.04888,
+          0.236818
+        ]
+      }
+    ],
+    "objectNames": [
+      "SoulRecorderBody"
+    ],
+    "meshObjectCount": 1,
+    "vertexCount": 2068,
+    "polygonCount": 1971,
+    "triangleCount": 3794,
+    "materialCount": 2,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.064994,
+        -0.04888,
+        -0.11076
+      ],
+      "maximum": [
+        0.064466,
+        0.0,
+        0.126057
+      ],
+      "dimensions": [
+        0.12946,
+        0.04888,
+        0.236818
+      ]
+    }
+  },
+  "normalization": {
+    "axisMapping": {
+      "sourceX": "recorder horizontal",
+      "sourceY": "recorder longest dimension",
+      "sourceZ": "recorder depth"
+    },
+    "sourceBoundsDimensions": [
+      0.12946,
+      0.04888,
+      0.236818
+    ],
+    "appliedScale": [
+      0.844531,
+      0.844531,
+      0.844531
+    ]
+  },
+  "finalDerived": {
+    "objects": [
+      {
+        "name": "SoulRecorderBody",
+        "vertices": 2068,
+        "polygons": 1971,
+        "triangles": 3794,
+        "materials": [
+          "cassette_player_body",
+          "cassette_player_flap"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.109333,
+          0.041281,
+          0.2
+        ]
+      }
+    ],
+    "objectNames": [
+      "SoulRecorderBody"
+    ],
+    "meshObjectCount": 1,
+    "vertexCount": 2068,
+    "polygonCount": 1971,
+    "triangleCount": 3794,
+    "materialCount": 2,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.054667,
+        -0.02064,
+        -0.1
+      ],
+      "maximum": [
+        0.054667,
+        0.02064,
+        0.1
+      ],
+      "dimensions": [
+        0.109333,
+        0.041281,
+        0.2
+      ]
+    }
+  },
+  "requiredTransforms": {
+    "stage": "Blender FBX",
+    "required": [
+      "SoulRecorderModel",
+      "SoulRecorderBody"
+    ],
+    "counts": {
+      "SoulRecorderModel": 1,
+      "SoulRecorderBody": 1
+    },
+    "allUnique": true,
+    "addedByUnityPrefabBuilder": [
+      "CassetteInsertionStart",
+      "CassetteSlot",
+      "CassetteWindow",
+      "StatusLed",
+      "ReelWindowLeft",
+      "ReelWindowRight"
+    ]
+  },
+  "reelPivots": {},
+  "retainedSourceObjects": [
+    {
+      "source": "cassette_player_body",
+      "derived": "SoulRecorderBody"
+    }
+  ],
+  "removedObjects": [
+    "cassette_player_tape"
+  ],
+  "removedSceneHelpers": [],
+  "removedLooseShellVertices": 0,
+  "reelSourceMapping": {},
+  "textureOutputs": [
+    {
+      "name": "soulrecorder_body_basecolor.png",
+      "relativePath": "textures/soulrecorder_body_basecolor.png",
+      "source": "cassette_player_body_diff_4k.png",
+      "sourceDimensions": [
+        4096,
+        4096
+      ],
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 4833980,
+      "brandingCleanup": {
+        "method": "feathered clone from adjacent unbranded atlas panel",
+        "topLeftPixelRectangle": [
+          740,
+          1563,
+          360,
+          100
+        ],
+        "removedIdentity": "Dixons TR12 Cassette Recorder"
+      }
+    },
+    {
+      "name": "soulrecorder_body_normal.png",
+      "relativePath": "textures/soulrecorder_body_normal.png",
+      "source": "cassette_player_body_nor_gl_4k.png",
+      "sourceDimensions": [
+        4096,
+        4096
+      ],
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 3374657,
+      "brandingCleanup": null
+    },
+    {
+      "name": "soulrecorder_body_metallic.png",
+      "relativePath": "textures/soulrecorder_body_metallic.png",
+      "source": "cassette_player_body_metallic_4k.png",
+      "sourceDimensions": [
+        4096,
+        4096
+      ],
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 291896,
+      "brandingCleanup": null
+    },
+    {
+      "name": "soulrecorder_body_roughness.png",
+      "relativePath": "textures/soulrecorder_body_roughness.png",
+      "source": "cassette_player_body_roughness_4k.png",
+      "sourceDimensions": [
+        4096,
+        4096
+      ],
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 2010271,
+      "brandingCleanup": null
+    },
+    {
+      "name": "soulrecorder_body_opacity.png",
+      "relativePath": "textures/soulrecorder_body_opacity.png",
+      "source": "cassette_player_body_opacity_4k.png",
+      "sourceDimensions": [
+        4096,
+        4096
+      ],
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 41803,
+      "brandingCleanup": null
+    },
+    {
+      "name": "soulrecorder_flap_basecolor.png",
+      "relativePath": "textures/soulrecorder_flap_basecolor.png",
+      "source": "soulrecorder_body_basecolor.png + soulrecorder_body_opacity.png",
+      "sourceDimensions": [
+        2048,
+        2048
+      ],
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 4833980,
+      "purpose": "Standard transparent flap base color with authored opacity in alpha",
+      "brandingCleanup": null
+    },
+    {
+      "name": "soulrecorder_body_metallic_smoothness.png",
+      "relativePath": "textures/soulrecorder_body_metallic_smoothness.png",
+      "source": "soulrecorder_body_metallic.png + soulrecorder_body_roughness.png",
+      "sourceDimensions": [
+        2048,
+        2048
+      ],
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 3559516,
+      "purpose": "Unity Standard metallic RGB with inverted roughness in smoothness alpha",
+      "brandingCleanup": null
+    }
+  ],
+  "animationClips": [],
+  "animationPoseAuditArmatureLocal": {},
+  "runtimeBones": [],
+  "socketParents": {},
+  "sourceWeightAudit": {},
+  "fpsCrop": {},
+  "derivedOutput": "soulrecorder_fp.fbx",
+  "derivedFbxSizeBytes": 150732,
+  "validation": {
+    "passed": true,
+    "errors": [],
+    "warnings": []
+  }
+}

@@ -1,0 +1,39 @@
+SoulRecorder AutoAnimationDraft_v5
+Runtime integration: BLOCKED pending human MP4 approval
+PhysicalGrip_L3: PRESERVED
+Visible support assembly: L3 fingers + L3 recorder grip, no interpolation
+Carry-to-contact cassette rotation: 165.371 deg
+Cassette rotation completion time: 1.340 s after first frame
+Minimum cassette/recorder center distance during rotation: 147.213 mm
+Maximum visible support-hand contact error: 1.527 mm across 153 visible frames
+Maximum left/right sleeve screen overlap: 32.003% IoU
+Contact -> Seated rotation delta: 0.000000 deg
+Insertion ownership snap: 0.000 mm / 0.000000 deg
+Ejection ownership snap: 0.000 mm / 0.000000 deg
+L3 cassette contacts thumb/index/middle: 1.325 / 0.673 / 0.556 mm
+Sampled frames: 181
+Insertion choreography:
+- EnterSupportedAssembliesLowerRight 0.34s owner=Hand
+- RaiseCassetteOnRight 0.28s owner=Hand
+- EarlyCassetteReorientation 0.72s owner=Hand
+- ReorientationStabilization 0.18s owner=Hand
+- ApproachFromRight 0.34s owner=Hand
+- Contact 0.24s owner=Hand
+- InsertHalf 0.18s owner=Hand
+- InsertSeated 0.18s owner=Hand
+- TransferToSlot 0.04s owner=Recorder
+- Release 0.24s owner=Recorder
+- ExitSupportedAssembly 0.46s owner=Recorder
+Ejection choreography:
+- EnterSupportedAssembly 0.46s owner=Recorder
+- EmptyHandApproachFromRight 0.24s owner=Recorder
+- EstablishL3Grip 0.24s owner=Recorder
+- TransferToHand 0.04s owner=Hand
+- PullStraightClear 0.24s owner=Hand
+- MoveClearToRight 0.30s owner=Hand
+- LateCassetteReorientation 0.72s owner=Hand
+- LowerCassetteOnRight 0.28s owner=Hand
+- ExitSupportedAssembliesLowerRight 0.34s owner=Hand
+Per-frame numerical gate: PASS
+AUTO ANIMATION DRAFT V5: PASS
+VISUAL APPROVAL: PENDING HUMAN REVIEW OF BOTH MP4 FILES

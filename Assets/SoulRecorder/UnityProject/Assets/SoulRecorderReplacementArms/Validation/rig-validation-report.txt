@@ -1,0 +1,7 @@
+DJMaesen First Person arms - Unity prop-free rig validation
+NEW ARM RIG VALIDATION: PASS
+Props attached: NO
+Renderer: DJMaesenFirstPersonArmsRenderer
+Left: L_arm -> L_elbow -> L_wrist
+Right: R_arm -> R_elbow -> R_wrist
+Finger chains: thumb / point(index) / middle / ring / pink, joints 1-3

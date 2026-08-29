@@ -1,3 +1,4 @@
+using System;
 using EFT;
 using SoulPlayer.Utils;
 using UnityEngine;
@@ -10,23 +11,21 @@ namespace SoulPlayer.Audio
         private const float DuplicateLockSeconds = 12f;
         private const float RaidStateGraceSeconds = 12f;
 
-        private ExitStatus? _pendingOutcome;
-        private float _playAt = -1f;
-        private float _ignoreSignalsUntil = -1f;
-        private int _signalCount;
+        private readonly PostRaidSignalGate _signalGate = new PostRaidSignalGate(
+            SettleDelaySeconds,
+            DuplicateLockSeconds);
+
+        internal event Action<ExitStatus> RaidResultQueued;
 
         internal void Queue(ExitStatus outcome)
         {
+            NotifyRaidResult(outcome);
             float now = Time.unscaledTime;
-            if (now < _ignoreSignalsUntil)
+            if (!_signalGate.Queue(outcome, now))
             {
                 Plugin.Log.LogInfo("Ignored duplicate post-raid signal: " + outcome + ".");
                 return;
             }
-
-            _pendingOutcome = outcome;
-            _playAt = now + SettleDelaySeconds;
-            _signalCount++;
 
             // EFT can leave its raid objects alive briefly while the result UI is
             // being assembled. Do not let that transient state pause the result track.
@@ -34,26 +33,91 @@ namespace SoulPlayer.Audio
             Plugin.Log.LogInfo("Queued post-raid signal: " + outcome + ".");
         }
 
-        private void Update()
+        private void NotifyRaidResult(ExitStatus outcome)
         {
-            if (!_pendingOutcome.HasValue || Time.unscaledTime < _playAt)
+            Action<ExitStatus> handler = RaidResultQueued;
+            if (handler == null)
             {
                 return;
             }
 
-            ExitStatus outcome = _pendingOutcome.Value;
-            int signals = _signalCount;
+            foreach (Action<ExitStatus> subscriber in handler.GetInvocationList())
+            {
+                try
+                {
+                    subscriber(outcome);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning(
+                        "Post-raid cleanup subscriber failed: " + ex.Message);
+                }
+            }
+        }
 
-            _pendingOutcome = null;
-            _playAt = -1f;
-            _signalCount = 0;
-            _ignoreSignalsUntil = Time.unscaledTime + DuplicateLockSeconds;
+        private void Update()
+        {
+            ExitStatus outcome;
+            int signals;
+            if (!_signalGate.TryTake(Time.unscaledTime, out outcome, out signals))
+            {
+                return;
+            }
 
             GameState.SuppressRaidMusicSuspend(RaidStateGraceSeconds);
             Plugin.Log.LogInfo(
                 "Post-raid result settled after " + signals + " signal(s): " + outcome + ".");
 
             Plugin.AudioPlayer.PlayPostRaid(outcome);
+        }
+    }
+
+    internal sealed class PostRaidSignalGate
+    {
+        private readonly float _settleDelaySeconds;
+        private readonly float _duplicateLockSeconds;
+        private ExitStatus? _pendingOutcome;
+        private float _playAt = -1f;
+        private float _ignoreSignalsUntil = -1f;
+        private int _signalCount;
+
+        internal PostRaidSignalGate(
+            float settleDelaySeconds,
+            float duplicateLockSeconds)
+        {
+            _settleDelaySeconds = Math.Max(0f, settleDelaySeconds);
+            _duplicateLockSeconds = Math.Max(0f, duplicateLockSeconds);
+        }
+
+        internal bool Queue(ExitStatus outcome, float now)
+        {
+            if (now < _ignoreSignalsUntil)
+            {
+                return false;
+            }
+
+            _pendingOutcome = outcome;
+            _playAt = now + _settleDelaySeconds;
+            _signalCount++;
+            return true;
+        }
+
+        internal bool TryTake(float now, out ExitStatus outcome, out int signals)
+        {
+            outcome = default(ExitStatus);
+            signals = 0;
+            if (!_pendingOutcome.HasValue || now < _playAt)
+            {
+                return false;
+            }
+
+            outcome = _pendingOutcome.Value;
+            signals = _signalCount;
+            _pendingOutcome = null;
+            _playAt = -1f;
+            _signalCount = 0;
+            _ignoreSignalsUntil = now + _duplicateLockSeconds;
+            return true;
         }
     }
 }

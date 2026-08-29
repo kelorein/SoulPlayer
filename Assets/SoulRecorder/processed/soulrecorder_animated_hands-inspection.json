@@ -1,0 +1,1535 @@
+{
+  "logicalName": "soulrecorder_animated_hands",
+  "preparedWith": "Blender 5.2.0 LTS",
+  "sourceArchiveEntry": "FPS Arms.fbx",
+  "before": {
+    "objects": [
+      {
+        "name": "FPS Arms",
+        "vertices": 6942,
+        "polygons": 6864,
+        "triangles": 13728,
+        "materials": [
+          "FPS Arm",
+          "FPS Hand"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          1.901227,
+          0.424497,
+          0.150841
+        ]
+      }
+    ],
+    "objectNames": [
+      "FPS Arms"
+    ],
+    "meshObjectCount": 1,
+    "vertexCount": 6942,
+    "polygonCount": 6864,
+    "triangleCount": 13728,
+    "materialCount": 2,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.950614,
+        -0.057576,
+        1.223881
+      ],
+      "maximum": [
+        0.950614,
+        0.366921,
+        1.374722
+      ],
+      "dimensions": [
+        1.901227,
+        0.424497,
+        0.150841
+      ]
+    }
+  },
+  "afterCleanup": {
+    "objects": [
+      {
+        "name": "SoulRecorderArms",
+        "vertices": 6032,
+        "polygons": 5954,
+        "triangles": 11952,
+        "materials": [
+          "FPS Arm",
+          "FPS Hand"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          1.901227,
+          0.814312,
+          0.412799
+        ]
+      }
+    ],
+    "objectNames": [
+      "SoulRecorderArms"
+    ],
+    "meshObjectCount": 1,
+    "vertexCount": 6032,
+    "polygonCount": 5954,
+    "triangleCount": 11952,
+    "materialCount": 2,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.950614,
+        -0.447391,
+        0.915314
+      ],
+      "maximum": [
+        0.950614,
+        0.366921,
+        1.328113
+      ],
+      "dimensions": [
+        1.901227,
+        0.814312,
+        0.412799
+      ]
+    }
+  },
+  "normalization": {
+    "axisMapping": {
+      "sourceX": "screen horizontal",
+      "sourceY": "camera-forward arm reach",
+      "sourceZ": "camera-local vertical"
+    },
+    "appliedScale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "holdingPose": "authored on the complete BAMEN skeleton with a derived FPS-cropped arm mesh"
+  },
+  "finalDerived": {
+    "objects": [
+      {
+        "name": "SoulRecorderArms",
+        "vertices": 6032,
+        "polygons": 5954,
+        "triangles": 11952,
+        "materials": [
+          "FPS Arm",
+          "FPS Hand"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          1.901227,
+          0.814312,
+          0.412799
+        ]
+      }
+    ],
+    "objectNames": [
+      "SoulRecorderArms"
+    ],
+    "meshObjectCount": 1,
+    "vertexCount": 6032,
+    "polygonCount": 5954,
+    "triangleCount": 11952,
+    "materialCount": 2,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.950614,
+        -0.447391,
+        0.915314
+      ],
+      "maximum": [
+        0.950614,
+        0.366921,
+        1.328113
+      ],
+      "dimensions": [
+        1.901227,
+        0.814312,
+        0.412799
+      ]
+    }
+  },
+  "requiredTransforms": {
+    "stage": "Blender FBX",
+    "required": [
+      "SoulRecorderHandsRig",
+      "SoulRecorderHandsRoot",
+      "SoulRecorderArms",
+      "RecorderGrip",
+      "CassetteGrip",
+      "CassetteContact",
+      "SupportSleeveCutoff",
+      "CassetteSleeveCutoff"
+    ],
+    "counts": {
+      "SoulRecorderHandsRig": 1,
+      "SoulRecorderHandsRoot": 1,
+      "SoulRecorderArms": 1,
+      "RecorderGrip": 1,
+      "CassetteGrip": 1,
+      "CassetteContact": 1,
+      "SupportSleeveCutoff": 1,
+      "CassetteSleeveCutoff": 1
+    },
+    "allUnique": true
+  },
+  "reelPivots": {},
+  "retainedSourceObjects": [
+    {
+      "source": "FPS Arms",
+      "derived": "SoulRecorderArms"
+    },
+    {
+      "source": "FRPS Arms Armature",
+      "derived": "SoulRecorderHandsRig"
+    }
+  ],
+  "removedObjects": [
+    "source scene animation take"
+  ],
+  "removedSceneHelpers": [],
+  "removedLooseShellVertices": 0,
+  "reelSourceMapping": {},
+  "textureOutputs": [
+    {
+      "name": "soulrecorder_arms_basecolor.png",
+      "relativePath": "textures/soulrecorder_arms_basecolor.png",
+      "source": "Arm_and_Hand_Arm_BaseColor.png",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "format": "PNG",
+      "sizeBytes": 787062
+    },
+    {
+      "name": "soulrecorder_arms_normal.png",
+      "relativePath": "textures/soulrecorder_arms_normal.png",
+      "source": "Arm_and_Hand_Arm_Normal.png",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "format": "PNG",
+      "sizeBytes": 938516
+    },
+    {
+      "name": "soulrecorder_arms_roughness.png",
+      "relativePath": "textures/soulrecorder_arms_roughness.png",
+      "source": "Arm_and_Hand_Arm_Roughness.png",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "format": "PNG",
+      "sizeBytes": 132056
+    },
+    {
+      "name": "soulrecorder_hands_basecolor.png",
+      "relativePath": "textures/soulrecorder_hands_basecolor.png",
+      "source": "Hand_Hand_BaseColor.png",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 4261851
+    },
+    {
+      "name": "soulrecorder_hands_normal.png",
+      "relativePath": "textures/soulrecorder_hands_normal.png",
+      "source": "Hand_Hand_Normal.png",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 5911790
+    },
+    {
+      "name": "soulrecorder_hands_roughness.png",
+      "relativePath": "textures/soulrecorder_hands_roughness.png",
+      "source": "Hand_Hand_Roughness.png",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 1538091
+    },
+    {
+      "name": "soulrecorder_arms_metallic_smoothness.png",
+      "relativePath": "textures/soulrecorder_arms_metallic_smoothness.png",
+      "source": "soulrecorder_arms_roughness.png",
+      "sourceDimensions": [
+        1024,
+        1024
+      ],
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "format": "PNG",
+      "sizeBytes": 262184,
+      "purpose": "Unity Standard metallic RGB with inverted roughness in smoothness alpha",
+      "brandingCleanup": null
+    },
+    {
+      "name": "soulrecorder_hands_metallic_smoothness.png",
+      "relativePath": "textures/soulrecorder_hands_metallic_smoothness.png",
+      "source": "soulrecorder_hands_roughness.png",
+      "sourceDimensions": [
+        2048,
+        2048
+      ],
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "format": "PNG",
+      "sizeBytes": 2933401,
+      "purpose": "Unity Standard metallic RGB with inverted roughness in smoothness alpha",
+      "brandingCleanup": null
+    }
+  ],
+  "animationClips": [
+    {
+      "name": "SoulRecorder_Enter",
+      "firstFrame": 0,
+      "lastFrame": 25,
+      "durationSeconds": 0.416667,
+      "loop": false
+    },
+    {
+      "name": "SoulRecorder_Insert",
+      "firstFrame": 26,
+      "lastFrame": 72,
+      "durationSeconds": 0.766667,
+      "loop": false
+    },
+    {
+      "name": "SoulRecorder_StartExit",
+      "firstFrame": 73,
+      "lastFrame": 96,
+      "durationSeconds": 0.383333,
+      "loop": false
+    },
+    {
+      "name": "SoulRecorder_Hold",
+      "firstFrame": 97,
+      "lastFrame": 109,
+      "durationSeconds": 0.2,
+      "loop": true
+    },
+    {
+      "name": "SoulRecorder_StopEnter",
+      "firstFrame": 110,
+      "lastFrame": 133,
+      "durationSeconds": 0.383333,
+      "loop": false
+    },
+    {
+      "name": "SoulRecorder_Eject",
+      "firstFrame": 134,
+      "lastFrame": 175,
+      "durationSeconds": 0.683333,
+      "loop": false
+    },
+    {
+      "name": "SoulRecorder_StopExit",
+      "firstFrame": 176,
+      "lastFrame": 199,
+      "durationSeconds": 0.383333,
+      "loop": false
+    },
+    {
+      "name": "SoulRecorder_CancelInsert",
+      "firstFrame": 200,
+      "lastFrame": 218,
+      "durationSeconds": 0.3,
+      "loop": false
+    }
+  ],
+  "animationPoseAuditArmatureLocal": {
+    "0": {
+      "Arm_1.L": [
+        -0.553541,
+        0.526128,
+        0.994128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.511604,
+        0.884996
+      ],
+      "Arm_2.L": [
+        -0.347707,
+        0.361213,
+        1.219465
+      ],
+      "Hand_1.L": [
+        -0.201336,
+        0.244536,
+        1.379524
+      ],
+      "Hand_2.L": [
+        -0.192783,
+        0.223191,
+        1.401998
+      ],
+      "Arm_1.R": [
+        0.284182,
+        0.598334,
+        0.932539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        0.160422,
+        0.809177
+      ],
+      "Arm_2.R": [
+        0.256163,
+        0.336424,
+        1.158282
+      ],
+      "Hand_1.R": [
+        0.235912,
+        0.150264,
+        1.318256
+      ],
+      "Hand_2.R": [
+        0.227516,
+        0.134846,
+        1.345194
+      ],
+      "RecorderGrip": [
+        -0.16947,
+        0.174545,
+        1.440183
+      ],
+      "CassetteGrip": [
+        0.175,
+        0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.217939,
+        0.038209,
+        1.407418
+      ]
+    },
+    "13": {
+      "Arm_1.L": [
+        -0.553541,
+        0.166129,
+        1.094928
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.151604,
+        0.985796
+      ],
+      "Arm_2.L": [
+        -0.298861,
+        0.127779,
+        1.327326
+      ],
+      "Hand_1.L": [
+        -0.117973,
+        0.100998,
+        1.492308
+      ],
+      "Hand_2.L": [
+        -0.102074,
+        0.088601,
+        1.517355
+      ],
+      "Arm_1.R": [
+        0.284182,
+        0.238334,
+        1.03334
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.199578,
+        0.909977
+      ],
+      "Arm_2.R": [
+        0.320743,
+        0.286235,
+        1.374969
+      ],
+      "Hand_1.R": [
+        0.228974,
+        0.069266,
+        1.446801
+      ],
+      "Hand_2.R": [
+        0.221479,
+        0.040327,
+        1.458644
+      ],
+      "RecorderGrip": [
+        -0.062504,
+        0.059128,
+        1.561328
+      ],
+      "CassetteGrip": [
+        0.175,
+        0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.202589,
+        -0.072611,
+        1.444851
+      ]
+    },
+    "25": {
+      "Arm_1.L": [
+        -0.553541,
+        0.026129,
+        1.134128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.011604,
+        1.024996
+      ],
+      "Arm_2.L": [
+        -0.288934,
+        0.053213,
+        1.356818
+      ],
+      "Hand_1.L": [
+        -0.101123,
+        0.072889,
+        1.514921
+      ],
+      "Hand_2.L": [
+        -0.081433,
+        0.064686,
+        1.53898
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.098334,
+        1.072539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.339578,
+        0.949177
+      ],
+      "Arm_2.R": [
+        0.505392,
+        0.040941,
+        1.333526
+      ],
+      "Hand_1.R": [
+        0.286789,
+        0.02026,
+        1.44507
+      ],
+      "Hand_2.R": [
+        0.258418,
+        0.012727,
+        1.458192
+      ],
+      "RecorderGrip": [
+        -0.033551,
+        0.046089,
+        1.580568
+      ],
+      "CassetteGrip": [
+        0.175,
+        0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.146439,
+        -0.013183,
+        1.448621
+      ]
+    },
+    "40": {
+      "Arm_1.L": [
+        -0.553541,
+        0.026129,
+        1.134128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.011604,
+        1.024996
+      ],
+      "Arm_2.L": [
+        -0.288934,
+        0.053213,
+        1.356818
+      ],
+      "Hand_1.L": [
+        -0.101123,
+        0.072889,
+        1.514921
+      ],
+      "Hand_2.L": [
+        -0.081433,
+        0.064686,
+        1.53898
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.098334,
+        1.072539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.339578,
+        0.949177
+      ],
+      "Arm_2.R": [
+        0.505619,
+        0.042598,
+        1.333693
+      ],
+      "Hand_1.R": [
+        0.286687,
+        0.02047,
+        1.44431
+      ],
+      "Hand_2.R": [
+        0.258487,
+        0.012859,
+        1.457753
+      ],
+      "RecorderGrip": [
+        -0.033551,
+        0.046089,
+        1.580568
+      ],
+      "CassetteGrip": [
+        0.175,
+        0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.146492,
+        -0.013416,
+        1.44945
+      ]
+    },
+    "52": {
+      "Arm_1.L": [
+        -0.553541,
+        0.026129,
+        1.134128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.011604,
+        1.024996
+      ],
+      "Arm_2.L": [
+        -0.288934,
+        0.053213,
+        1.356818
+      ],
+      "Hand_1.L": [
+        -0.101123,
+        0.072889,
+        1.514921
+      ],
+      "Hand_2.L": [
+        -0.081433,
+        0.064686,
+        1.53898
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.098334,
+        1.072539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.339578,
+        0.949177
+      ],
+      "Arm_2.R": [
+        0.358586,
+        -0.109069,
+        1.340476
+      ],
+      "Hand_1.R": [
+        0.222529,
+        -0.002856,
+        1.516158
+      ],
+      "Hand_2.R": [
+        0.204048,
+        0.005487,
+        1.541113
+      ],
+      "RecorderGrip": [
+        -0.033551,
+        0.046089,
+        1.580568
+      ],
+      "CassetteGrip": [
+        0.099822,
+        0.035784,
+        1.57712
+      ],
+      "CassetteContact": [
+        0.113495,
+        0.061517,
+        1.585416
+      ]
+    },
+    "70": {
+      "Arm_1.L": [
+        -0.553541,
+        0.026129,
+        1.134128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.011604,
+        1.024996
+      ],
+      "Arm_2.L": [
+        -0.290299,
+        0.054078,
+        1.358324
+      ],
+      "Hand_1.L": [
+        -0.103442,
+        0.074358,
+        1.517478
+      ],
+      "Hand_2.L": [
+        -0.08384,
+        0.0662,
+        1.541624
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.098334,
+        1.072539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.339578,
+        0.949177
+      ],
+      "Arm_2.R": [
+        0.178369,
+        -0.112757,
+        1.326677
+      ],
+      "Hand_1.R": [
+        0.05015,
+        -0.004457,
+        1.506921
+      ],
+      "Hand_2.R": [
+        0.031765,
+        0.001653,
+        1.532583
+      ],
+      "RecorderGrip": [
+        -0.036103,
+        0.047692,
+        1.583417
+      ],
+      "CassetteGrip": [
+        -0.0409,
+        0.0278,
+        1.5982
+      ],
+      "CassetteContact": [
+        -0.04264,
+        0.068646,
+        1.589836
+      ]
+    },
+    "73": {
+      "Arm_1.L": [
+        -0.553541,
+        0.026129,
+        1.134128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.011604,
+        1.024996
+      ],
+      "Arm_2.L": [
+        -0.289301,
+        0.053443,
+        1.357225
+      ],
+      "Hand_1.L": [
+        -0.101746,
+        0.073295,
+        1.51561
+      ],
+      "Hand_2.L": [
+        -0.082066,
+        0.065087,
+        1.539676
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.098334,
+        1.072539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.339578,
+        0.949177
+      ],
+      "Arm_2.R": [
+        0.178723,
+        -0.112321,
+        1.327185
+      ],
+      "Hand_1.R": [
+        0.049719,
+        -0.004298,
+        1.507035
+      ],
+      "Hand_2.R": [
+        0.031272,
+        0.001761,
+        1.532665
+      ],
+      "RecorderGrip": [
+        -0.034196,
+        0.046495,
+        1.58128
+      ],
+      "CassetteGrip": [
+        -0.0434,
+        0.0278,
+        1.5982
+      ],
+      "CassetteContact": [
+        -0.04354,
+        0.068468,
+        1.589721
+      ]
+    },
+    "84": {
+      "Arm_1.L": [
+        -0.553541,
+        0.206128,
+        1.083728
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.191604,
+        0.974596
+      ],
+      "Arm_2.L": [
+        -0.303167,
+        0.150331,
+        1.317267
+      ],
+      "Hand_1.L": [
+        -0.125311,
+        0.11116,
+        1.483068
+      ],
+      "Hand_2.L": [
+        -0.110303,
+        0.097517,
+        1.508017
+      ],
+      "Arm_1.R": [
+        0.284182,
+        0.278334,
+        1.022139
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.159578,
+        0.898777
+      ],
+      "Arm_2.R": [
+        0.111912,
+        0.2325,
+        1.319736
+      ],
+      "Hand_1.R": [
+        0.050736,
+        0.080292,
+        1.503442
+      ],
+      "Hand_2.R": [
+        0.037119,
+        0.069928,
+        1.530663
+      ],
+      "RecorderGrip": [
+        -0.072731,
+        0.065243,
+        1.551774
+      ],
+      "CassetteGrip": [
+        -0.002,
+        0.043,
+        1.614
+      ],
+      "CassetteContact": [
+        0.044396,
+        -0.021015,
+        1.621825
+      ]
+    },
+    "121": {
+      "Arm_1.L": [
+        -0.553541,
+        0.186128,
+        1.089328
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.171604,
+        0.980196
+      ],
+      "Arm_2.L": [
+        -0.300947,
+        0.138965,
+        1.32238
+      ],
+      "Hand_1.L": [
+        -0.121528,
+        0.105925,
+        1.48783
+      ],
+      "Hand_2.L": [
+        -0.106077,
+        0.092901,
+        1.51284
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.258334,
+        1.027739
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.179578,
+        0.904377
+      ],
+      "Arm_2.R": [
+        0.034246,
+        0.139692,
+        1.237018
+      ],
+      "Hand_1.R": [
+        0.172244,
+        0.01686,
+        1.399885
+      ],
+      "Hand_2.R": [
+        0.185112,
+        0.001708,
+        1.425158
+      ],
+      "RecorderGrip": [
+        -0.067514,
+        0.062008,
+        1.556732
+      ],
+      "CassetteGrip": [
+        0.175,
+        0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.29528,
+        -0.016547,
+        1.489685
+      ]
+    },
+    "133": {
+      "Arm_1.L": [
+        -0.553541,
+        0.026129,
+        1.134128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.011604,
+        1.024996
+      ],
+      "Arm_2.L": [
+        -0.288934,
+        0.053213,
+        1.356818
+      ],
+      "Hand_1.L": [
+        -0.101123,
+        0.072889,
+        1.514921
+      ],
+      "Hand_2.L": [
+        -0.081433,
+        0.064686,
+        1.53898
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.098334,
+        1.072539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.339578,
+        0.949177
+      ],
+      "Arm_2.R": [
+        0.070782,
+        -0.137744,
+        1.21063
+      ],
+      "Hand_1.R": [
+        0.191029,
+        -0.047416,
+        1.405664
+      ],
+      "Hand_2.R": [
+        0.202774,
+        -0.034858,
+        1.432835
+      ],
+      "RecorderGrip": [
+        -0.033551,
+        0.046089,
+        1.580568
+      ],
+      "CassetteGrip": [
+        0.175,
+        0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.268432,
+        0.065401,
+        1.480492
+      ]
+    },
+    "151": {
+      "Arm_1.L": [
+        -0.553541,
+        0.026129,
+        1.134128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.011604,
+        1.024996
+      ],
+      "Arm_2.L": [
+        -0.288934,
+        0.053213,
+        1.356818
+      ],
+      "Hand_1.L": [
+        -0.101123,
+        0.072889,
+        1.514921
+      ],
+      "Hand_2.L": [
+        -0.081433,
+        0.064686,
+        1.53898
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.098334,
+        1.072539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.339578,
+        0.949177
+      ],
+      "Arm_2.R": [
+        0.178724,
+        -0.112322,
+        1.327185
+      ],
+      "Hand_1.R": [
+        0.04972,
+        -0.004298,
+        1.507035
+      ],
+      "Hand_2.R": [
+        0.031272,
+        0.001761,
+        1.532664
+      ],
+      "RecorderGrip": [
+        -0.033551,
+        0.046089,
+        1.580568
+      ],
+      "CassetteGrip": [
+        -0.0434,
+        0.0278,
+        1.5982
+      ],
+      "CassetteContact": [
+        -0.045874,
+        0.073873,
+        1.5888
+      ]
+    },
+    "175": {
+      "Arm_1.L": [
+        -0.553541,
+        0.026129,
+        1.134128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.011604,
+        1.024996
+      ],
+      "Arm_2.L": [
+        -0.288934,
+        0.053213,
+        1.356817
+      ],
+      "Hand_1.L": [
+        -0.101123,
+        0.072889,
+        1.514921
+      ],
+      "Hand_2.L": [
+        -0.081433,
+        0.064686,
+        1.53898
+      ],
+      "Arm_1.R": [
+        0.284183,
+        0.098334,
+        1.072539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.339578,
+        0.949177
+      ],
+      "Arm_2.R": [
+        0.505391,
+        0.040941,
+        1.333527
+      ],
+      "Hand_1.R": [
+        0.286787,
+        0.020261,
+        1.44507
+      ],
+      "Hand_2.R": [
+        0.258416,
+        0.012728,
+        1.458192
+      ],
+      "RecorderGrip": [
+        -0.033551,
+        0.046089,
+        1.580568
+      ],
+      "CassetteGrip": [
+        0.175,
+        -0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.146437,
+        -0.013181,
+        1.448622
+      ]
+    },
+    "187": {
+      "Arm_1.L": [
+        -0.553541,
+        0.221129,
+        1.079528
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.206604,
+        0.970396
+      ],
+      "Arm_2.L": [
+        -0.304912,
+        0.158981,
+        1.313328
+      ],
+      "Hand_1.L": [
+        -0.128286,
+        0.1153,
+        1.479316
+      ],
+      "Hand_2.L": [
+        -0.113606,
+        0.101201,
+        1.504207
+      ],
+      "Arm_1.R": [
+        0.284182,
+        0.293334,
+        1.017939
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        -0.144578,
+        0.894577
+      ],
+      "Arm_2.R": [
+        0.282034,
+        0.295257,
+        1.364831
+      ],
+      "Hand_1.R": [
+        0.21954,
+        0.069484,
+        1.440844
+      ],
+      "Hand_2.R": [
+        0.215412,
+        0.040891,
+        1.454961
+      ],
+      "RecorderGrip": [
+        -0.076769,
+        0.067916,
+        1.547832
+      ],
+      "CassetteGrip": [
+        0.175,
+        0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.2128,
+        -0.074338,
+        1.450783
+      ]
+    },
+    "199": {
+      "Arm_1.L": [
+        -0.553541,
+        0.526128,
+        0.994128
+      ],
+      "SupportSleeveCutoff": [
+        -0.68165,
+        0.511604,
+        0.884996
+      ],
+      "Arm_2.L": [
+        -0.347707,
+        0.361213,
+        1.219465
+      ],
+      "Hand_1.L": [
+        -0.201336,
+        0.244536,
+        1.379524
+      ],
+      "Hand_2.L": [
+        -0.192782,
+        0.223191,
+        1.401997
+      ],
+      "Arm_1.R": [
+        0.284182,
+        0.598334,
+        0.932539
+      ],
+      "CassetteSleeveCutoff": [
+        0.446909,
+        0.160422,
+        0.809177
+      ],
+      "Arm_2.R": [
+        0.256163,
+        0.336424,
+        1.158282
+      ],
+      "Hand_1.R": [
+        0.235912,
+        0.150264,
+        1.318256
+      ],
+      "Hand_2.R": [
+        0.227516,
+        0.134846,
+        1.345194
+      ],
+      "RecorderGrip": [
+        -0.169469,
+        0.174546,
+        1.440183
+      ],
+      "CassetteGrip": [
+        0.175,
+        0.0,
+        1.5
+      ],
+      "CassetteContact": [
+        0.217938,
+        0.03821,
+        1.407418
+      ]
+    }
+  },
+  "runtimeBones": [
+    "SoulRecorderHandsRoot",
+    "Arm_1.L",
+    "Arm_2.L",
+    "Hand_1.L",
+    "Hand_2.L",
+    "Finger_4_1.L",
+    "Finger_4_2.L",
+    "Finger_4_3.L",
+    "Finger_4_3.L_end",
+    "Finger_5_1.L",
+    "Finger_5_2.L",
+    "Finger_5_3.L",
+    "Finger_5_3.L_end",
+    "RecorderGrip",
+    "Finger_3_1.L",
+    "Finger_3_2.L",
+    "Finger_3_3.L",
+    "Finger_3_3.L_end",
+    "Finger_2_1.L",
+    "Finger_2_2.L",
+    "Finger_2_3.L",
+    "Finger_2_3.L_end",
+    "Finger_1_1.L",
+    "Finger_1_2.L",
+    "Finger_1_3.L",
+    "Finger_1_4.L",
+    "Finger_1_4.L_end",
+    "Arm_1.R",
+    "Arm_2.R",
+    "Hand_1.R",
+    "Hand_2.R",
+    "Finger_4_1.R",
+    "Finger_4_2.R",
+    "Finger_4_3.R",
+    "Finger_4_3.R_end",
+    "Finger_5_1.R",
+    "Finger_5_2.R",
+    "Finger_5_3.R",
+    "Finger_5_3.R_end",
+    "Finger_3_1.R",
+    "Finger_3_2.R",
+    "Finger_3_3.R",
+    "Finger_3_3.R_end",
+    "Finger_2_1.R",
+    "Finger_2_2.R",
+    "Finger_2_3.R",
+    "Finger_2_3.R_end",
+    "CassetteContact",
+    "Finger_1_1.R",
+    "Finger_1_2.R",
+    "Finger_1_3.R",
+    "Finger_1_4.R",
+    "Finger_1_4.R_end",
+    "CassetteGrip",
+    "SupportSleeveCutoff",
+    "CassetteSleeveCutoff"
+  ],
+  "socketParents": {
+    "RecorderGrip": "Hand_2.L",
+    "CassetteGrip": "Hand_1.R",
+    "CassetteContact": "Finger_2_2.R",
+    "SupportSleeveCutoff": "SoulRecorderHandsRoot",
+    "CassetteSleeveCutoff": "SoulRecorderHandsRoot"
+  },
+  "sourceWeightAudit": {
+    "vertexCount": 6942,
+    "dominantRegionCounts": {
+      "forearm": 582,
+      "wristHandFingers": 5530,
+      "upperArm": 830
+    },
+    "dominantBoneCounts": {
+      "Arm_1.L": 415,
+      "Arm_1.R": 415,
+      "Arm_2.L": 291,
+      "Arm_2.R": 291,
+      "Finger_1_1.L": 89,
+      "Finger_1_1.R": 89,
+      "Finger_1_2.L": 92,
+      "Finger_1_2.R": 92,
+      "Finger_1_3.L": 122,
+      "Finger_1_3.R": 122,
+      "Finger_1_4.L": 119,
+      "Finger_1_4.R": 119,
+      "Finger_2_1.L": 215,
+      "Finger_2_1.R": 215,
+      "Finger_2_2.L": 139,
+      "Finger_2_2.R": 139,
+      "Finger_2_3.L": 164,
+      "Finger_2_3.R": 164,
+      "Finger_3_1.L": 179,
+      "Finger_3_1.R": 179,
+      "Finger_3_2.L": 102,
+      "Finger_3_2.R": 102,
+      "Finger_3_3.L": 203,
+      "Finger_3_3.R": 203,
+      "Finger_4_1.L": 174,
+      "Finger_4_1.R": 174,
+      "Finger_4_2.L": 119,
+      "Finger_4_2.R": 119,
+      "Finger_4_3.L": 192,
+      "Finger_4_3.R": 192,
+      "Finger_5_1.L": 174,
+      "Finger_5_1.R": 174,
+      "Finger_5_2.L": 124,
+      "Finger_5_2.R": 124,
+      "Finger_5_3.L": 148,
+      "Finger_5_3.R": 148,
+      "Hand_1.L": 280,
+      "Hand_1.R": 280,
+      "Hand_2.L": 130,
+      "Hand_2.R": 130
+    },
+    "dominantRegionBoundsArmatureLocal": {
+      "forearm": {
+        "minimum": [
+          -0.783284,
+          0.056158,
+          1.250743
+        ],
+        "maximum": [
+          0.783284,
+          0.258151,
+          1.331075
+        ],
+        "dimensions": [
+          1.566568,
+          0.201993,
+          0.080332
+        ]
+      },
+      "wristHandFingers": {
+        "minimum": [
+          -0.950614,
+          0.192884,
+          1.223881
+        ],
+        "maximum": [
+          0.950614,
+          0.366921,
+          1.296418
+        ],
+        "dimensions": [
+          1.901227,
+          0.174037,
+          0.072537
+        ]
+      },
+      "upperArm": {
+        "minimum": [
+          -0.595048,
+          -0.057576,
+          1.229648
+        ],
+        "maximum": [
+          0.595048,
+          0.137829,
+          1.374722
+        ],
+        "dimensions": [
+          1.190097,
+          0.195404,
+          0.145074
+        ]
+      }
+    },
+    "upperArmProjectionBins": {
+      "L": {
+        "proximal0To25": 120,
+        "proximal25To50": 96,
+        "distal50To75": 93,
+        "distal75To100": 118,
+        "beyondElbow": 3044
+      },
+      "R": {
+        "proximal0To25": 120,
+        "proximal25To50": 96,
+        "distal50To75": 93,
+        "distal75To100": 118,
+        "beyondElbow": 3044
+      }
+    }
+  },
+  "fpsCrop": {
+    "strategy": "distal-forearm FPS crop plus contact-pose-solved sleeve continuation",
+    "sourceMeshUntouched": true,
+    "cutoffFractionFromForearmStart": 0.22,
+    "sleeveExtensionReferenceFrame": 70,
+    "sleeveExtensionLength": 0.57,
+    "sleeveExtensionArmatureRest": {
+      "L": [
+        -0.045341,
+        -0.193981,
+        -0.263356
+      ],
+      "R": [
+        -0.1894,
+        -0.545163,
+        -0.339175
+      ]
+    },
+    "extensionVertices": 52,
+    "removedVertices": 910,
+    "removedVerticesBySide": {
+      "L": 481,
+      "R": 481
+    },
+    "retainedVertices": 6032,
+    "removedSourcePolygons": 964,
+    "retainedPolygonsIncludingCaps": 5954,
+    "removedTrianglesNet": 1776,
+    "capFaces": 2,
+    "retainedWeights": "original BAMEN weights unchanged; generated off-screen sleeve endpoints follow the hands root",
+    "visibleIntent": "hands, wrists, and distal forearms only; elbows and upper arms removed"
+  },
+  "derivedOutput": "soulrecorder_bamen_rig.fbx",
+  "derivedFbxSizeBytes": 1558140,
+  "validation": {
+    "passed": true,
+    "errors": [],
+    "warnings": []
+  }
+}

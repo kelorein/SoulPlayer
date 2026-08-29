@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using SoulPlayer.Library;
 
 namespace SoulPlayer.Cassettes
 {
@@ -53,7 +54,13 @@ namespace SoulPlayer.Cassettes
                 throw new ArgumentException("A spawn-anchor path is required.", "path");
             }
 
-            _path = Path.GetFullPath(path);
+            _path = SoulPath.NormalizeConfiguredPath(
+                path,
+                AppDomain.CurrentDomain.BaseDirectory);
+            if (string.IsNullOrWhiteSpace(_path))
+            {
+                throw new ArgumentException("The spawn-anchor path is invalid.", "path");
+            }
         }
 
         internal string PathDescription { get { return _path; } }

@@ -24,6 +24,9 @@ namespace SoulPlayer.Cassettes
             UnlockedCassetteIds = new List<string>();
             FavoriteCassetteIds = new List<string>();
             SelectedRecorderCassetteId = string.Empty;
+            DiscoveredCassetteMetadata =
+                new Dictionary<string, SoulTapeDiscoveredCassetteMetadata>(
+                    StringComparer.Ordinal);
         }
 
         public int Version { get; set; }
@@ -31,6 +34,23 @@ namespace SoulPlayer.Cassettes
         public List<string> UnlockedCassetteIds { get; set; }
         public List<string> FavoriteCassetteIds { get; set; }
         public string SelectedRecorderCassetteId { get; set; }
+        public Dictionary<string, SoulTapeDiscoveredCassetteMetadata>
+            DiscoveredCassetteMetadata { get; set; }
+    }
+
+    internal sealed class SoulTapeDiscoveredCassetteMetadata
+    {
+        public SoulTapeDiscoveredCassetteMetadata()
+        {
+            Artist = string.Empty;
+            Title = string.Empty;
+            AudioReference = string.Empty;
+        }
+
+        public string Artist { get; set; }
+        public string Title { get; set; }
+        public string AudioReference { get; set; }
+        public SoulTapeRarity? Rarity { get; set; }
     }
 
     internal sealed class SoulTapeLoadResult
@@ -195,6 +215,10 @@ namespace SoulPlayer.Cassettes
                 data.FavoriteCassetteIds = data.FavoriteCassetteIds ?? new List<string>();
                 data.SelectedRecorderCassetteId =
                     (data.SelectedRecorderCassetteId ?? string.Empty).Trim();
+                data.DiscoveredCassetteMetadata =
+                    data.DiscoveredCassetteMetadata ??
+                    new Dictionary<string, SoulTapeDiscoveredCassetteMetadata>(
+                        StringComparer.Ordinal);
                 return data;
             }
             catch (Exception ex)

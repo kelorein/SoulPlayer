@@ -15,29 +15,24 @@ namespace SoulPlayer.Recorder
         Hidden,
         Entering,
         Held,
-        AutoLowering,
-        Lowered,
-        RaisingForEject,
         Exiting
     }
 
     /// <summary>
     /// Pure presentation state used by the procedural Unity view. Recorder gameplay
-    /// remains owned by SoulRecorderUsableItemController; this class only describes
+    /// remains owned by SoulRecorderNativePresentation; this class only describes
     /// how far the replaceable visual should have moved.
     /// </summary>
     internal sealed class SoulRecorderPresentationState
     {
         private float _enterStartedAt;
         private float _exitStartedAt;
-        private float _exitStartLoweredAmount;
+        private float _exitStartOffscreenAmount;
         private float _insertionStartedAt;
-        private float _playbackStartedAt;
-        private float _autoLowerStartedAt;
-        private float _raiseStartedAt;
-        private float _raiseStartLoweredAmount;
         private float _ejectionStartedAt;
         private float _ejectionStartTravel;
+        private float _ejectionLeadInSeconds;
+        private float _ejectionMotionSeconds;
 
         internal SoulRecorderVisualPoseState PoseState { get; private set; }
         internal bool IsVisible { get { return PoseState != SoulRecorderVisualPoseState.Hidden; } }
@@ -69,10 +64,6 @@ namespace SoulPlayer.Recorder
         internal void SetPlayback(bool isPlaying, float now)
         {
             IsPlaying = isPlaying;
-            if (isPlaying)
-            {
-                _playbackStartedAt = now;
-            }
         }
 
         internal void Advance(float now)
@@ -83,24 +74,6 @@ namespace SoulPlayer.Recorder
                 PoseState = SoulRecorderVisualPoseState.Held;
             }
 
-            if (IsPlaying && PoseState == SoulRecorderVisualPoseState.Held &&
-                now - _playbackStartedAt >= SoulRecorderPresentationTuning.PlaybackVisibleSeconds)
-            {
-                PoseState = SoulRecorderVisualPoseState.AutoLowering;
-                _autoLowerStartedAt = now;
-            }
-
-            if (PoseState == SoulRecorderVisualPoseState.AutoLowering &&
-                GetAutoLowerProgress(now) >= 1f)
-            {
-                PoseState = SoulRecorderVisualPoseState.Lowered;
-            }
-
-            if (PoseState == SoulRecorderVisualPoseState.RaisingForEject &&
-                GetRaiseForEjectProgress(now) >= 1f)
-            {
-                PoseState = SoulRecorderVisualPoseState.Held;
-            }
         }
 
         internal void StartEjection(float now)
@@ -109,26 +82,18 @@ namespace SoulPlayer.Recorder
             _ejectionStartTravel = CassetteState == SoulRecorderCassetteVisualState.Inserting
                 ? GetInsertionProgress(now)
                 : CassetteState == SoulRecorderCassetteVisualState.Hidden ? 0f : 1f;
-            _raiseStartLoweredAmount = GetLoweredAmount(now);
-            bool mustRaise = _raiseStartLoweredAmount > 0.001f;
-
+            bool interruptedInsertion = CassetteState == SoulRecorderCassetteVisualState.Inserting;
             IsPlaying = false;
             CassetteState = SoulRecorderCassetteVisualState.Ejecting;
-            if (mustRaise)
-            {
-                PoseState = SoulRecorderVisualPoseState.RaisingForEject;
-                _raiseStartedAt = now;
-                _ejectionStartedAt = now + SoulRecorderPresentationTuning.RaiseForEjectSeconds;
-                EjectionTotalSeconds =
-                    SoulRecorderPresentationTuning.RaiseForEjectSeconds +
-                    SoulRecorderPresentationTuning.TapeEjectionSeconds;
-            }
-            else
-            {
-                PoseState = SoulRecorderVisualPoseState.Held;
-                _ejectionStartedAt = now;
-                EjectionTotalSeconds = SoulRecorderPresentationTuning.TapeEjectionSeconds;
-            }
+            _ejectionStartedAt = now;
+            _ejectionLeadInSeconds = interruptedInsertion
+                ? SoulRecorderPresentationTuning.InterruptedEjectionLeadInSeconds
+                : SoulRecorderPresentationTuning.StopEjectionLeadInSeconds;
+            _ejectionMotionSeconds = interruptedInsertion
+                ? SoulRecorderPresentationTuning.CassetteEjectionMotionSeconds *
+                    Math.Max(0.25f, _ejectionStartTravel)
+                : SoulRecorderPresentationTuning.CassetteEjectionMotionSeconds;
+            EjectionTotalSeconds = _ejectionLeadInSeconds + _ejectionMotionSeconds;
         }
 
         internal void HideCassette()
@@ -138,7 +103,7 @@ namespace SoulPlayer.Recorder
 
         internal void Exit(float now)
         {
-            _exitStartLoweredAmount = GetLoweredAmount(now);
+            _exitStartOffscreenAmount = GetOffscreenAmount(now);
             PoseState = SoulRecorderVisualPoseState.Exiting;
             IsPlaying = false;
             _exitStartedAt = now;
@@ -157,14 +122,12 @@ namespace SoulPlayer.Recorder
             EjectionTotalSeconds = SoulRecorderPresentationTuning.TapeEjectionSeconds;
             _enterStartedAt = 0f;
             _exitStartedAt = 0f;
-            _exitStartLoweredAmount = 0f;
+            _exitStartOffscreenAmount = 0f;
             _insertionStartedAt = 0f;
-            _playbackStartedAt = 0f;
-            _autoLowerStartedAt = 0f;
-            _raiseStartedAt = 0f;
-            _raiseStartLoweredAmount = 0f;
             _ejectionStartedAt = 0f;
             _ejectionStartTravel = 0f;
+            _ejectionLeadInSeconds = 0f;
+            _ejectionMotionSeconds = SoulRecorderPresentationTuning.CassetteEjectionMotionSeconds;
         }
 
         internal float GetEnterProgress(float now)
@@ -181,32 +144,33 @@ namespace SoulPlayer.Recorder
         {
             return Progress(
                 now,
-                _insertionStartedAt,
-                SoulRecorderPresentationTuning.TapeInsertionSeconds);
-        }
-
-        internal float GetAutoLowerProgress(float now)
-        {
-            return Progress(
-                now,
-                _autoLowerStartedAt,
-                SoulRecorderPresentationTuning.AutoLowerSeconds);
-        }
-
-        internal float GetRaiseForEjectProgress(float now)
-        {
-            return Progress(
-                now,
-                _raiseStartedAt,
-                SoulRecorderPresentationTuning.RaiseForEjectSeconds);
+                _insertionStartedAt +
+                    SoulRecorderPresentationTuning.CassetteInsertionLeadInSeconds,
+                SoulRecorderPresentationTuning.CassetteInsertionMotionSeconds);
         }
 
         internal float GetEjectionProgress(float now)
         {
             return Progress(
                 now,
-                _ejectionStartedAt,
-                SoulRecorderPresentationTuning.TapeEjectionSeconds);
+                _ejectionStartedAt + _ejectionLeadInSeconds,
+                _ejectionMotionSeconds);
+        }
+
+        internal float GetInsertionSettleProgress(float now)
+        {
+            return Progress(
+                now,
+                _insertionStartedAt +
+                    SoulRecorderPresentationTuning.CassetteInsertionLeadInSeconds +
+                    SoulRecorderPresentationTuning.CassetteInsertionMotionSeconds,
+                SoulRecorderPresentationTuning.CassetteInsertionSettleSeconds);
+        }
+
+        internal float GetInsertionSettleAmount(float now)
+        {
+            float progress = GetInsertionSettleProgress(now);
+            return (float)Math.Sin(progress * Math.PI) * (1f - progress);
         }
 
         internal float GetEjectionCassetteTravel(float now)
@@ -215,26 +179,20 @@ namespace SoulPlayer.Recorder
                    (1f - Smooth(GetEjectionProgress(now)));
         }
 
-        internal float GetLoweredAmount(float now)
+        internal float GetOffscreenAmount(float now)
         {
             switch (PoseState)
             {
                 case SoulRecorderVisualPoseState.Hidden:
                     return 1f;
                 case SoulRecorderVisualPoseState.Entering:
-                    return 1f - Smooth(GetEnterProgress(now));
+                    return 1f - EaseOutCubic(GetEnterProgress(now));
                 case SoulRecorderVisualPoseState.Held:
                     return 0f;
-                case SoulRecorderVisualPoseState.AutoLowering:
-                    return Smooth(GetAutoLowerProgress(now));
-                case SoulRecorderVisualPoseState.Lowered:
-                    return 1f;
-                case SoulRecorderVisualPoseState.RaisingForEject:
-                    return _raiseStartLoweredAmount *
-                           (1f - Smooth(GetRaiseForEjectProgress(now)));
                 case SoulRecorderVisualPoseState.Exiting:
-                    return _exitStartLoweredAmount +
-                           ((1f - _exitStartLoweredAmount) * Smooth(GetExitProgress(now)));
+                    return _exitStartOffscreenAmount +
+                           ((1f - _exitStartOffscreenAmount) *
+                            EaseInCubic(GetExitProgress(now)));
                 default:
                     return 1f;
             }
@@ -260,6 +218,30 @@ namespace SoulPlayer.Recorder
         {
             float value = Math.Max(0f, Math.Min(1f, progress));
             return value * value * (3f - (2f * value));
+        }
+
+        internal static float EaseOutCubic(float progress)
+        {
+            float value = Clamp01(progress);
+            float inverse = 1f - value;
+            return 1f - (inverse * inverse * inverse);
+        }
+
+        internal static float EaseInCubic(float progress)
+        {
+            float value = Clamp01(progress);
+            return value * value * value;
+        }
+
+        internal static float SettlePulse(float progress, float start)
+        {
+            float normalized = Progress(progress, start, 1f - start);
+            return (float)Math.Sin(normalized * Math.PI) * (1f - normalized);
+        }
+
+        private static float Clamp01(float value)
+        {
+            return Math.Max(0f, Math.Min(1f, value));
         }
     }
 }

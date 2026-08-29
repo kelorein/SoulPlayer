@@ -93,6 +93,8 @@ namespace SoulPlayer.Cassettes
     {
         private readonly ISoulTapeCatalog _catalog;
         private readonly SoulTapeCollection _collection;
+        private readonly ISoulTapeEligibleCatalogProvider _eligibleCatalog;
+        private readonly ISoulTapeAssignmentSnapshotProvider _assignments;
 
         internal SoulTapeCollectionProjection(
             ISoulTapeCatalog catalog,
@@ -100,6 +102,28 @@ namespace SoulPlayer.Cassettes
         {
             _catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
             _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+        }
+
+        internal SoulTapeCollectionProjection(
+            ISoulTapeCatalog catalog,
+            SoulTapeCollection collection,
+            ISoulTapeEligibleCatalogProvider eligibleCatalog)
+            : this(catalog, collection)
+        {
+            _eligibleCatalog = eligibleCatalog;
+        }
+
+        /// <summary>
+        /// Compatibility constructor for the deprecated persistent assignment
+        /// projection. New runtime UI uses ISoulTapeEligibleCatalogProvider.
+        /// </summary>
+        internal SoulTapeCollectionProjection(
+            ISoulTapeCatalog catalog,
+            SoulTapeCollection collection,
+            ISoulTapeAssignmentSnapshotProvider assignments)
+            : this(catalog, collection)
+        {
+            _assignments = assignments;
         }
 
         internal SoulTapeCollectionSnapshot Project(SoulTapeCollectionFilter filter)
@@ -117,8 +141,7 @@ namespace SoulPlayer.Cassettes
                     new List<SoulTapeCollectionCard>());
             }
 
-            List<SoulTapeCollectionCard> all = _catalog.GetAllTapes()
-                .Where(tape => tape != null && tape.Rarity.HasValue)
+            List<SoulTapeCollectionCard> all = GetEffectiveCatalog()
                 .Select(ProjectCard)
                 .OrderBy(card => card.IsDiscovered ? 0 : 1)
                 .ThenBy(card => card.Id, StringComparer.Ordinal)
@@ -151,6 +174,56 @@ namespace SoulPlayer.Cassettes
                 selectedCard == null ? string.Empty : selectedCard.Artist,
                 selectedCard == null ? string.Empty : selectedCard.Title,
                 filtered.ToList());
+        }
+
+        private IReadOnlyList<SoulTapeCatalogEntry> GetEffectiveCatalog()
+        {
+            if (_eligibleCatalog == null && _assignments == null)
+            {
+                // Compatibility path for callers that deliberately project the
+                // legacy curated catalog without a profile assignment provider.
+                return _catalog.GetAllTapes()
+                    .Where(tape => tape != null && tape.Rarity.HasValue)
+                    .ToList();
+            }
+
+            HashSet<string> ids = new HashSet<string>(
+                _collection.GetUnlockedTapeIds(), StringComparer.Ordinal);
+            SoulTapeEligibleCatalogSnapshot eligible =
+                _eligibleCatalog == null
+                    ? null
+                    : _eligibleCatalog.CurrentEligibleCatalog;
+            if (eligible != null && string.Equals(
+                    eligible.ProfileId,
+                    _collection.ProfileId,
+                    StringComparison.Ordinal))
+            {
+                ids.UnionWith(eligible.TapeIds);
+            }
+
+            SoulTapeAssignmentSnapshot snapshot = _assignments == null
+                ? null
+                : _assignments.CurrentAssignments;
+            if (snapshot != null && string.Equals(
+                    snapshot.ProfileId,
+                    _collection.ProfileId,
+                    StringComparison.Ordinal))
+            {
+                ids.UnionWith(snapshot.Assignments.Values);
+            }
+
+            List<SoulTapeCatalogEntry> result =
+                new List<SoulTapeCatalogEntry>();
+            foreach (string id in ids.OrderBy(value => value, StringComparer.Ordinal))
+            {
+                SoulTapeCatalogEntry tape;
+                if (_catalog.TryGetTape(id, out tape) ||
+                    _collection.TryResolveHistoricalTape(id, out tape))
+                {
+                    result.Add(tape);
+                }
+            }
+            return result;
         }
 
         private SoulTapeCollectionCard ProjectCard(SoulTapeCatalogEntry tape)

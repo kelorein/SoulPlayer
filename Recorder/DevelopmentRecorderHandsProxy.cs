@@ -17,7 +17,9 @@ namespace SoulPlayer.Recorder
         private bool _loggedMissingProxy;
 
         public float TapeInsertionSeconds { get { return 0.25f; } }
+        public float TapePreparationLeadSeconds { get { return 0.15f; } }
         public float TapeEjectionSeconds { get { return 0.25f; } }
+        public float TapeEjectionAudioStopSeconds { get { return 0f; } }
 
         public void OnInteractionEntered(Player player)
         {

@@ -1,0 +1,32 @@
+SoulRecorder replacement-arm auto animation draft v2
+StaticMaster_v1: LOCKED 2EA27472ACBEBF323D9C2502AF7FDFCE1FC3FB8ACDD72D56629C8E8ECEC20AA2
+Human CassetteAlign: preserved / authoritative grip anchor
+Human CassetteContact: preserved; auto physical draft stored separately
+
+Pose metrics
+Auto_CassetteAlign: owner=Hand axisError=155.1888deg extension=91.53% gripError=0.000mm
+Auto_CassetteContact: owner=Hand axisError=0.0000deg extension=92.00% gripError=0.000mm
+Auto_CassetteEjectApproach: owner=Recorder axisError=0.0000deg extension=89.76% gripError=0.000mm
+Auto_CassetteEjectClear: owner=Hand axisError=0.0000deg extension=92.00% gripError=0.000mm
+Auto_CassetteEjectGrip: owner=Hand axisError=0.0000deg extension=88.93% gripError=0.000mm
+Auto_CassetteHalfInserted: owner=Hand axisError=0.0000deg extension=90.43% gripError=0.000mm
+Auto_CassetteRelease: owner=Recorder axisError=0.0000deg extension=90.12% gripError=0.000mm
+Auto_CassetteSeated: owner=Hand axisError=0.0000deg extension=88.93% gripError=0.000mm
+Auto_HandsBelowCarry: owner=Hand axisError=177.3915deg extension=87.45% gripError=0.000mm
+Auto_HandsBelowSeated: owner=Recorder axisError=0.0000deg extension=90.12% gripError=0.000mm
+Auto_StopRecorderReturn: owner=Recorder axisError=0.0000deg extension=91.49% gripError=0.000mm
+Auto_SupportHold: owner=Hand axisError=177.3915deg extension=87.45% gripError=0.000mm
+
+contact/slot entry error: 0.000 mm (derived marker target)
+seated error: 0.000 mm (derived marker target)
+maximum lateral insertion drift: 0.0002 mm
+final insertion rotation delta: 0.0000 deg
+contact grip translation from human Align: 64.81 mm
+contact wrist deviation from StaticMaster: 20.00 deg
+left arm / recorder lock: PASS for every interaction key pose
+finger/cassette readability: FAIL; cassette is obscured at Contact/HalfInserted
+right-arm silhouette: FAIL; fixed-shoulder chain remains nearly horizontal at 92% extension
+human CassetteContact comparison: FAIL; approaches over recorder and obscures slot
+ownership transfer snap: 0.000 mm by construction
+AUTO NUMERICAL GATE: PASS
+AUTO VISUAL DRAFT V2 GATE: FAIL

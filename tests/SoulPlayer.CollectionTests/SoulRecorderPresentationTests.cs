@@ -13,6 +13,31 @@ namespace SoulPlayer.CollectionTests
 {
     public sealed class SoulRecorderPresentationTests : IDisposable
     {
+        [Fact]
+        [Trait("Validation", "RecorderPresentation")]
+        public void AnimatedClipTimingHitsInsertionAndEjectionContactDeterministically()
+        {
+            float startInteraction =
+                ProceduralSoulRecorderHandsView.EnterClipSeconds +
+                ProceduralSoulRecorderHandsView.InsertClipSeconds +
+                ProceduralSoulRecorderHandsView.ExitClipSeconds;
+            float stopInteraction =
+                ProceduralSoulRecorderHandsView.StopEnterClipSeconds +
+                ProceduralSoulRecorderHandsView.EjectClipSeconds +
+                ProceduralSoulRecorderHandsView.ExitClipSeconds;
+            float ejectionContact =
+                ProceduralSoulRecorderHandsView.StopEnterClipSeconds +
+                ProceduralSoulRecorderHandsView.EjectTransferSeconds;
+
+            Assert.InRange(startInteraction, 1.50f, 2.20f);
+            Assert.InRange(stopInteraction, 1.30f, 2.00f);
+            Assert.True(ejectionContact >
+                ProceduralSoulRecorderHandsView.StopEnterClipSeconds);
+            Assert.True(ejectionContact <
+                ProceduralSoulRecorderHandsView.StopEnterClipSeconds +
+                ProceduralSoulRecorderHandsView.EjectClipSeconds);
+        }
+
         private readonly string _folder = Path.Combine(
             Path.GetTempPath(),
             "SoulRecorderPresentation-" + Guid.NewGuid().ToString("N"));
@@ -26,13 +51,10 @@ namespace SoulPlayer.CollectionTests
         [Trait("Validation", "RecorderPresentation")]
         public void AnimationTimingConstantsArePositiveAndPractical()
         {
-            Assert.InRange(SoulRecorderPresentationTuning.EnterSeconds, 0.20f, 0.30f);
-            Assert.InRange(SoulRecorderPresentationTuning.ExitSeconds, 0.15f, 0.35f);
-            Assert.InRange(SoulRecorderPresentationTuning.TapeInsertionSeconds, 0.50f, 0.70f);
-            Assert.InRange(SoulRecorderPresentationTuning.TapeEjectionSeconds, 0.45f, 0.65f);
-            Assert.InRange(SoulRecorderPresentationTuning.PlaybackVisibleSeconds, 0.8f, 1.2f);
-            Assert.Equal(0.25f, SoulRecorderPresentationTuning.AutoLowerSeconds);
-            Assert.InRange(SoulRecorderPresentationTuning.RaiseForEjectSeconds, 0.20f, 0.25f);
+            Assert.InRange(SoulRecorderPresentationTuning.EnterSeconds, 0.30f, 0.45f);
+            Assert.InRange(SoulRecorderPresentationTuning.ExitSeconds, 0.25f, 0.40f);
+            Assert.InRange(SoulRecorderPresentationTuning.TapeInsertionSeconds, 1.0f, 1.25f);
+            Assert.InRange(SoulRecorderPresentationTuning.TapeEjectionSeconds, 0.90f, 1.10f);
             Assert.True(SoulRecorderPresentationTuning.ReelDegreesPerSecond > 0f);
         }
 
@@ -165,14 +187,99 @@ namespace SoulPlayer.CollectionTests
         public void CassetteInsertionEndpointsAreDeterministicAndDistinct()
         {
             Assert.Equal(
-                new Vector3(0.13f, -0.12f, -0.105f),
+                new Vector3(0.105f, -0.080f, -0.125f),
                 SoulRecorderPresentationTuning.CassetteInsertionStartPosition);
             Assert.Equal(
-                new Vector3(0f, 0.018f, -0.0305f),
+                new Vector3(0.012f, 0.012f, -0.062f),
+                SoulRecorderPresentationTuning.CassetteAlignmentPosition);
+            Assert.Equal(
+                new Vector3(0f, 0.018f, -0.008f),
                 SoulRecorderPresentationTuning.CassetteInsertionEndPosition);
+            Assert.Equal(
+                new Vector3(0.095f, -0.065f, -0.115f),
+                SoulRecorderPresentationTuning.CassetteEjectPosition);
             Assert.NotEqual(
                 SoulRecorderPresentationTuning.CassetteInsertionStartPosition,
                 SoulRecorderPresentationTuning.CassetteInsertionEndPosition);
+            Assert.InRange(
+                SoulRecorderPresentationTuning.CassetteAlignmentProgress,
+                0.4f,
+                0.7f);
+        }
+
+        [Fact]
+        [Trait("Validation", "RecorderPresentation")]
+        public void PresentationRootKeepsGameplayPoseSeparateFromPrefabImportCorrection()
+        {
+            Assert.Equal(
+                "SoulRecorder First-Person Presentation",
+                SoulRecorderPresentationTuning.PresentationRootName);
+            Assert.Equal(Vector3.zero, SoulRecorderPresentationTuning.PrefabLocalPosition);
+            Assert.Equal(Vector3.zero, SoulRecorderPresentationTuning.PrefabLocalRotationEuler);
+            Assert.Equal(Vector3.one, SoulRecorderPresentationTuning.PrefabLocalScale);
+            Assert.NotEqual(Vector3.zero, SoulRecorderPresentationTuning.HeldPosition);
+            Assert.Equal(new Vector3(0.060f, -1.460f, 0.360f),
+                SoulRecorderPresentationTuning.HeldPosition);
+            Assert.All(
+                new[]
+                {
+                    SoulRecorderPresentationTuning.RecorderScale.x,
+                    SoulRecorderPresentationTuning.RecorderScale.y,
+                    SoulRecorderPresentationTuning.RecorderScale.z
+                },
+                value => Assert.InRange(value, 0.85f, 0.95f));
+        }
+
+        [Fact]
+        [Trait("Validation", "RecorderPresentation")]
+        public void PackagedViewUsesIndependentPresentationAndCassetteTransforms()
+        {
+            string repositoryRoot = FindRepositoryRoot();
+            string view = File.ReadAllText(Path.Combine(
+                repositoryRoot,
+                "Recorder",
+                "ProceduralSoulRecorderHandsView.cs"));
+
+            Assert.Contains("EnsurePresentationRoot(view)", view);
+            Assert.Contains("_presentationRoot.transform.localPosition", view);
+            Assert.Contains("_root.transform.localPosition", view);
+            Assert.Contains("_cassetteRoot.transform.localPosition", view);
+            Assert.DoesNotContain("_handsRoot", view);
+            Assert.DoesNotContain("_holdingHand", view);
+            Assert.DoesNotContain("_cassetteHand", view);
+            Assert.Contains("ResolveCassetteAlignmentPosition", view);
+            Assert.Contains("ResolveCassetteEjectPosition", view);
+            Assert.DoesNotContain("ApplyHandTransforms", view);
+            Assert.Contains("Vector3.Lerp", view);
+            Assert.Contains("Quaternion.Slerp", view);
+            Assert.Contains("SoulRecorderCassetteVisualState.Inserting", view);
+            Assert.Contains("SoulRecorderCassetteVisualState.Seated", view);
+            Assert.Contains("SoulRecorderCassetteVisualState.Ejecting", view);
+            Assert.Contains("using packaged recorder-only fallback", view);
+            Assert.Contains("using the procedural presentation fallback", view);
+            Assert.Contains("safe headless", view);
+        }
+
+        [Fact]
+        [Trait("Validation", "RecorderPresentation")]
+        public void PlacementToolsExposeReloadableCameraRecorderHandsAndAnchorTuning()
+        {
+            string repositoryRoot = FindRepositoryRoot();
+            string tuner = File.ReadAllText(Path.Combine(
+                repositoryRoot,
+                "Recorder",
+                "DevelopmentSoulRecorderPresentationTuner.cs"));
+
+            Assert.StartsWith("#if SOULPLAYER_PLACEMENT_TOOLS", tuner.TrimStart());
+            Assert.Contains("Presentation root position", tuner);
+            Assert.Contains("Recorder local position", tuner);
+            Assert.Contains("Hands local position", tuner);
+            Assert.Contains("Cassette start position", tuner);
+            Assert.Contains("Cassette alignment position", tuner);
+            Assert.Contains("Cassette inserted position", tuner);
+            Assert.Contains("Cassette eject position", tuner);
+            Assert.Contains("KeyCode.F7", tuner);
+            Assert.Contains("_config.Reload()", tuner);
         }
 
         [Fact]
@@ -188,6 +295,9 @@ namespace SoulPlayer.CollectionTests
 
             Assert.True(cassetteFront > frameRear);
             Assert.True(
+                cassetteFront >
+                -(SoulRecorderPresentationTuning.RecorderBodyDepth * 0.5f));
+            Assert.True(
                 SoulTapeCassetteVisual.Dimensions.x >
                 SoulRecorderPresentationTuning.CassetteBayOpeningWidth);
             Assert.True(
@@ -197,47 +307,55 @@ namespace SoulPlayer.CollectionTests
 
         [Fact]
         [Trait("Validation", "RecorderPresentation")]
-        public void PlaybackAutoLowersWithoutChangingPlaybackOrCassetteState()
+        public void PlaybackRemainsHeldWithoutChangingCassetteState()
         {
             SoulRecorderPresentationState state = HeldSeatedState();
             state.SetPlayback(true, 1f);
 
-            state.Advance(1f + SoulRecorderPresentationTuning.PlaybackVisibleSeconds - 0.01f);
+            state.Advance(100f);
+
             Assert.Equal(SoulRecorderVisualPoseState.Held, state.PoseState);
-
-            float lowerStarted = 1f + SoulRecorderPresentationTuning.PlaybackVisibleSeconds;
-            state.Advance(lowerStarted);
-            Assert.Equal(SoulRecorderVisualPoseState.AutoLowering, state.PoseState);
-            state.Advance(lowerStarted + SoulRecorderPresentationTuning.AutoLowerSeconds);
-
-            Assert.Equal(SoulRecorderVisualPoseState.Lowered, state.PoseState);
-            Assert.Equal(1f, state.GetLoweredAmount(10f));
+            Assert.Equal(0f, state.GetOffscreenAmount(100f));
             Assert.True(state.IsPlaying);
             Assert.Equal(SoulRecorderCassetteVisualState.Seated, state.CassetteState);
         }
 
         [Fact]
         [Trait("Validation", "RecorderPresentation")]
-        public void ExitFromLoweredPlaybackRaisesBeforeCassetteEjection()
+        public void EjectionFromPlayingWaitsForRecorderEnterBeforeCassetteTravel()
         {
-            SoulRecorderPresentationState state = LoweredPlayingState();
-            state.SetPlayback(false, 3f);
+            SoulRecorderPresentationState state = HeldSeatedState();
+            state.SetPlayback(true, 2f);
             state.StartEjection(3f);
 
-            Assert.Equal(SoulRecorderVisualPoseState.RaisingForEject, state.PoseState);
+            Assert.Equal(SoulRecorderVisualPoseState.Held, state.PoseState);
+            Assert.False(state.IsPlaying);
             Assert.Equal(1f, state.GetEjectionCassetteTravel(3f));
             Assert.Equal(0f, state.GetEjectionProgress(3f));
-            Assert.Equal(
-                SoulRecorderPresentationTuning.RaiseForEjectSeconds +
-                SoulRecorderPresentationTuning.TapeEjectionSeconds,
+            Assert.Equal(SoulRecorderPresentationTuning.TapeEjectionSeconds,
                 state.EjectionTotalSeconds);
+        }
 
-            state.Advance(3f + SoulRecorderPresentationTuning.RaiseForEjectSeconds);
-            Assert.Equal(SoulRecorderVisualPoseState.Held, state.PoseState);
-            Assert.Equal(
-                1f,
-                state.GetEjectionCassetteTravel(
-                    3f + SoulRecorderPresentationTuning.RaiseForEjectSeconds));
+        [Fact]
+        [Trait("Validation", "RecorderPresentation")]
+        public void InsertionHasReadableEnterMotionAndContactSettleStages()
+        {
+            SoulRecorderPresentationState state = new SoulRecorderPresentationState();
+            state.Enter(10f);
+            state.StartInsertion(10f);
+
+            Assert.Equal(0f, state.GetInsertionProgress(
+                10f + SoulRecorderPresentationTuning.CassetteInsertionLeadInSeconds - 0.01f));
+            Assert.InRange(state.GetInsertionProgress(
+                10f + SoulRecorderPresentationTuning.CassetteInsertionLeadInSeconds + 0.20f),
+                0.01f,
+                0.99f);
+            float settleAt = 10f +
+                SoulRecorderPresentationTuning.CassetteInsertionLeadInSeconds +
+                SoulRecorderPresentationTuning.CassetteInsertionMotionSeconds + 0.04f;
+            Assert.True(state.GetInsertionSettleAmount(settleAt) > 0f);
+            Assert.InRange(state.GetInsertionSettleAmount(
+                10f + SoulRecorderPresentationTuning.TapeInsertionSeconds), 0f, 0.00001f);
         }
 
         [Fact]
@@ -247,7 +365,7 @@ namespace SoulPlayer.CollectionTests
             SoulRecorderPresentationState state = new SoulRecorderPresentationState();
             state.Enter(0f);
             state.StartInsertion(0f);
-            float interruptedAt = 0.20f;
+            float interruptedAt = 0.48f;
             float insertionTravel = state.GetInsertionProgress(interruptedAt);
 
             state.StartEjection(interruptedAt);
@@ -262,12 +380,12 @@ namespace SoulPlayer.CollectionTests
 
         [Fact]
         [Trait("Validation", "RecorderPresentation")]
-        public void ResetClearsLoweredAndRaiseForEjectStates()
+        public void ResetClearsPlayingAndEjectionStates()
         {
-            SoulRecorderPresentationState state = LoweredPlayingState();
-            state.SetPlayback(false, 3f);
+            SoulRecorderPresentationState state = HeldSeatedState();
+            state.SetPlayback(true, 2f);
             state.StartEjection(3f);
-            Assert.Equal(SoulRecorderVisualPoseState.RaisingForEject, state.PoseState);
+            Assert.Equal(SoulRecorderCassetteVisualState.Ejecting, state.CassetteState);
 
             state.Reset();
 
@@ -322,6 +440,22 @@ namespace SoulPlayer.CollectionTests
             return new MusicTrack(path, bytes.Length);
         }
 
+        private static string FindRepositoryRoot()
+        {
+            DirectoryInfo current = new DirectoryInfo(AppContext.BaseDirectory);
+            while (current != null)
+            {
+                if (File.Exists(Path.Combine(current.FullName, "SoulPlayer.csproj")))
+                {
+                    return current.FullName;
+                }
+                current = current.Parent;
+            }
+
+            throw new DirectoryNotFoundException(
+                "SoulPlayer repository root could not be located from the test output.");
+        }
+
         private static SoulRecorderPresentationState HeldSeatedState()
         {
             SoulRecorderPresentationState state = new SoulRecorderPresentationState();
@@ -331,14 +465,5 @@ namespace SoulPlayer.CollectionTests
             return state;
         }
 
-        private static SoulRecorderPresentationState LoweredPlayingState()
-        {
-            SoulRecorderPresentationState state = HeldSeatedState();
-            state.SetPlayback(true, 1f);
-            float lowerStarted = 1f + SoulRecorderPresentationTuning.PlaybackVisibleSeconds;
-            state.Advance(lowerStarted);
-            state.Advance(lowerStarted + SoulRecorderPresentationTuning.AutoLowerSeconds);
-            return state;
-        }
     }
 }

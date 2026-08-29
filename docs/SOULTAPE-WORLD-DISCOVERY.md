@@ -8,7 +8,8 @@ collected. Cassettes are collectibles, not ordinary stash inventory items.
 
 ```text
 raid starts
-    -> choose 1–3 eligible cassettes and distinct curated anchors
+    -> build the mode-filtered track pool
+    -> choose 1–3 distinct curated anchors and tracks for this raid only
     -> player finds and aims at a cassette within 2.5 metres
     -> F collects it
     -> collection JSON saves the unlock immediately
@@ -18,45 +19,51 @@ raid starts
 Extraction is not required. Death later in the raid does not revoke an unlock, and no
 raid-end, survival, or inventory-extraction hook participates in discovery persistence.
 
-## Eligibility
+## Per-raid selection and eligibility
 
-A world cassette must have a stable ID, available audio, and an explicit curated
-`SoulTapeRarity`. The starter cassette
-`soul-tape.scott-buckley.the-long-dark` never spawns. Already unlocked IDs are excluded.
-Generated/personal-library entries currently have no rarity and therefore do not spawn.
+A world cassette must have a stable ID, available audio, and belong to the configured
+`BuiltInOnly`, `UserOnly`, or `MergeBuiltInAndUser` library pool. The starter cassette
+`soul-tape.scott-buckley.the-long-dark` never spawns. Generated personal-library entries
+are eligible even when they do not have a curated rarity.
 
-Rarity selection is weighted without making any rarity impossible:
+At raid startup, the planner splits eligible tracks into undiscovered and already
+discovered pools. It shuffles both pools with the raid seed, fills every available spawn
+from the undiscovered pool first, and uses discovered tracks only when too few locked
+tracks remain. Track IDs and anchor IDs are selected without replacement, so a normal
+raid never contains duplicate songs or anchors. Capacity is the smaller of available
+tracks, enabled map anchors, and the three-cassette maximum.
 
-| Rarity | Weight |
-| --- | ---: |
-| Common | 100 |
-| Uncommon | 60 |
-| Rare | 30 |
-| Epic | 12 |
-| Legendary | 4 |
+The seed material is SHA-256-derived by `SoulTapeDeterministicRandom` from the format
+salt `soul-tape-raid-selection-v1`, profile ID, canonical map ID, and a fresh per-raid
+identity. Calling the planner again with the same raid identity produces the same map;
+a later raid receives a different identity and naturally chooses other tracks/anchors.
+The plan is created once and retained until raid end.
 
-Weights are centralized in `SoulTapeSpawnPlanner` for later rebalancing. The planner
-uses a private deterministic `System.Random`, never `UnityEngine.Random`, and selects
-without replacing either cassette IDs or anchors.
+Older `BepInEx/config/SoulPlayer/assignments/<profile>.json` files belong to the retired
+persistent anchor-to-track design. SoulPlayer leaves those user files untouched, but
+runtime world spawning never reads them and stale pairs cannot force a raid mapping.
+Permanent ownership remains solely in the profile collection JSON.
 
 ## Curated maps and packaged data
 
-Curated anchors are authoritative. Factory Day currently has ten enabled anchors in:
+Curated anchors are authoritative. The release includes 108 enabled anchors across
+Bigmap (Customs), Factory Day, Interchange, Laboratory, Lighthouse, Reserve, Ground Zero,
+Shoreline, Streets of Tarkov, and Woods in:
 
 ```text
-Data/SoulTape/SpawnAnchors/factory4_day.json
+Data/SoulTape/SpawnAnchors/all-maps.json
 ```
 
 The file is embedded as a manifest resource in `Soulplayer.dll`. Runtime does not read
 the placement author's `BepInEx/config/SoulPlayer/authoring/spawn-anchors.json` file.
-Maps without committed anchor resources spawn zero SoulTapes. Factory Night does not
-reuse Factory Day coordinates.
+Maps without curated entries spawn zero SoulTapes. Factory Night does not reuse Factory
+Day coordinates.
 
 ## Runtime timing
 
 The world controller recognizes each new live `GameWorld`, waits for `MainPlayer`,
 ensures the correct profile collection is bound, and waits until the asynchronous music
-scan has been applied to the catalog. It then creates one deterministic plan and marks
+scan has been applied to the catalog. It then creates one raid-seeded plan and marks
 that raid complete. Picking up a cassette never causes replenishment. Remaining
 SoulPlayer pickup objects are destroyed when the raid ends or `GameWorld` changes.
 

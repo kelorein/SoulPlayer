@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using NAudio.Flac;
@@ -9,7 +10,18 @@ namespace SoulPlayer.Audio
     {
         internal static DecodedAudio Decode(string path)
         {
-            using (FlacReader reader = new FlacReader(path))
+            return DecodeProfiled(path).Audio;
+        }
+
+        internal static ProfiledDecodedAudio DecodeProfiled(string path)
+        {
+            Stopwatch timer = Stopwatch.StartNew();
+            byte[] encoded = File.ReadAllBytes(path);
+            timer.Stop();
+            double fileReadMs = timer.Elapsed.TotalMilliseconds;
+
+            using (MemoryStream encodedStream = new MemoryStream(encoded, false))
+            using (FlacReader reader = new FlacReader(encodedStream))
             {
                 int bits = reader.WaveFormat.BitsPerSample;
                 int channels = reader.WaveFormat.Channels;
@@ -20,7 +32,10 @@ namespace SoulPlayer.Audio
                     throw new NotSupportedException("Unsupported FLAC bit depth: " + bits);
                 }
 
+                timer.Restart();
                 byte[] bytes = ReadDecodedBytes(reader);
+                timer.Stop();
+                double decodeMs = timer.Elapsed.TotalMilliseconds;
                 int sampleCount = bytes.Length / bytesPerSample;
                 float[] samples = new float[sampleCount];
 
@@ -31,6 +46,7 @@ namespace SoulPlayer.Audio
                     Math.Max(1, Environment.ProcessorCount),
                     Math.Max(1, sampleCount / (256 * 1024)));
 
+                timer.Restart();
                 if (workers <= 1)
                 {
                     ConvertRange(bytes, samples, bits, bytesPerSample, 0, sampleCount);
@@ -44,8 +60,13 @@ namespace SoulPlayer.Audio
                         ConvertRange(bytes, samples, bits, bytesPerSample, start, end);
                     });
                 }
+                timer.Stop();
 
-                return new DecodedAudio(samples, channels, sampleRate);
+                return new ProfiledDecodedAudio(
+                    new DecodedAudio(samples, channels, sampleRate),
+                    fileReadMs,
+                    decodeMs,
+                    timer.Elapsed.TotalMilliseconds);
             }
         }
 
