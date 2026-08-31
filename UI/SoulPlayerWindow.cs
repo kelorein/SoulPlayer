@@ -28,6 +28,8 @@ namespace SoulPlayer.UI
         private static Type _configurationManagerType;
         private static PropertyInfo _configurationManagerDisplayingWindow;
         private static bool _configurationManagerContractResolved;
+        private static UnityEngine.Object _configurationManagerInstance;
+        private static Func<bool> _configurationWindowGetter;
 
         private readonly SoulPlayerWindowCloseController _closeController =
             new SoulPlayerWindowCloseController();
@@ -184,7 +186,7 @@ namespace SoulPlayer.UI
             UIUtils.CreateLabel(
                 sidebar,
                 "Version",
-                "LOCAL MUSIC  •  0.9.0",
+                "LOCAL MUSIC  •  0.9.1",
                 _styleSource,
                 11f,
                 UIUtils.MutedText,
@@ -851,6 +853,11 @@ namespace SoulPlayer.UI
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Window);
+            try
+            {
+#endif
             if (Input.GetKeyDown(KeyCode.Escape) &&
                 _closeController.TryCloseFromEscape(
                     HasEscapeOwnership(), HideImmediately))
@@ -892,6 +899,10 @@ namespace SoulPlayer.UI
             }
 
             UpdatePlaybackProgress();
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Window); }
+#endif
         }
 
         private void RefreshEverything()
@@ -1376,8 +1387,18 @@ namespace SoulPlayer.UI
                 !IsConfigurationManagerOpen();
         }
 
-        private static bool IsConfigurationManagerOpen()
+        internal bool CapturesKeyboardInput
         {
+            get { return gameObject.activeInHierarchy && _panel != null && _panel.activeInHierarchy; }
+        }
+
+        internal static bool IsConfigurationManagerOpen()
+        {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Input);
+            try
+            {
+#endif
             try
             {
                 if (!_configurationManagerContractResolved)
@@ -1400,11 +1421,25 @@ namespace SoulPlayer.UI
                     return false;
                 }
 
-                UnityEngine.Object manager =
-                    UnityEngine.Object.FindObjectOfType(_configurationManagerType);
-                return manager != null &&
-                    (bool)_configurationManagerDisplayingWindow.GetValue(
-                        manager, null);
+                if (_configurationManagerInstance == null)
+                {
+                    // Plugin registry includes inactive components; never search
+                    RecurringWorkProfiler.Mark(RecurringWorkEvent.ConfigurationLookup);
+                    // the whole EFT scene when the optional F12 UI is hidden.
+                    foreach (BepInEx.PluginInfo info in BepInEx.Bootstrap.Chainloader.PluginInfos.Values)
+                    {
+                        if (info.Instance != null && _configurationManagerType.IsInstanceOfType(info.Instance))
+                        {
+                            _configurationManagerInstance = info.Instance;
+                            break;
+                        }
+                    }
+                    _configurationWindowGetter = _configurationManagerInstance == null ? null :
+                        (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), _configurationManagerInstance,
+                            _configurationManagerDisplayingWindow.GetGetMethod());
+                }
+                return _configurationManagerInstance != null && _configurationWindowGetter != null &&
+                    _configurationWindowGetter();
             }
             catch
             {
@@ -1412,6 +1447,10 @@ namespace SoulPlayer.UI
                 // contract must never prevent SoulPlayer from closing normally.
                 return false;
             }
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Input); }
+#endif
         }
 
         private void HideImmediately()

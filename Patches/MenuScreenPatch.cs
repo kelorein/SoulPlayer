@@ -24,6 +24,7 @@ namespace SoulPlayer.Patches
         private static void PatchPostfix(MenuScreen __instance, object[] __args)
         {
             BindMenuProfile(__args);
+            if (Plugin.PostRaidCoordinator != null) Plugin.PostRaidCoordinator.MenuScreenShown();
 
             try
             {

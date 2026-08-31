@@ -28,11 +28,17 @@ namespace SoulPlayer.Audio
 
         internal void ApplyNow()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Other);
+            try
+            {
+#endif
             if (_settings == null || !_settings.MuteTarkovMusic)
             {
                 return;
             }
 
+            SoulPlayer.Utils.RecurringWorkProfiler.Mark(SoulPlayer.Utils.RecurringWorkEvent.MixerScan);
             AudioMixer[] mixers = Resources.FindObjectsOfTypeAll<AudioMixer>();
 
             foreach (AudioMixer mixer in mixers)
@@ -71,6 +77,10 @@ namespace SoulPlayer.Audio
                     }
                 }
             }
+#if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Other); }
+#endif
         }
 
         internal void RestoreTarkovMusic()

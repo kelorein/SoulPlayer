@@ -18,6 +18,8 @@ namespace SoulPlayer.UI
         private GUIStyle _valueStyle;
         private Texture2D _panelTexture;
         private Texture2D _pixelTexture;
+        private readonly SoulOverlayLayoutRevision _layoutRevision = new SoulOverlayLayoutRevision();
+        private SoulPlayerVolumeHudLayoutResult _layout;
 
         internal void Initialize(SoulPlayerSettings settings)
         {
@@ -39,6 +41,11 @@ namespace SoulPlayer.UI
 
         private void OnGUI()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Overlay);
+            try
+            {
+#endif
             if (Event.current.type != EventType.Repaint)
             {
                 return;
@@ -55,10 +62,10 @@ namespace SoulPlayer.UI
             EnsureStyles();
             float now = Time.unscaledTime;
             SoulPlayerVolumeHudPlacementContext placement =
-                BuildPlacementContext(now);
-            SoulPlayerVolumeHudLayoutResult layout =
-                SoulPlayerVolumeHudLayout.Calculate(
-                    Screen.width, Screen.height, placement);
+                BuildPlacementContext(_settings, now, true);
+            if (_layoutRevision.ShouldRebuild(true, Screen.width, Screen.height, 1f, 0, placement))
+                _layout = SoulPlayerVolumeHudLayout.Calculate(Screen.width, Screen.height, placement);
+            SoulPlayerVolumeHudLayoutResult layout = _layout;
             float slide = frame.SlidePixels * layout.Scale;
             Color previous = GUI.color;
             GUI.color = new Color(1f, 1f, 1f, frame.Alpha);
@@ -72,10 +79,14 @@ namespace SoulPlayer.UI
             DrawBar(layout.Bar, slide, frame.Volume, layout.Scale);
 
             GUI.color = previous;
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Overlay); }
+#endif
         }
 
-        private SoulPlayerVolumeHudPlacementContext BuildPlacementContext(
-            float now)
+        internal static SoulPlayerVolumeHudPlacementContext BuildPlacementContext(
+            SoulPlayerSettings settings, float now, bool includeMini)
         {
             SoulPlayerVolumeHudPlacementContext context =
                 new SoulPlayerVolumeHudPlacementContext
@@ -84,7 +95,7 @@ namespace SoulPlayer.UI
                 };
 
             SoulPlayerVolumeHudRect miniPlayer;
-            if (SoulMiniPlayer.TryGetScreenRect(out miniPlayer))
+            if (includeMini && SoulMiniPlayer.TryGetScreenRect(out miniPlayer))
             {
                 context.MiniPlayerVisible = true;
                 context.MiniPlayer = miniPlayer;
@@ -92,15 +103,15 @@ namespace SoulPlayer.UI
 
             if (Plugin.RecorderController != null &&
                 Plugin.RecorderController.IsActive &&
-                _settings != null && _settings.RecorderOverlayEnabled)
+                settings != null && settings.RecorderOverlayEnabled)
             {
                 SoulRecorderOverlayPose recorder =
                     SoulRecorderOverlayTimeline.SampleInsertion(
                         Screen.width,
                         Screen.height,
                         SoulRecorderOverlayTimeline.InsertionSeconds(
-                            _settings.RecorderOverlaySettings.AnimationSpeed),
-                        _settings.RecorderOverlaySettings);
+                            settings.RecorderOverlaySettings.AnimationSpeed),
+                        settings.RecorderOverlaySettings);
                 context.RecorderOverlayVisible = true;
                 context.RecorderOverlay = new SoulPlayerVolumeHudRect
                 {
@@ -109,6 +120,16 @@ namespace SoulPlayer.UI
                     Width = recorder.Recorder.Width,
                     Height = recorder.Recorder.Height
                 };
+            }
+
+            if (Plugin.RecorderController != null)
+            {
+                SoulPlayerVolumeHudRect status;
+                if (Plugin.RecorderController.TryGetStatusScreenRect(now, out status))
+                {
+                    context.RecorderStatusVisible = true;
+                    context.RecorderStatus = status;
+                }
             }
 
             if (Plugin.WorldDiscoveryController != null &&

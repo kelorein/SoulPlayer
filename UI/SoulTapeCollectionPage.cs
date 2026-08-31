@@ -240,10 +240,19 @@ namespace SoulPlayer.UI
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Collection);
+            try
+            {
+#endif
             if (_dirty)
             {
                 RefreshNow();
             }
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Collection); }
+#endif
         }
 
         private void OnEnable()

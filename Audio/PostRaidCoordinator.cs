@@ -1,123 +1,105 @@
 using System;
 using EFT;
-using SoulPlayer.Utils;
+using EFT.UI.Screens;
 using UnityEngine;
 
 namespace SoulPlayer.Audio
 {
+    // Adapts EFT lifecycle evidence; the audio session alone owns playback.
     internal sealed class PostRaidCoordinator : MonoBehaviour
     {
-        private const float SettleDelaySeconds = 0.75f;
-        private const float DuplicateLockSeconds = 12f;
-        private const float RaidStateGraceSeconds = 12f;
-
-        private readonly PostRaidSignalGate _signalGate = new PostRaidSignalGate(
-            SettleDelaySeconds,
-            DuplicateLockSeconds);
-
+        private bool _returnScreenShown;
+        private bool _readinessWarningLogged;
+        private EftScreenManager _screens;
         internal event Action<ExitStatus> RaidResultQueued;
+
+        internal void BeginRaid()
+        {
+            StableRaidMenuContext.Invalidate();
+            _returnScreenShown = false;
+            _readinessWarningLogged = false;
+        }
+
+        internal void MenuScreenShown()
+        {
+            StableRaidMenuContext.Invalidate();
+            _returnScreenShown = true;
+            Plugin.AudioPlayer?.RequestRaidReevaluation("MenuScreenShown");
+        }
 
         internal void Queue(ExitStatus outcome)
         {
+            SoulAudioPlayer player = Plugin.AudioPlayer;
+            if (player == null || !player.ObserveRaidResult(outcome)) return;
+            StableRaidMenuContext.Invalidate();
+            _returnScreenShown = true;
             NotifyRaidResult(outcome);
-            float now = Time.unscaledTime;
-            if (!_signalGate.Queue(outcome, now))
-            {
-                Plugin.Log.LogInfo("Ignored duplicate post-raid signal: " + outcome + ".");
-                return;
-            }
-
-            // EFT can leave its raid objects alive briefly while the result UI is
-            // being assembled. Do not let that transient state pause the result track.
-            GameState.SuppressRaidMusicSuspend(RaidStateGraceSeconds);
-            Plugin.Log.LogInfo("Queued post-raid signal: " + outcome + ".");
+            player.RequestRaidReevaluation("Outcome");
         }
 
         private void NotifyRaidResult(ExitStatus outcome)
         {
             Action<ExitStatus> handler = RaidResultQueued;
-            if (handler == null)
-            {
-                return;
-            }
-
+            if (handler == null) return;
             foreach (Action<ExitStatus> subscriber in handler.GetInvocationList())
             {
-                try
-                {
-                    subscriber(outcome);
-                }
+                try { subscriber(outcome); }
                 catch (Exception ex)
                 {
-                    Plugin.Log.LogWarning(
-                        "Post-raid cleanup subscriber failed: " + ex.Message);
+                    Plugin.Log.LogWarning("Post-raid cleanup subscriber failed: " + ex.Message);
                 }
             }
         }
 
-        private void Update()
+        internal RaidMenuEvidence ReadEvidence()
         {
-            ExitStatus outcome;
-            int signals;
-            if (!_signalGate.TryTake(Time.unscaledTime, out outcome, out signals))
+            try { return StableRaidMenuContext.Read(_returnScreenShown); }
+            catch (Exception ex)
             {
-                return;
+                if (!_readinessWarningLogged)
+                {
+                    _readinessWarningLogged = true;
+                    Plugin.Log.LogWarning("SoulPlayer stable-menu evidence unavailable; playback stays suspended: " + ex.Message);
+                }
+                return new RaidMenuEvidence { Screen = "Unavailable", ResultModel = "Unavailable" };
             }
-
-            GameState.SuppressRaidMusicSuspend(RaidStateGraceSeconds);
-            Plugin.Log.LogInfo(
-                "Post-raid result settled after " + signals + " signal(s): " + outcome + ".");
-
-            Plugin.AudioPlayer.PlayPostRaid(outcome);
-        }
-    }
-
-    internal sealed class PostRaidSignalGate
-    {
-        private readonly float _settleDelaySeconds;
-        private readonly float _duplicateLockSeconds;
-        private ExitStatus? _pendingOutcome;
-        private float _playAt = -1f;
-        private float _ignoreSignalsUntil = -1f;
-        private int _signalCount;
-
-        internal PostRaidSignalGate(
-            float settleDelaySeconds,
-            float duplicateLockSeconds)
-        {
-            _settleDelaySeconds = Math.Max(0f, settleDelaySeconds);
-            _duplicateLockSeconds = Math.Max(0f, duplicateLockSeconds);
         }
 
-        internal bool Queue(ExitStatus outcome, float now)
+        private void OnScreenChanged(EEftScreenType screen)
         {
-            if (now < _ignoreSignalsUntil)
-            {
-                return false;
-            }
-
-            _pendingOutcome = outcome;
-            _playAt = now + _settleDelaySeconds;
-            _signalCount++;
-            return true;
+            StableRaidMenuContext.Invalidate();
+            if (StableRaidMenuContext.IsReturnScreen(screen)) _returnScreenShown = true;
+            Plugin.AudioPlayer?.RequestRaidReevaluation("ScreenChanged");
         }
 
-        internal bool TryTake(float now, out ExitStatus outcome, out int signals)
+        private void LateUpdate()
         {
-            outcome = default(ExitStatus);
-            signals = 0;
-            if (!_pendingOutcome.HasValue || now < _playAt)
+            if (Plugin.AudioPlayer == null || !Plugin.AudioPlayer.NeedsRaidReadinessInspection) return;
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Readiness);
+            try
             {
-                return false;
+#endif
+            EftScreenManager current = EftScreenManager.Instance;
+            if (_screens != current)
+            {
+                if (_screens != null) _screens.OnScreenChanged -= OnScreenChanged;
+                _screens = current;
+                if (_screens != null) _screens.OnScreenChanged += OnScreenChanged;
             }
+            // Screen events request reevaluation; this also observes loader/black
+            // overlay changes that occur without a screen-controller change.
+            if (Plugin.AudioPlayer != null && Plugin.AudioPlayer.IsRaidPlaybackActive)
+                Plugin.AudioPlayer.RefreshRaidReadiness();
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Readiness); }
+#endif
+        }
 
-            outcome = _pendingOutcome.Value;
-            signals = _signalCount;
-            _pendingOutcome = null;
-            _playAt = -1f;
-            _signalCount = 0;
-            _ignoreSignalsUntil = now + _duplicateLockSeconds;
-            return true;
+        private void OnDestroy()
+        {
+            if (_screens != null) _screens.OnScreenChanged -= OnScreenChanged;
         }
     }
 }

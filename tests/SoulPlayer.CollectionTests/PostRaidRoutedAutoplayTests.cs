@@ -95,38 +95,28 @@ namespace SoulPlayer.CollectionTests
 
         [Fact]
         [Trait("Validation", "PostRaidLifecycle")]
-        public void PostRaidCleanupSettlesBeforeOneShotPlaybackRequest()
+        public void ResultAloneDoesNotReleaseSuspension()
         {
-            PostRaidSignalGate gate = new PostRaidSignalGate(0.75f, 12f);
-            ExitStatus outcome;
-            int signals;
-
-            Assert.True(gate.Queue(ExitStatus.Survived, 10f));
-            Assert.False(gate.TryTake(10.74f, out outcome, out signals));
-            Assert.True(gate.TryTake(10.75f, out outcome, out signals));
-            Assert.Equal(ExitStatus.Survived, outcome);
-            Assert.Equal(1, signals);
-            Assert.False(gate.TryTake(11f, out outcome, out signals));
+            RaidPlaybackSession session = new RaidPlaybackSession();
+            session.Begin(null);
+            Assert.True(session.RecordOutcome(ExitStatus.Survived));
+            Assert.True(session.MainSuspended);
+            Assert.False(session.MenuReady);
+            Assert.False(session.CanStart(PlaybackIntent.AutomaticMain));
         }
 
         [Fact]
         [Trait("Validation", "PostRaidLifecycle")]
-        public void MenuTransitionProtectionRemainsAheadOfPlayback()
+        public void MenuTransitionUsesLifecycleEvidenceNotTimedOverrides()
         {
             string coordinator = ReadSource("Audio", "PostRaidCoordinator.cs");
-            int update = coordinator.IndexOf("private void Update()", StringComparison.Ordinal);
-            int suppression = coordinator.IndexOf(
-                "GameState.SuppressRaidMusicSuspend(RaidStateGraceSeconds)",
-                update,
-                StringComparison.Ordinal);
-            int playback = coordinator.IndexOf(
-                "Plugin.AudioPlayer.PlayPostRaid(outcome)",
-                update,
-                StringComparison.Ordinal);
-
-            Assert.True(update >= 0);
-            Assert.True(suppression > update);
-            Assert.True(playback > suppression);
+            Assert.Contains("StableRaidMenuContext.Read(_returnScreenShown)", coordinator);
+            Assert.DoesNotContain("Time.", coordinator);
+            Assert.DoesNotContain("PlayPostRaid", coordinator);
+            Assert.DoesNotContain("SuppressRaidMusicSuspend", ReadSource("Utils", "GameState.cs"));
+            string player = ReadSource("Audio", "SoulAudioPlayer.cs");
+            Assert.DoesNotContain("_resumeAfterRaidAt", player);
+            Assert.Contains("Plugin.PostRaidCoordinator.ReadEvidence()", player);
         }
 
         [Fact]
@@ -177,18 +167,14 @@ namespace SoulPlayer.CollectionTests
 
         [Fact]
         [Trait("Validation", "PostRaidLifecycle")]
-        public void DuplicatePostRaidSignalsProduceOnlyOnePlaybackRequest()
+        public void DuplicatePostRaidSignalsNeverReplaceTheFinalOutcome()
         {
-            PostRaidSignalGate gate = new PostRaidSignalGate(0.75f, 12f);
-            ExitStatus outcome;
-            int signals;
-
-            Assert.True(gate.Queue(ExitStatus.Survived, 20f));
-            Assert.True(gate.Queue(ExitStatus.Survived, 20.1f));
-            Assert.True(gate.TryTake(20.85f, out outcome, out signals));
-            Assert.Equal(2, signals);
-            Assert.False(gate.Queue(ExitStatus.Survived, 21f));
-            Assert.False(gate.TryTake(21f, out outcome, out signals));
+            RaidPlaybackSession session = new RaidPlaybackSession();
+            session.Begin(null);
+            Assert.True(session.RecordOutcome(ExitStatus.Survived));
+            Assert.False(session.RecordOutcome(ExitStatus.Survived));
+            Assert.False(session.RecordOutcome(ExitStatus.Killed));
+            Assert.Equal(ExitStatus.Survived, session.Outcome);
         }
 
         [Fact]
@@ -331,24 +317,15 @@ namespace SoulPlayer.CollectionTests
 
         [Fact]
         [Trait("Validation", "PlaybackSelection")]
-        public void FadeCompletionUsesExactRequestWithoutSecondSelection()
+        public void ActualStartUsesExactRequestWithoutSecondSelection()
         {
             string player = ReadSource("Audio", "SoulAudioPlayer.cs");
-            int completion = player.IndexOf(
-                "if (completion == FadeCompletion.StartPendingTrack)",
-                StringComparison.Ordinal);
-            int cancel = player.IndexOf(
-                "private void CancelFade()",
-                completion,
-                StringComparison.Ordinal);
-            string exactCompletion = player.Substring(
-                completion,
-                cancel - completion);
-
-            Assert.Contains("PlayExactPostRaid(track, queue, exactRequest)", exactCompletion);
-            Assert.DoesNotContain("_random.Next", exactCompletion);
-            Assert.DoesNotContain("SelectEligible", exactCompletion);
-            Assert.DoesNotContain("PlayAutomatic", exactCompletion);
+            string start = UxFixSource.Method(player, "private void StartClip", "private void StopPlayback");
+            Assert.Contains("startedExactRequest.TryMarkStarted(CurrentTrack)", start);
+            Assert.Contains("_raidPlayback.RoutedStarted(CurrentTrack)", start);
+            Assert.DoesNotContain("_random.Next", start);
+            Assert.DoesNotContain("SelectEligible", start);
+            Assert.DoesNotContain("PostRaidAutoplayPlan.Resolve", start);
         }
 
         [Fact]

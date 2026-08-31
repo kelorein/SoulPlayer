@@ -244,6 +244,11 @@ namespace SoulPlayer.UI
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Window);
+            try
+            {
+#endif
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Close();
@@ -252,6 +257,10 @@ namespace SoulPlayer.UI
             {
                 NavigateBack();
             }
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Window); }
+#endif
         }
 
         private void RefreshQuickAccess()

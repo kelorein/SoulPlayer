@@ -37,6 +37,7 @@ namespace SoulPlayer.Configuration
         private readonly ConfigEntry<bool> _shuffle;
         private readonly ConfigEntry<int> _repeatMode;
         private readonly ConfigEntry<bool> _showMiniPlayer;
+        private readonly ConfigEntry<SoulPlayer.UI.SoulMiniPlayerCorner> _miniPlayerPosition;
         private readonly ConfigEntry<bool> _muteTarkovMusic;
         private readonly ConfigEntry<bool> _autoPlayAfterRaid;
         private readonly ConfigEntry<string> _survivedMusicFolder;
@@ -52,6 +53,7 @@ namespace SoulPlayer.Configuration
         private readonly ConfigEntry<KeyboardShortcut> _volumeThreeQuartersHotkey;
         private readonly ConfigEntry<KeyboardShortcut> _volumeFullHotkey;
         private readonly ConfigEntry<KeyboardShortcut> _nextRaidCassetteHotkey;
+        private readonly ConfigEntry<KeyboardShortcut> _recorderStartStopHotkey;
         private readonly ConfigEntry<KeyboardShortcut> _collectCassetteHotkey;
         private readonly ConfigEntry<float> _cassetteInteractionDistance;
         private readonly ConfigEntry<bool> _soulTapeTargetingDiagnostics;
@@ -67,6 +69,7 @@ namespace SoulPlayer.Configuration
         private readonly ConfigEntry<float> _postRaidTransitionSeconds;
 
         internal event Action<float> VolumeChanged;
+        internal event Action MiniPlayerChanged;
         internal event Action<SoulPlayer.Cassettes.SoulTapeMusicMode>
             CassetteMusicModeChanged;
         internal event Action<SoulPlayer.Cassettes.SoulTapeRaidPlaybackMode>
@@ -121,7 +124,14 @@ namespace SoulPlayer.Configuration
                 "Interface",
                 "Show mini player",
                 true,
-                "Show compact playback controls above the bottom-right menu toolbar.");
+                "Show compact playback controls in the selected screen corner.");
+            _miniPlayerPosition = config.Bind(
+                "Interface",
+                "Mini-player position",
+                SoulPlayer.UI.SoulMiniPlayerCorner.BottomRight,
+                "BottomLeft, BottomRight, TopLeft or TopRight. Updates immediately; BottomRight preserves the existing placement.");
+            _showMiniPlayer.SettingChanged += OnMiniPlayerSettingChanged;
+            _miniPlayerPosition.SettingChanged += OnMiniPlayerSettingChanged;
 
             _autoPlayAfterRaid = config.Bind(
                 "Post-raid",
@@ -216,6 +226,12 @@ namespace SoulPlayer.Configuration
                     100,
                     "100% hotkey"));
 
+            _recorderStartStopHotkey = config.Bind(
+                "SoulTape discovery",
+                "SoulRecorder start / stop hotkey",
+                new KeyboardShortcut(KeyCode.M),
+                "Start or stop SoulRecorder in a raid. Changes apply immediately. If this and Next raid cassette share a shortcut, Start / Stop takes priority.");
+
             _nextRaidCassetteHotkey = config.Bind(
                 "SoulTape discovery",
                 "Next raid cassette hotkey",
@@ -247,6 +263,9 @@ namespace SoulPlayer.Configuration
                 "Recorder overlay enabled",
                 true,
                 "Show the two-dimensional SoulRecorder cassette animation. Music playback remains functional if this is disabled or its images cannot load.");
+            _recorderStartStopHotkey.SettingChanged += OnRecorderBindingChanged;
+            _nextRaidCassetteHotkey.SettingChanged += OnRecorderBindingChanged;
+
             _recorderOverlayCorner = config.Bind(
                 "SoulRecorder overlay",
                 "Recorder corner",
@@ -292,7 +311,7 @@ namespace SoulPlayer.Configuration
                 "Raid fade-out seconds",
                 4f,
                 new ConfigDescription(
-                    "How long music fades after the deployment countdown appears.",
+                    "Legacy value retained for compatibility. Deployment now pauses Main immediately to keep raid/loading playback silent.",
                     new AcceptableValueRange<float>(0f, 10f)));
 
             _postRaidTransitionSeconds = config.Bind(
@@ -300,7 +319,7 @@ namespace SoulPlayer.Configuration
                 "Post-raid track fade-out seconds",
                 1.5f,
                 new ConfigDescription(
-                    "How long the previous song fades before survived/death music starts.",
+                    "Legacy value retained for compatibility. Post-raid playback now starts from silence only when the result/menu is ready.",
                     new AcceptableValueRange<float>(0f, 6f)));
         }
 
@@ -352,6 +371,17 @@ namespace SoulPlayer.Configuration
                 _showMiniPlayer.Value = value;
                 _config.Save();
             }
+        }
+
+        internal SoulPlayer.UI.SoulMiniPlayerCorner MiniPlayerPosition
+        {
+            get { return _miniPlayerPosition.Value; }
+        }
+
+        private void OnMiniPlayerSettingChanged(object sender, EventArgs args)
+        {
+            Action handler = MiniPlayerChanged;
+            if (handler != null) handler();
         }
 
         internal bool AutoPlayAfterRaid
@@ -453,6 +483,15 @@ namespace SoulPlayer.Configuration
         internal KeyboardShortcut VolumeFullHotkey
         {
             get { return _volumeFullHotkey.Value; }
+        }
+
+        internal int RecorderInputRevision { get; private set; }
+
+        private void OnRecorderBindingChanged(object sender, EventArgs args) { RecorderInputRevision++; }
+
+        internal KeyboardShortcut RecorderStartStopHotkey
+        {
+            get { return _recorderStartStopHotkey.Value; }
         }
 
         internal KeyboardShortcut NextRaidCassetteHotkey

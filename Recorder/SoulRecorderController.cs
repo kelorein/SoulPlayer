@@ -1,10 +1,10 @@
 using System;
-using BepInEx.Configuration;
 using Comfort.Common;
 using EFT;
 using SoulPlayer.Cassettes;
 using SoulPlayer.Configuration;
 using SoulPlayer.Library;
+using SoulPlayer.UI;
 using SoulPlayer.Utils;
 using UnityEngine;
 
@@ -12,12 +12,12 @@ namespace SoulPlayer.Recorder
 {
     /// <summary>
     /// Raid-level input/lifetime host for the SoulRecorder usable-item controller.
-    /// M enters or exits the recorder interaction; tape transport lives on the
+    /// The configured shortcut enters/exits the interaction; tape transport lives on the
     /// usable-item controller and no longer borrows compass state.
     /// </summary>
     internal sealed class SoulRecorderController : MonoBehaviour
     {
-        private const KeyCode RecorderHotkey = KeyCode.M;
+        private readonly SoulRecorderInput _input = new SoulRecorderInput();
         private SoulPlayerSettings _settings;
         private SoulRecorderAudioPlayer _audioPlayer;
         private SoulRecorderInteractionController _usableItemController;
@@ -109,7 +109,8 @@ namespace SoulPlayer.Recorder
             }
 
             Plugin.Log.LogInfo(
-                "SoulRecorder screen-space controller ready: M enters/exits the recorder interaction " +
+                "SoulRecorder screen-space controller ready: " + _settings.RecorderStartStopHotkey +
+                " enters/exits the recorder interaction " +
                 "without changing EFT hands; " +
                 "raid cassette playback uses a non-repeating " +
                 _settings.RaidCassettePlaybackMode + " shuffle bag.");
@@ -121,8 +122,17 @@ namespace SoulPlayer.Recorder
             ResetRecorder(reason, false);
         }
 
+        private static readonly Func<KeyCode, bool> KeyDown = Input.GetKeyDown;
+        private static readonly Func<KeyCode, bool> KeyHeld = Input.GetKey;
+        private Action<string> _inputWarning;
+
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Recorder);
+            try
+            {
+#endif
             if (_handsTransition != null)
             {
                 _handsTransition.ManualUpdate(Time.unscaledTime);
@@ -167,17 +177,38 @@ namespace SoulPlayer.Recorder
                 return;
             }
 
-            if (Input.GetKeyDown(RecorderHotkey))
+            bool inputEdge = KeyDown(_settings.RecorderStartStopHotkey.MainKey) ||
+                KeyDown(_settings.NextRaidCassetteHotkey.MainKey);
+            if (_inputWarning == null) _inputWarning = ShowHotkeyConflictWarning;
+            SoulRecorderInputAction inputAction = _input.Poll(
+                _settings.RecorderStartStopHotkey, _settings.NextRaidCassetteHotkey,
+                inRaid, inputEdge && (Input.GetKeyDown(KeyCode.F12) || SoulPlayerWindow.IsConfigurationManagerOpen()),
+                SoulPlayerOverlayHost.Instance != null &&
+                    SoulPlayerOverlayHost.Instance.CapturesKeyboardInput,
+                KeyDown, KeyHeld, _inputWarning, _settings.RecorderInputRevision);
+            if (inputAction == SoulRecorderInputAction.StartStop)
             {
                 ToggleInteraction(player);
             }
-            else if (ShortcutPressed(_settings.NextRaidCassetteHotkey))
+            else if (inputAction == SoulRecorderInputAction.NextCassette)
             {
                 QueueRaidNextCassette();
             }
 
             _usableItemController.ManualRecorderUpdate(Time.unscaledTime);
             ProcessQueuedRaidNext(player);
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Recorder); }
+#endif
+        }
+
+        private void ShowHotkeyConflictWarning(string message)
+        {
+            Plugin.Log.LogWarning(message);
+            _emptyFeedbackHeading = "HOTKEY CONFLICT";
+            _emptyFeedbackDetail = "Start / Stop takes priority. Rebind in F12.";
+            _emptyFeedbackUntil = Time.unscaledTime + 4f;
         }
 
         private void ToggleInteraction(Player player)
@@ -185,7 +216,7 @@ namespace SoulPlayer.Recorder
             if (_pendingEnter)
             {
                 _pendingEnter = false;
-                Plugin.Log.LogInfo("SoulRecorder pending interaction cancelled (M pressed).");
+                Plugin.Log.LogInfo("SoulRecorder pending interaction cancelled (Start / Stop pressed).");
                 return;
             }
 
@@ -195,7 +226,7 @@ namespace SoulPlayer.Recorder
                 _pendingHandsAcquisition = false;
                 _handsTransition.Restore("interaction cancelled while taking hands ownership");
                 Plugin.Log.LogInfo(
-                    "SoulRecorder pending hands-controller transition cancelled (M pressed).");
+                    "SoulRecorder pending hands-controller transition cancelled (Start / Stop pressed).");
                 return;
             }
 
@@ -213,7 +244,7 @@ namespace SoulPlayer.Recorder
 
             if (_usableItemController.RecorderState == SoulRecorderState.LoadingTape)
             {
-                _usableItemController.InterruptInsertion("M pressed during tape insertion");
+                _usableItemController.InterruptInsertion("Start / Stop pressed during tape insertion");
                 return;
             }
 
@@ -292,6 +323,10 @@ namespace SoulPlayer.Recorder
                     return;
                 }
 
+                // Recorder owns in-raid audio only; the pre-raid Main capture
+                // survives preparation, cassette changes, ejection and cleanup.
+                if (Plugin.AudioPlayer != null)
+                    Plugin.AudioPlayer.PreserveMainForRecorder();
                 _statusTrack = tape.Artist + " — " + tape.Title;
             });
         }
@@ -609,8 +644,32 @@ namespace SoulPlayer.Recorder
             }
         }
 
+        internal bool TryGetStatusScreenRect(float now, out SoulPlayerVolumeHudRect rect)
+        {
+            SoulRecorderStatusOverlayFrame frame = _statusAnimation.Sample(
+                ResolveStatusOverlayState(now), now);
+            if (frame.State == SoulRecorderStatusOverlayState.Hidden || frame.Alpha <= 0.001f)
+            {
+                rect = new SoulPlayerVolumeHudRect();
+                return false;
+            }
+            SoulRecorderStatusOverlayRect panel = SoulRecorderStatusOverlayLayout.Calculate(
+                Screen.width, Screen.height).Panel;
+            rect = new SoulPlayerVolumeHudRect
+            {
+                X = panel.X, Y = panel.Y, Width = panel.Width,
+                Height = panel.Height + SoulRecorderStatusOverlayLayout.SlideDistance
+            };
+            return frame.State != SoulRecorderStatusOverlayState.Hidden && frame.Alpha > 0.001f;
+        }
+
         private void OnGUI()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Overlay);
+            try
+            {
+#endif
             float now = Time.unscaledTime;
             SoulRecorderStatusOverlayFrame frame = _statusAnimation.Sample(
                 ResolveStatusOverlayState(now), now);
@@ -682,6 +741,10 @@ namespace SoulPlayer.Recorder
             }
 
             GUI.color = previousColor;
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Overlay); }
+#endif
         }
 
         private void EnsureFeedbackStyles()
@@ -811,24 +874,6 @@ namespace SoulPlayer.Recorder
             {
                 EnterInteraction(_raidPlayer);
             }
-        }
-
-        private static bool ShortcutPressed(KeyboardShortcut shortcut)
-        {
-            if (shortcut.MainKey == KeyCode.None ||
-                !Input.GetKeyDown(shortcut.MainKey))
-            {
-                return false;
-            }
-
-            foreach (KeyCode modifier in shortcut.Modifiers)
-            {
-                if (!Input.GetKey(modifier))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         private void OnDestroy()

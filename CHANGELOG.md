@@ -2,6 +2,21 @@
 
 All notable SoulPlayer changes are documented here.
 
+## [0.9.1] - 2026-08-31
+
+### UX, performance, and stability
+
+- Made the in-raid SoulRecorder start/stop hotkey configurable (default **M**).
+- Added configurable mini-player corner placement and collision-aware overlay stacking.
+- Corrected post-raid playback: loading stays silent, a configured Extract or Death cue plays when ready, then the exact pre-raid Main track and position resume.
+- Preserved the saved Main resume snapshot through SoulRecorder playback and next-cassette use.
+- Optimized raid performance by eliminating unnecessary per-frame readiness inspection, F12 lookups, layout work, library copies, and repeated searches through cached and event-driven updates.
+- Improved world-cassette targeting with cached camera references, throttled proximity checks, and reusable raycast buffers while retaining occlusion checks.
+- Fixed readiness, lifecycle, and library-rescan/remapping edge cases. Existing cassette, collection, routing, and volume features are preserved.
+- Restricted the developer recorder-discovery probe to PlacementTools builds; normal Release excludes performance-profiler call sites.
+
+The user confirmed that the optimized pre-release build restored normal/much better raid performance in real EFT and that the UX and post-raid features work. This is qualitative runtime acceptance, not a measured FPS benchmark. Windows remains the officially tested OS; Linux/Wine/Proton runtime verification is limited and Fika is unverified.
+
 ## [0.9.0] - 2026-08-29
 
 ### Added

@@ -1,3 +1,4 @@
+#if SOULPLAYER_PLACEMENT_TOOLS
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,11 @@ namespace SoulPlayer.Utils
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Other);
+            try
+            {
+#endif
             if (Time.unscaledTime < _nextAllowedProbe)
             {
                 return;
@@ -44,6 +50,10 @@ namespace SoulPlayer.Utils
 
             _nextAllowedProbe = Time.unscaledTime + 2f;
             RunProbe();
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Other); }
+#endif
         }
 
         private static void RunProbe()
@@ -361,3 +371,4 @@ namespace SoulPlayer.Utils
         }
     }
 }
+#endif

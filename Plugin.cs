@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace SoulPlayer
 {
-    [BepInPlugin("com.kelorein.soulplayer", "SoulPlayer", "0.9.0")]
+    [BepInPlugin("com.kelorein.soulplayer", "SoulPlayer", "0.9.1")]
     public sealed class Plugin : BaseUnityPlugin
     {
         internal static ManualLogSource Log { get; private set; }
@@ -36,7 +36,9 @@ namespace SoulPlayer
         internal static PostRaidCoordinator PostRaidCoordinator { get; private set; }
         internal static SoulRecorderController RecorderController { get; private set; }
         internal static SoulRecorderAssetProvider RecorderAssets { get; private set; }
+#if SOULPLAYER_PLACEMENT_TOOLS
         internal static RecorderDiagnostics RecorderDiagnostics { get; private set; }
+#endif
         internal static SoulTapeWorldDiscoveryController WorldDiscoveryController { get; private set; }
         internal static SoulTapeWorldVisualAssetProvider WorldCassetteVisualAssets { get; private set; }
 #if SOULPLAYER_PLACEMENT_TOOLS
@@ -55,6 +57,9 @@ namespace SoulPlayer
             DontDestroyOnLoad(gameObject);
 
             Settings = new SoulPlayerSettings(Config);
+#if SOULPLAYER_PERF
+            Log.LogWarning("SoulPlayer DEVELOPMENT performance diagnostics enabled; aggregate summary at most once every 5 seconds.");
+#endif
 
             EnablePatch("Tushonka music volume", () => new Patches.TarkovMusicVolumePatch().Enable());
             EnablePatch("Tushonka settings music apply", () => new Patches.TarkovMusicSettingsApplyPatch().Enable());
@@ -99,7 +104,9 @@ namespace SoulPlayer
             PostRaidCoordinator = gameObject.AddComponent<PostRaidCoordinator>();
             RecorderController = gameObject.AddComponent<SoulRecorderController>();
             RecorderController.Initialize(Settings);
+#if SOULPLAYER_PLACEMENT_TOOLS
             RecorderDiagnostics = gameObject.AddComponent<RecorderDiagnostics>();
+#endif
             WorldDiscoveryController = gameObject.AddComponent<SoulTapeWorldDiscoveryController>();
             WorldDiscoveryController.Initialize(
                 Settings,
@@ -121,14 +128,18 @@ namespace SoulPlayer
             EnablePatch("menu taskbar", () => new Patches.MenuTaskBarPatch().Enable());
             EnablePatch("in-game folder browser", () => new Patches.FolderBrowserPatch().Enable());
             EnablePatch("post-raid result", () => new Patches.PostRaidResultPatch().Enable());
+            EnablePatch("raid deployment", () => new Patches.RaidDeploymentPatch().Enable());
 
             MusicLibrary.BeginScan(Settings.GetScanFolders());
-            Log.LogInfo("SoulPlayer 0.9.0 loaded. Library scan started.");
+            Log.LogInfo("SoulPlayer 0.9.1 loaded. Library scan started.");
             Log.LogInfo(
-                "SoulRecorder: press M during a raid to enter/exit; press " +
+                "SoulRecorder: press " + Settings.RecorderStartStopHotkey +
+                " during a raid to enter/exit; press " +
                 Settings.NextRaidCassetteHotkey.MainKey +
                 " to play the next raid cassette.");
+#if SOULPLAYER_PLACEMENT_TOOLS
             Log.LogInfo("Recorder discovery probe armed on Ctrl+Shift+F10 (development branch only).");
+#endif
 #if SOULPLAYER_PLACEMENT_TOOLS
             Log.LogWarning(
                 "SoulTape placement-tools DEVELOPMENT BUILD active; F9 solves and " +
@@ -151,6 +162,13 @@ namespace SoulPlayer
                 Log.LogError("SoulPlayer could not enable the " + name + " patch: " + ex);
             }
         }
+
+#if SOULPLAYER_PERF
+        private void Update()
+        {
+            RecurringWorkProfiler.Flush();
+        }
+#endif
 
         private void OnDestroy()
         {

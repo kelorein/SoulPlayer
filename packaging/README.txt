@@ -1,4 +1,4 @@
-SoulPlayer 0.9.0 for SPT 4.1.x
+SoulPlayer 0.9.1 for SPT 4.1.x
 ==============================
 
 INSTALL OR UPDATE

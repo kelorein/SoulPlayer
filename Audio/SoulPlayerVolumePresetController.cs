@@ -67,6 +67,11 @@ namespace SoulPlayer.Audio
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Input);
+            try
+            {
+#endif
             if (_settings == null)
             {
                 return;
@@ -83,6 +88,10 @@ namespace SoulPlayer.Audio
             {
                 _settings.Volume = volume;
             }
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Input); }
+#endif
         }
 
         private static bool ShortcutPressed(KeyboardShortcut shortcut)

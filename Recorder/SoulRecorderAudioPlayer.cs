@@ -265,6 +265,11 @@ namespace SoulPlayer.Recorder
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Audio);
+            try
+            {
+#endif
             FlushDeferredDiagnostic();
 
             if (_startPreparedOnNextUpdate)
@@ -281,6 +286,10 @@ namespace SoulPlayer.Recorder
             }
 
             AdvancePreparationOneStage();
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Audio); }
+#endif
         }
 
         private void CompleteFlacDecode()
