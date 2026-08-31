@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace SoulPlayer.UI
 {
@@ -10,12 +11,16 @@ namespace SoulPlayer.UI
         Exiting = 3
     }
 
-    public struct SoulPlayerVolumeHudRect
+    public struct SoulPlayerVolumeHudRect : IEquatable<SoulPlayerVolumeHudRect>
     {
         public float X;
         public float Y;
         public float Width;
         public float Height;
+        public bool Equals(SoulPlayerVolumeHudRect other)
+        {
+            return X == other.X && Y == other.Y && Width == other.Width && Height == other.Height;
+        }
     }
 
     public struct SoulPlayerVolumeHudLayoutResult
@@ -28,15 +33,25 @@ namespace SoulPlayer.UI
         public SoulPlayerVolumeHudRect Bar;
     }
 
-    public struct SoulPlayerVolumeHudPlacementContext
+    public struct SoulPlayerVolumeHudPlacementContext : IEquatable<SoulPlayerVolumeHudPlacementContext>
     {
         public bool IsInRaid;
         public bool MiniPlayerVisible;
         public SoulPlayerVolumeHudRect MiniPlayer;
         public bool RecorderOverlayVisible;
         public SoulPlayerVolumeHudRect RecorderOverlay;
+        public bool RecorderStatusVisible;
+        public SoulPlayerVolumeHudRect RecorderStatus;
         public bool DiscoveryOverlayVisible;
         public SoulPlayerVolumeHudRect DiscoveryOverlay;
+        public bool Equals(SoulPlayerVolumeHudPlacementContext other)
+        {
+            return IsInRaid == other.IsInRaid &&
+                MiniPlayerVisible == other.MiniPlayerVisible && (!MiniPlayerVisible || MiniPlayer.Equals(other.MiniPlayer)) &&
+                RecorderOverlayVisible == other.RecorderOverlayVisible && (!RecorderOverlayVisible || RecorderOverlay.Equals(other.RecorderOverlay)) &&
+                RecorderStatusVisible == other.RecorderStatusVisible && (!RecorderStatusVisible || RecorderStatus.Equals(other.RecorderStatus)) &&
+                DiscoveryOverlayVisible == other.DiscoveryOverlayVisible && (!DiscoveryOverlayVisible || DiscoveryOverlay.Equals(other.DiscoveryOverlay));
+        }
     }
 
     public struct SoulPlayerVolumeHudFrame
@@ -79,23 +94,8 @@ namespace SoulPlayer.UI
             float y = screenHeight - marginBottom - height;
             SoulPlayerVolumeHudRect candidate = Rect(x, y, width, height);
 
-            if (context.MiniPlayerVisible)
-            {
-                y = StackAbove(candidate, context.MiniPlayer,
-                    y, scale, screenHeight);
-                candidate.Y = y;
-            }
-            if (context.RecorderOverlayVisible)
-            {
-                y = StackAbove(candidate, context.RecorderOverlay,
-                    y, scale, screenHeight);
-                candidate.Y = y;
-            }
-            if (context.DiscoveryOverlayVisible)
-            {
-                y = StackAbove(candidate, context.DiscoveryOverlay,
-                    y, scale, screenHeight);
-            }
+            y = StackAround(candidate, context, true,
+                scale, screenHeight, false).Y;
 
             return new SoulPlayerVolumeHudLayoutResult
             {
@@ -147,30 +147,79 @@ namespace SoulPlayer.UI
             };
         }
 
-        private static float StackAbove(
-            SoulPlayerVolumeHudRect candidate,
-            SoulPlayerVolumeHudRect occupied,
-            float currentY,
-            float scale,
-            int screenHeight)
+        public static SoulPlayerVolumeHudRect[] OccupiedRects(
+            SoulPlayerVolumeHudPlacementContext context, bool includeMini)
         {
-            if (occupied.Width <= 0f || occupied.Height <= 0f ||
-                candidate.X >= occupied.X + occupied.Width ||
-                candidate.X + candidate.Width <= occupied.X)
-            {
-                return currentY;
-            }
+            List<SoulPlayerVolumeHudRect> occupied = new List<SoulPlayerVolumeHudRect>();
+            if (includeMini && context.MiniPlayerVisible) occupied.Add(context.MiniPlayer);
+            if (context.RecorderOverlayVisible) occupied.Add(context.RecorderOverlay);
+            if (context.RecorderStatusVisible) occupied.Add(context.RecorderStatus);
+            if (context.DiscoveryOverlayVisible) occupied.Add(context.DiscoveryOverlay);
+            return occupied.ToArray();
+        }
 
+        // The runtime overload uses four value slots, never List/ToArray.
+        public static SoulPlayerVolumeHudRect StackAround(SoulPlayerVolumeHudRect candidate,
+            SoulPlayerVolumeHudPlacementContext context, bool includeMini,
+            float scale, int screenHeight, bool down)
+        {
             float gap = StackGap * scale;
-            if (candidate.Y >= occupied.Y + occupied.Height + gap ||
-                candidate.Y + candidate.Height <= occupied.Y - gap)
+            float margin = Math.Min(24f * scale, Math.Max(0f, screenHeight - candidate.Height));
+            int count = (includeMini && context.MiniPlayerVisible ? 1 : 0) +
+                (context.RecorderOverlayVisible ? 1 : 0) + (context.RecorderStatusVisible ? 1 : 0) +
+                (context.DiscoveryOverlayVisible ? 1 : 0);
+            for (int pass = 0; pass <= count; pass++)
             {
-                return currentY;
+                float oldY = candidate.Y;
+                for (int i = 0; i < 4; i++)
+                {
+                    SoulPlayerVolumeHudRect occupied = i == 0 ? (includeMini && context.MiniPlayerVisible ? context.MiniPlayer : default(SoulPlayerVolumeHudRect)) :
+                        i == 1 ? (context.RecorderOverlayVisible ? context.RecorderOverlay : default(SoulPlayerVolumeHudRect)) :
+                        i == 2 ? (context.RecorderStatusVisible ? context.RecorderStatus : default(SoulPlayerVolumeHudRect)) :
+                        (context.DiscoveryOverlayVisible ? context.DiscoveryOverlay : default(SoulPlayerVolumeHudRect));
+                    if (occupied.Width <= 0f || occupied.Height <= 0f ||
+                        candidate.X >= occupied.X + occupied.Width || candidate.X + candidate.Width <= occupied.X ||
+                        candidate.Y >= occupied.Y + occupied.Height + gap || candidate.Y + candidate.Height <= occupied.Y - gap)
+                        continue;
+                    candidate.Y = down ? occupied.Y + occupied.Height + gap : occupied.Y - gap - candidate.Height;
+                }
+                candidate.Y = Clamp(candidate.Y, margin, Math.Max(margin, screenHeight - margin - candidate.Height));
+                if (candidate.Y == oldY) break;
             }
-            float stackedY = occupied.Y - gap - candidate.Height;
-            float topMargin = Math.Min(24f * scale,
+            return candidate;
+        }
+
+        // Shared vertical stacking, rechecking every obstacle after a move so
+        // caller order cannot place a panel back over a previously checked one.
+        public static SoulPlayerVolumeHudRect StackAround(
+            SoulPlayerVolumeHudRect candidate,
+            SoulPlayerVolumeHudRect[] occupiedRects,
+            float scale,
+            int screenHeight,
+            bool down)
+        {
+            float gap = StackGap * scale;
+            float margin = Math.Min(24f * scale,
                 Math.Max(0f, screenHeight - candidate.Height));
-            return Math.Max(topMargin, Math.Min(currentY, stackedY));
+            for (int pass = 0; pass <= occupiedRects.Length; pass++)
+            {
+                float oldY = candidate.Y;
+                foreach (SoulPlayerVolumeHudRect occupied in occupiedRects)
+                {
+                    if (occupied.Width <= 0f || occupied.Height <= 0f ||
+                        candidate.X >= occupied.X + occupied.Width ||
+                        candidate.X + candidate.Width <= occupied.X ||
+                        candidate.Y >= occupied.Y + occupied.Height + gap ||
+                        candidate.Y + candidate.Height <= occupied.Y - gap)
+                        continue;
+                    candidate.Y = down ? occupied.Y + occupied.Height + gap :
+                        occupied.Y - gap - candidate.Height;
+                }
+                candidate.Y = Clamp(candidate.Y, margin,
+                    Math.Max(margin, screenHeight - margin - candidate.Height));
+                if (candidate.Y == oldY) break;
+            }
+            return candidate;
         }
 
         private static float Clamp(float value, float minimum, float maximum)

@@ -102,7 +102,7 @@ namespace SoulPlayer.CollectionTests
 
         [Fact]
         [Trait("Validation", "WorldCassetteVisual")]
-        public void AssignmentCollectionPlanningAndDiscoverySourcesAreUnchanged()
+        public void AssignmentCollectionPlanningAndTargetingRulesAreUnchanged()
         {
             Dictionary<string, string> expected = new Dictionary<string, string>
             {
@@ -111,7 +111,6 @@ namespace SoulPlayer.CollectionTests
                 { "Cassettes/SoulTapeCollection.cs", "3DAAAEE62BF975FDF0C4BE2988173BA8E609B9F222196C1473322DCBAC03DC5F" },
                 { "Cassettes/SoulTapeCollectionStore.cs", "B42772C3ECD099F077DC6F4EC4230EB550B1D8EA844F23A8373E99B238219B7D" },
                 { "Cassettes/SoulTapeSpawnPlanner.cs", "48256B207C10FDB8B72CC22AAB765FD98B1411C5678B8D1D2242B18FB7DF0B2C" },
-                { "World/SoulTapeWorldDiscoveryController.cs", "78C6D9131B9F95419A665CCD9DDAEAB7784A9E1DEDFA90045BA54627498C3378" },
                 { "World/SoulTapeInteractionTargeting.cs", "89073C6F2804F701023E26B7D04F8B862D6EFB0DCED1822FA529AC07962B4C7F" }
             };
 
@@ -120,6 +119,13 @@ namespace SoulPlayer.CollectionTests
                 Assert.Equal(item.Value, Sha256(RepoPath(
                     item.Key.Split('/'))));
             }
+            // Discovery's frame scheduler/buffers are now optimized; preserve its
+            // behavioral handoff instead of freezing the entire implementation.
+            string discovery = ReadSource("World", "SoulTapeWorldDiscoveryController.cs");
+            Assert.Contains("_discovery.Discover(pickup.Cassette.Id)", discovery);
+            Assert.Contains("_planner.CreateRaidSelection(", discovery);
+            Assert.Contains("SoulTapeDiscoveryResult.NewUnlock", discovery);
+            Assert.Contains("QueryTriggerInteraction.Ignore", discovery);
         }
 
         [Fact]

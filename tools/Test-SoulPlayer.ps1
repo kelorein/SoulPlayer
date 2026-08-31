@@ -171,6 +171,9 @@ if ($unitPassed) {
     $groups += Invoke-ValidationGroup 'CatalogLibraryRefresh' 'Catalog/library refresh'
     $groups += Invoke-ValidationGroup 'PersistenceRecovery' 'Persistence/recovery'
     $groups += Invoke-ValidationGroup 'RecorderSelection' 'Recorder selection'
+    $groups += Invoke-ValidationGroup 'RecorderInput' 'SoulRecorder input'
+    $groups += Invoke-ValidationGroup 'MiniPlayerLayout' 'Mini-player layout'
+    $groups += Invoke-ValidationGroup 'OverlayCollision' 'Overlay collision'
     $groups += Invoke-ValidationGroup 'RecorderPresentation' 'Recorder presentation'
     $groups += Invoke-ValidationGroup 'NativeHands' 'Native EFT hands'
     $groups += Invoke-ValidationGroup 'AssetPipeline' 'Asset pipeline'
@@ -181,6 +184,11 @@ if ($unitPassed) {
     $groups += Invoke-ValidationGroup 'TrackRouting' 'Track routing/playlists'
     $groups += Invoke-ValidationGroup 'PostRaidRouting' 'Extract/death routing'
     $groups += Invoke-ValidationGroup 'PostRaidLifecycle' 'Post-raid lifecycle'
+    $groups += Invoke-ValidationGroup 'RecorderMainResume' 'Recorder-preserved Main resume'
+    $groups += Invoke-ValidationGroup 'Performance' 'Idle/performance regressions'
+    $groups += Invoke-ValidationGroup 'ExactPositionResume' 'Exact-position resume'
+    $groups += Invoke-ValidationGroup 'RaidReadiness' 'Raid readiness contracts'
+    $groups += Invoke-ValidationGroup 'LibraryRescan' 'Library rescan/remapping'
     $groups += Invoke-ValidationGroup 'PlaybackSelection' 'Exact playback selection'
     $groups += Invoke-ValidationGroup 'LibraryPaths' 'Library/path compatibility'
     $groups += Invoke-ValidationGroup 'LibraryUi' 'Library UI'
@@ -192,6 +200,9 @@ else {
         'Catalog/library refresh',
         'Persistence/recovery',
         'Recorder selection',
+        'SoulRecorder input',
+        'Mini-player layout',
+        'Overlay collision',
         'Recorder presentation',
         'Native EFT hands',
         'Asset pipeline',
@@ -202,6 +213,11 @@ else {
         'Track routing/playlists',
         'Extract/death routing',
         'Post-raid lifecycle',
+        'Recorder-preserved Main resume',
+        'Idle/performance regressions',
+        'Exact-position resume',
+        'Raid readiness contracts',
+        'Library rescan/remapping',
         'Exact playback selection',
         'Library/path compatibility',
         'Library UI')) {
@@ -299,7 +315,14 @@ $changedFiles = @(
 
 $runtimeRequired = $false
 $runtimeReason = 'no runtime-specific systems changed'
-if ($changedFiles | Where-Object {
+if ($changedFiles -contains 'Audio/RaidPlaybackSession.cs' -or
+    $changedFiles -contains 'Audio/StableRaidMenuContext.cs' -or
+    $changedFiles -contains 'Audio/SoulAudioPlayer.cs' -or
+    $changedFiles -contains 'Patches/RaidDeploymentPatch.cs') {
+    $runtimeRequired = $true
+    $runtimeReason = 'raid loading suspension / exact Main resume lifecycle changed'
+}
+elseif ($changedFiles | Where-Object {
     $_ -match '^Assets/SoulRecorder/Overlay/' -or
     $_ -eq 'Recorder/SoulRecorderOverlayView.cs' -or
     $_ -eq 'Recorder/SoulRecorderScreenOverlayTransition.cs'

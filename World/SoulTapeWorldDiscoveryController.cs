@@ -31,6 +31,11 @@ namespace SoulPlayer.World
         private ISoulTapeLog _log;
         private GameWorld _activeWorld;
         private Camera _gameplayCamera;
+        private float _nextCameraRefresh;
+        private float _nextProximityCheck;
+        private readonly Dictionary<SoulTapeWorldPickup, PickupEvaluation> _evaluations =
+            new Dictionary<SoulTapeWorldPickup, PickupEvaluation>();
+        private static readonly RaycastHit[] VisibilityHits = new RaycastHit[128];
         private string _cameraSelectionSource = "unavailable";
         private string _mainCameraAudit = "not evaluated";
         private int _activeCameraCount;
@@ -86,6 +91,11 @@ namespace SoulPlayer.World
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.World);
+            try
+            {
+#endif
             GameWorld world = Singleton<GameWorld>.Instance;
             if (!GameState.IsInRaid() || world == null)
             {
@@ -119,6 +129,10 @@ namespace SoulPlayer.World
             }
 
             UpdateInteraction(player);
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.World); }
+#endif
         }
 
         private void BeginRaid(GameWorld world)
@@ -130,6 +144,8 @@ namespace SoulPlayer.World
             _spawnPending = true;
             _spawnCompleted = false;
             _gameplayCamera = null;
+            _nextCameraRefresh = _nextProximityCheck = 0f;
+            _evaluations.Clear();
             _cameraSelectionSource = "unavailable";
             _mainCameraAudit = "not evaluated";
             _activeCameraCount = 0;
@@ -219,9 +235,29 @@ namespace SoulPlayer.World
         private void UpdateInteraction(Player player)
         {
             _pickups.RemoveAll(candidate => candidate == null);
+            if (_pickups.Count == 0) { _targetedPickup = null; _nearestPickupEvaluation = null; return; }
+            bool collectPressed = ShortcutPressed(_settings.CollectCassetteHotkey);
+            if (!_settings.ShowSoulTapeTargetingDiagnostics && _targetedPickup == null && !collectPressed)
+            {
+                if (Time.unscaledTime < _nextProximityCheck) return;
+                Transform originTransform = player.CameraPosition != null ? player.CameraPosition :
+                    (player.Transform == null ? null : player.Transform.Original);
+                if (originTransform == null) return;
+                Vector3 origin = originTransform.position;
+                float range = _settings.CassetteInteractionDistance + 4f;
+                bool nearby = false;
+                foreach (SoulTapeWorldPickup candidate in _pickups)
+                    if ((candidate.InteractionFocusPoint - origin).sqrMagnitude <= range * range) { nearby = true; break; }
+                if (!nearby)
+                {
+                    _nearestPickupEvaluation = null;
+                    _nextProximityCheck = Time.unscaledTime + 0.2f;
+                    return;
+                }
+            }
             _targetedPickup = FindTargetedPickup(player);
             if (_targetedPickup == null ||
-                !ShortcutPressed(_settings.CollectCassetteHotkey))
+                !collectPressed)
             {
                 return;
             }
@@ -291,14 +327,10 @@ namespace SoulPlayer.World
             Ray screenCenterRay,
             bool isCurrentTarget)
         {
-            PickupEvaluation evaluation = new PickupEvaluation
-            {
-                Pickup = pickup,
-                IsCurrentTarget = isCurrentTarget,
-                AllowedAngle = SoulTapeInteractionTargeting.GetAllowedAngle(isCurrentTarget),
-                Angle = float.MaxValue,
-                Viewport = new Vector3(float.NaN, float.NaN, float.NaN)
-            };
+            PickupEvaluation evaluation;
+            if (!_evaluations.TryGetValue(pickup, out evaluation))
+                _evaluations[pickup] = evaluation = new PickupEvaluation();
+            evaluation.Reset(pickup, isCurrentTarget);
             Vector3 focus = pickup.InteractionFocusPoint;
             Vector3 toFocus = focus - screenCenterRay.origin;
             float distance = toFocus.magnitude;
@@ -337,7 +369,7 @@ namespace SoulPlayer.World
                     player,
                     pickup,
                     camera,
-                    screenCenterRay.origin);
+                    screenCenterRay.origin, _settings.ShowSoulTapeTargetingDiagnostics);
                 evaluation.LineOfSightClear = lineOfSight.IsClear;
                 evaluation.VisibilitySamplesTested = lineOfSight.SamplesTested;
                 evaluation.VisibilitySampleName = lineOfSight.SampleName;
@@ -355,7 +387,7 @@ namespace SoulPlayer.World
             Player player,
             SoulTapeWorldPickup pickup,
             Camera camera,
-            Vector3 origin)
+            Vector3 origin, bool captureDiagnostics)
         {
             LineOfSightEvaluation evaluation = new LineOfSightEvaluation();
             for (int index = 0; index < SoulTapeWorldPickup.VisibilitySampleCount; index++)
@@ -386,7 +418,7 @@ namespace SoulPlayer.World
                     return evaluation;
                 }
 
-                if (evaluation.Blocker == null)
+                if (captureDiagnostics && evaluation.Blocker == null)
                 {
                     Collider collider = blocker.collider;
                     Transform colliderTransform = collider == null ? null : collider.transform;
@@ -424,32 +456,34 @@ namespace SoulPlayer.World
             float distance,
             out RaycastHit blocker)
         {
-            RaycastHit[] hits = Physics.RaycastAll(
+            int count = Physics.RaycastNonAlloc(
                 origin,
                 direction,
+                VisibilityHits,
                 distance,
                 Physics.DefaultRaycastLayers,
                 QueryTriggerInteraction.Ignore);
-            Array.Sort(hits, CompareRaycastHits);
-            foreach (RaycastHit hit in hits)
+            // A saturated buffer must not hide a nearer blocker. Rare overflow
+            // retains the correctness-first allocating query.
+            RaycastHit[] hits = count == VisibilityHits.Length ? Physics.RaycastAll(
+                origin, direction, distance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) : VisibilityHits;
+            if (hits != VisibilityHits) count = hits.Length;
+            float nearest = float.MaxValue;
+            blocker = new RaycastHit();
+            bool found = false;
+            for (int i = 0; i < count; i++)
             {
+                RaycastHit hit = hits[i];
                 Collider collider = hit.collider;
                 if (ShouldIgnoreLineOfSightHit(collider, player, pickup, camera))
                 {
                     continue;
                 }
 
-                blocker = hit;
-                return true;
+                if (hit.distance < nearest) { nearest = hit.distance; blocker = hit; found = true; }
             }
 
-            blocker = new RaycastHit();
-            return false;
-        }
-
-        private static int CompareRaycastHits(RaycastHit left, RaycastHit right)
-        {
-            return left.distance.CompareTo(right.distance);
+            return found;
         }
 
         private static bool ShouldIgnoreLineOfSightHit(
@@ -520,8 +554,12 @@ namespace SoulPlayer.World
 
         private Camera ResolveGameplayCamera()
         {
-            // Correctness-first acceptance path: resolve Camera.main for every
-            // targeting update instead of accepting whichever camera rendered last.
+            if (IsUsableGameplayCamera(_gameplayCamera) && Time.unscaledTime < _nextCameraRefresh)
+                return _gameplayCamera;
+            _nextCameraRefresh = Time.unscaledTime + 0.5f;
+            SoulPlayer.Utils.RecurringWorkProfiler.Mark(SoulPlayer.Utils.RecurringWorkEvent.CameraResolve);
+            // Revalidate periodically or immediately if the cached camera dies.
+            // Never accept whichever auxiliary camera happened to render last.
             Camera main = Camera.main;
             string mainRejection = GetCameraRejectionReason(main, false);
             _mainCameraAudit = string.IsNullOrEmpty(mainRejection)
@@ -656,7 +694,14 @@ namespace SoulPlayer.World
 
         private void OnGUI()
         {
-            if (_activeWorld == null)
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.World);
+            try
+            {
+#endif
+            if (_activeWorld == null || Event.current.type != EventType.Repaint ||
+                (!_settings.ShowSoulTapeTargetingDiagnostics && _targetedPickup == null &&
+                 !IsNotificationVisible(Time.unscaledTime)))
             {
                 return;
             }
@@ -695,6 +740,10 @@ namespace SoulPlayer.World
             }
 
             DrawDiscoveryNotification(Time.unscaledTime);
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.World); }
+#endif
         }
 
         private void EnsureGuiStyles()
@@ -1024,6 +1073,7 @@ namespace SoulPlayer.World
                 }
             }
             _pickups.Clear();
+            _evaluations.Clear();
             _targetedPickup = null;
             _nearestPickupEvaluation = null;
             _activeWorld = null;
@@ -1074,6 +1124,16 @@ namespace SoulPlayer.World
 
         private sealed class PickupEvaluation
         {
+            internal void Reset(SoulTapeWorldPickup pickup, bool current)
+            {
+                Pickup = pickup; IsCurrentTarget = current;
+                AllowedAngle = SoulTapeInteractionTargeting.GetAllowedAngle(current);
+                Angle = float.MaxValue; Distance = 0f;
+                Viewport = new Vector3(float.NaN, float.NaN, float.NaN);
+                WithinDistance = InFront = InViewport = InsideAcquireCone = InsideAllowedCone =
+                    LineOfSightClear = IsTargetable = IsFinalTarget = false;
+                VisibilitySamplesTested = 0; VisibilitySampleName = null; Blocker = null;
+            }
             internal SoulTapeWorldPickup Pickup { get; set; }
             internal float Distance { get; set; }
             internal Vector3 Viewport { get; set; }
@@ -1093,7 +1153,7 @@ namespace SoulPlayer.World
             internal BlockingHitDiagnostic Blocker { get; set; }
         }
 
-        private sealed class LineOfSightEvaluation
+        private struct LineOfSightEvaluation
         {
             internal bool IsClear { get; set; }
             internal int SamplesTested { get; set; }

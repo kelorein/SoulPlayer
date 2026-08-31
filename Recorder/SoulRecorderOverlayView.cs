@@ -173,6 +173,11 @@ namespace SoulPlayer.Recorder
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Overlay);
+            try
+            {
+#endif
             if (!_enabled || _sequence == Sequence.Hidden)
             {
                 return;
@@ -187,6 +192,10 @@ namespace SoulPlayer.Recorder
             {
                 _sequence = Sequence.Hidden;
             }
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Overlay); }
+#endif
         }
 
         private SoulRecorderOverlayPose Evaluate(float now)
@@ -226,6 +235,11 @@ namespace SoulPlayer.Recorder
 
         private void OnGUI()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Overlay);
+            try
+            {
+#endif
             if (!_enabled || _sequence == Sequence.Hidden ||
                 Event.current.type != EventType.Repaint)
             {
@@ -262,6 +276,10 @@ namespace SoulPlayer.Recorder
                     led, led), Texture2D.whiteTexture);
             }
             GUI.color = previous;
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Overlay); }
+#endif
         }
 
         private bool TryLoadAssets()

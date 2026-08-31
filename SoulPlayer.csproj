@@ -35,7 +35,20 @@
   <PropertyGroup Condition=" '$(SoulPlayerPlacementTools)' == 'true' ">
     <DefineConstants>$(DefineConstants);SOULPLAYER_PLACEMENT_TOOLS</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(SoulPlayerPerformanceDiagnostics)' == 'true' ">
+    <DefineConstants>$(DefineConstants);SOULPLAYER_PERF</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Utils\RecurringWorkProfiler.cs" />
+    <Compile Include="UI\SoulOverlayLayoutRevision.cs" />
+    <Compile Include="Audio\RaidReadinessPollGate.cs" />
+    <Compile Include="Recorder\SoulRecorderInput.cs" />
+    <Compile Include="UI\SoulMiniPlayerLayout.cs" />
+    <Compile Include="Audio\PostRaidHandoff.cs" />
+    <Compile Include="Audio\RaidPlaybackSession.cs" />
+    <Compile Include="Audio\RaidPlaybackReadiness.cs" />
+    <Compile Include="Audio\StableRaidMenuContext.cs" />
+    <Compile Include="Patches\RaidDeploymentPatch.cs" />
     <Reference Include="0Harmony"><HintPath>$(SptRoot)\BepInEx\core\0Harmony.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="Assembly-CSharp"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="BepInEx"><HintPath>$(SptRoot)\BepInEx\core\BepInEx.dll</HintPath><Private>False</Private></Reference>

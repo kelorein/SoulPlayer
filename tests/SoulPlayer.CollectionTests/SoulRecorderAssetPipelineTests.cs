@@ -149,7 +149,7 @@ namespace SoulPlayer.CollectionTests
             Assert.True(versionMatch.Success);
             string pluginVersion = versionMatch.Groups["version"].Value;
 
-            Assert.Equal("0.9.0", pluginVersion);
+            Assert.Equal("0.9.1", pluginVersion);
             Assert.Contains("SPT_Runtime\\SPT.Server.exe", packageScript);
             Assert.DoesNotContain("Join-Path $resolvedSptRoot 'SPT.Server.exe'", packageScript);
             Assert.Contains("$pluginVersion = $pluginVersionMatch.Groups['version'].Value", packageScript);

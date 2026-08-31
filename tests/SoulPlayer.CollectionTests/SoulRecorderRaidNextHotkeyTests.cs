@@ -200,7 +200,8 @@ namespace SoulPlayer.CollectionTests
             string controller = File.ReadAllText(Path.Combine(
                 FindRepositoryRoot(), "Recorder", "SoulRecorderController.cs"));
 
-            Assert.Contains("private const KeyCode RecorderHotkey = KeyCode.M", controller);
+            Assert.Contains("_settings.RecorderStartStopHotkey", controller);
+            Assert.DoesNotContain("Input.GetKeyDown(RecorderHotkey)", controller);
             Assert.Contains("ToggleInteraction(player);", controller);
             Assert.Contains("EnterInteraction(player);", controller);
             Assert.Contains("EnterStopInteraction(player, null);", controller);

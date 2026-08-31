@@ -85,6 +85,11 @@ namespace SoulPlayer.Cassettes
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Collection);
+            try
+            {
+#endif
             if (Time.unscaledTime < _nextProfileCheck)
             {
                 return;
@@ -105,6 +110,10 @@ namespace SoulPlayer.Cassettes
                     RefreshEligibleCatalogIfReady();
                 }
             }
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Collection); }
+#endif
         }
 
         private void OnDestroy()
