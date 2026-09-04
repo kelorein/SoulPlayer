@@ -16,6 +16,11 @@ namespace SoulPlayer.UI
 
         internal static SoulPlayerOverlayHost Instance { get; private set; }
 
+        internal bool CapturesKeyboardInput
+        {
+            get { return _window != null && _window.CapturesKeyboardInput; }
+        }
+
         internal static SoulPlayerOverlayHost Create(TMP_Text styleSource)
         {
             if (Instance != null)
@@ -75,6 +80,11 @@ namespace SoulPlayer.UI
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Overlay);
+            try
+            {
+#endif
             if (Time.unscaledTime < _nextStateCheck)
             {
                 return;
@@ -86,6 +96,10 @@ namespace SoulPlayer.UI
             {
                 ApplyRaidState(inRaid);
             }
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Overlay); }
+#endif
         }
 
         private void ApplyRaidState(bool inRaid)

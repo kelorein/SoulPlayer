@@ -1,0 +1,812 @@
+{
+  "logicalName": "soultape_cassette",
+  "preparedWith": "Blender 5.2.0 LTS",
+  "sourceArchiveEntry": "cassette_tapeBlendswap.blend",
+  "before": {
+    "objects": [
+      {
+        "name": "Axle",
+        "vertices": 360,
+        "polygons": 342,
+        "triangles": 684,
+        "materials": [
+          "WhitePlastic"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.339028
+        ],
+        "dimensions": [
+          0.479028,
+          0.486418,
+          0.034207
+        ]
+      },
+      {
+        "name": "Axle.001",
+        "vertices": 1368,
+        "polygons": 1368,
+        "triangles": 2736,
+        "materials": [
+          "WhitePlastic"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          1.401175,
+          0.486418,
+          0.091608
+        ]
+      },
+      {
+        "name": "CassetteCase_Hero",
+        "vertices": 1148,
+        "polygons": 1040,
+        "triangles": 2087,
+        "materials": [
+          "Plastic Case"
+        ],
+        "localScale": [
+          1.106334,
+          0.702834,
+          0.073033
+        ],
+        "dimensions": [
+          1.01784,
+          3.725289,
+          1.136999
+        ]
+      },
+      {
+        "name": "CassetteCase_Hero.001",
+        "vertices": 4468,
+        "polygons": 4160,
+        "triangles": 8348,
+        "materials": [
+          "Plastic Case"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          2.252141,
+          2.618259,
+          0.166076
+        ]
+      },
+      {
+        "name": "Plastic Cover",
+        "vertices": 4,
+        "polygons": 1,
+        "triangles": 2,
+        "materials": [
+          "Clear Plastic"
+        ],
+        "localScale": [
+          0.654628,
+          0.193053,
+          0.79753
+        ],
+        "dimensions": [
+          0.91736,
+          2.044945,
+          0.0
+        ]
+      },
+      {
+        "name": "Plastic Cover.001",
+        "vertices": 8,
+        "polygons": 2,
+        "triangles": 4,
+        "materials": [
+          "Clear Plastic"
+        ],
+        "localScale": [
+          0.654628,
+          0.193053,
+          0.79753
+        ],
+        "dimensions": [
+          0.600529,
+          0.394782,
+          0.120553
+        ]
+      },
+      {
+        "name": "Screws",
+        "vertices": 1006,
+        "polygons": 958,
+        "triangles": 1920,
+        "materials": [
+          "screws black"
+        ],
+        "localScale": [
+          0.637863,
+          0.637863,
+          0.637863
+        ],
+        "dimensions": [
+          0.122981,
+          2.095616,
+          0.017123
+        ]
+      },
+      {
+        "name": "Screws.001",
+        "vertices": 4024,
+        "polygons": 3832,
+        "triangles": 7680,
+        "materials": [
+          "screws black"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          2.141638,
+          1.336716,
+          0.13332
+        ]
+      },
+      {
+        "name": "ScrewsCenter",
+        "vertices": 503,
+        "polygons": 479,
+        "triangles": 960,
+        "materials": [
+          "screws black"
+        ],
+        "localScale": [
+          0.637863,
+          0.637863,
+          0.637863
+        ],
+        "dimensions": [
+          0.115445,
+          0.115445,
+          0.017123
+        ]
+      },
+      {
+        "name": "ScrewsCenter.001",
+        "vertices": 1006,
+        "polygons": 958,
+        "triangles": 1920,
+        "materials": [
+          "screws black"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.073638,
+          0.073638,
+          0.131114
+        ]
+      },
+      {
+        "name": "TapeHeadPadR",
+        "vertices": 8,
+        "polygons": 6,
+        "triangles": 12,
+        "materials": [
+          "white sponge"
+        ],
+        "localScale": [
+          0.034643,
+          0.00941,
+          0.06037
+        ],
+        "dimensions": [
+          2.0,
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "name": "TapeHeadPadR.001",
+        "vertices": 8,
+        "polygons": 6,
+        "triangles": 12,
+        "materials": [
+          "white sponge"
+        ],
+        "localScale": [
+          0.034643,
+          0.00941,
+          0.06037
+        ],
+        "dimensions": [
+          2.0,
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "name": "TapeHeadPadR.002",
+        "vertices": 8,
+        "polygons": 6,
+        "triangles": 12,
+        "materials": [
+          "white sponge"
+        ],
+        "localScale": [
+          0.034643,
+          0.00941,
+          0.06037
+        ],
+        "dimensions": [
+          0.069286,
+          0.01882,
+          0.120741
+        ]
+      },
+      {
+        "name": "TapeHeadPadR.003",
+        "vertices": 8,
+        "polygons": 6,
+        "triangles": 12,
+        "materials": [
+          "white sponge"
+        ],
+        "localScale": [
+          0.034643,
+          0.00941,
+          0.06037
+        ],
+        "dimensions": [
+          0.069286,
+          0.01882,
+          0.120741
+        ]
+      },
+      {
+        "name": "WheelCogs",
+        "vertices": 510,
+        "polygons": 456,
+        "triangles": 912,
+        "materials": [],
+        "localScale": [
+          0.018488,
+          0.02455,
+          0.018488
+        ],
+        "dimensions": [
+          12.444256,
+          9.979938,
+          2.172178
+        ]
+      },
+      {
+        "name": "WheelCogs.001",
+        "vertices": 1020,
+        "polygons": 912,
+        "triangles": 1824,
+        "materials": [],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          1.148919,
+          0.245011,
+          0.040158
+        ]
+      },
+      {
+        "name": "tape",
+        "vertices": 126,
+        "polygons": 108,
+        "triangles": 216,
+        "materials": [
+          "tape"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.339028
+        ],
+        "dimensions": [
+          0.830701,
+          0.843516,
+          0.019389
+        ]
+      },
+      {
+        "name": "tape.001",
+        "vertices": 468,
+        "polygons": 432,
+        "triangles": 864,
+        "materials": [
+          "tape"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.339028
+        ],
+        "dimensions": [
+          1.752849,
+          0.843516,
+          0.051926
+        ]
+      }
+    ],
+    "objectNames": [
+      "Axle",
+      "Axle.001",
+      "CassetteCase_Hero",
+      "CassetteCase_Hero.001",
+      "Plastic Cover",
+      "Plastic Cover.001",
+      "Screws",
+      "Screws.001",
+      "ScrewsCenter",
+      "ScrewsCenter.001",
+      "TapeHeadPadR",
+      "TapeHeadPadR.001",
+      "TapeHeadPadR.002",
+      "TapeHeadPadR.003",
+      "WheelCogs",
+      "WheelCogs.001",
+      "tape",
+      "tape.001"
+    ],
+    "meshObjectCount": 18,
+    "vertexCount": 16051,
+    "polygonCount": 15072,
+    "triangleCount": 30205,
+    "materialCount": 6,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -31.072861,
+        -3.134982,
+        -1.644925
+      ],
+      "maximum": [
+        1.124001,
+        6.844956,
+        1.136999
+      ],
+      "dimensions": [
+        32.196861,
+        9.979938,
+        2.781924
+      ]
+    }
+  },
+  "afterCleanup": {
+    "objects": [
+      {
+        "name": "Axles",
+        "vertices": 1368,
+        "polygons": 1368,
+        "triangles": 2736,
+        "materials": [
+          "SoulTape Amber Detail"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          1.401175,
+          0.486418,
+          0.091608
+        ]
+      },
+      {
+        "name": "ReelLeft",
+        "vertices": 510,
+        "polygons": 456,
+        "triangles": 912,
+        "materials": [
+          "SoulTape Amber Detail"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.230063,
+          0.245011,
+          0.040158
+        ]
+      },
+      {
+        "name": "ReelRight",
+        "vertices": 510,
+        "polygons": 456,
+        "triangles": 912,
+        "materials": [
+          "SoulTape Amber Detail"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.230063,
+          0.245011,
+          0.040158
+        ]
+      },
+      {
+        "name": "Shell",
+        "vertices": 4464,
+        "polygons": 4160,
+        "triangles": 8348,
+        "materials": [
+          "SoulTape Dark Shell"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          2.252141,
+          1.43007,
+          0.166076
+        ]
+      },
+      {
+        "name": "TapeRibbon",
+        "vertices": 468,
+        "polygons": 432,
+        "triangles": 864,
+        "materials": [
+          "SoulTape Ribbon"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.339028
+        ],
+        "dimensions": [
+          1.752849,
+          0.843516,
+          0.051926
+        ]
+      }
+    ],
+    "objectNames": [
+      "Axles",
+      "ReelLeft",
+      "ReelRight",
+      "Shell",
+      "TapeRibbon"
+    ],
+    "meshObjectCount": 5,
+    "vertexCount": 7320,
+    "polygonCount": 6872,
+    "triangleCount": 13772,
+    "materialCount": 3,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -1.12814,
+        -0.751123,
+        -0.083038
+      ],
+      "maximum": [
+        1.124001,
+        0.678948,
+        0.083038
+      ],
+      "dimensions": [
+        2.252141,
+        1.43007,
+        0.166076
+      ]
+    }
+  },
+  "normalization": {
+    "axisMapping": {
+      "sourceX": "width",
+      "sourceY": "height",
+      "sourceZ": "depth"
+    },
+    "sourceBoundsDimensions": [
+      2.252141,
+      1.43007,
+      0.166076
+    ],
+    "appliedScale": [
+      0.048842,
+      0.048949,
+      0.108384
+    ]
+  },
+  "finalDerived": {
+    "objects": [
+      {
+        "name": "Axles",
+        "vertices": 1368,
+        "polygons": 1368,
+        "triangles": 2736,
+        "materials": [
+          "SoulTape Amber Detail"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.068437,
+          0.023809,
+          0.009929
+        ]
+      },
+      {
+        "name": "LabelLower",
+        "vertices": 8,
+        "polygons": 6,
+        "triangles": 12,
+        "materials": [
+          "SoulTape Aged Label"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.082,
+          0.012,
+          0.0002
+        ]
+      },
+      {
+        "name": "LabelUpper",
+        "vertices": 8,
+        "polygons": 6,
+        "triangles": 12,
+        "materials": [
+          "SoulTape Aged Label"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.082,
+          0.012,
+          0.0002
+        ]
+      },
+      {
+        "name": "ReelLeft",
+        "vertices": 510,
+        "polygons": 456,
+        "triangles": 912,
+        "materials": [
+          "SoulTape Amber Detail"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.011237,
+          0.011993,
+          0.004353
+        ]
+      },
+      {
+        "name": "ReelRight",
+        "vertices": 510,
+        "polygons": 456,
+        "triangles": 912,
+        "materials": [
+          "SoulTape Amber Detail"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.011237,
+          0.011993,
+          0.004353
+        ]
+      },
+      {
+        "name": "Shell",
+        "vertices": 4464,
+        "polygons": 4160,
+        "triangles": 8348,
+        "materials": [
+          "SoulTape Dark Shell"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.11,
+          0.07,
+          0.018
+        ]
+      },
+      {
+        "name": "TapeRibbon",
+        "vertices": 468,
+        "polygons": 432,
+        "triangles": 864,
+        "materials": [
+          "SoulTape Ribbon"
+        ],
+        "localScale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.085613,
+          0.041289,
+          0.005628
+        ]
+      }
+    ],
+    "objectNames": [
+      "Axles",
+      "LabelLower",
+      "LabelUpper",
+      "ReelLeft",
+      "ReelRight",
+      "Shell",
+      "TapeRibbon"
+    ],
+    "meshObjectCount": 7,
+    "vertexCount": 7336,
+    "polygonCount": 6884,
+    "triangleCount": 13796,
+    "materialCount": 4,
+    "cameraCount": 0,
+    "lightCount": 0,
+    "overallBounds": {
+      "minimum": [
+        -0.055,
+        -0.035,
+        -0.009
+      ],
+      "maximum": [
+        0.055,
+        0.035,
+        0.0092
+      ],
+      "dimensions": [
+        0.11,
+        0.07,
+        0.0182
+      ]
+    }
+  },
+  "requiredTransforms": {
+    "stage": "Blender FBX",
+    "required": [
+      "SoulTapeCassette",
+      "Shell",
+      "Label",
+      "ReelLeft",
+      "ReelRight"
+    ],
+    "counts": {
+      "SoulTapeCassette": 1,
+      "Shell": 1,
+      "Label": 1,
+      "ReelLeft": 1,
+      "ReelRight": 1
+    },
+    "allUnique": true
+  },
+  "reelPivots": {
+    "ReelLeft": {
+      "pivot": [
+        -0.022338,
+        0.003996,
+        -0.00112
+      ],
+      "boundsCenter": [
+        -0.022338,
+        0.003996,
+        -0.00112
+      ],
+      "pivotOffsetMeters": 0.0,
+      "rotationReady": true
+    },
+    "ReelRight": {
+      "pivot": [
+        0.022541,
+        0.003996,
+        -0.00112
+      ],
+      "boundsCenter": [
+        0.022541,
+        0.003996,
+        -0.00112
+      ],
+      "pivotOffsetMeters": 0.0,
+      "rotationReady": true
+    }
+  },
+  "retainedSourceObjects": [
+    {
+      "source": "CassetteCase_Hero.001",
+      "derived": "Shell"
+    },
+    {
+      "source": "Axle.001",
+      "derived": "Axles"
+    },
+    {
+      "source": "tape.001",
+      "derived": "TapeRibbon"
+    },
+    {
+      "source": "WheelCogs.001",
+      "derived": "ReelLeft/ReelRight"
+    }
+  ],
+  "removedObjects": [
+    "Axle",
+    "CassetteCase_Hero",
+    "Plastic Cover",
+    "Plastic Cover.001",
+    "Screws",
+    "Screws.001",
+    "ScrewsCenter",
+    "ScrewsCenter.001",
+    "TapeHeadPadR",
+    "TapeHeadPadR.001",
+    "TapeHeadPadR.002",
+    "TapeHeadPadR.003",
+    "WheelCogs",
+    "tape"
+  ],
+  "removedSceneHelpers": [
+    "CassetteTape_Group"
+  ],
+  "removedLooseShellVertices": 4,
+  "reelSourceMapping": {
+    "ReelLeft": "negative-X six-cog half of WheelCogs.001",
+    "ReelRight": "positive-X six-cog half of WheelCogs.001"
+  },
+  "textureOutputs": [],
+  "animationClips": [],
+  "animationPoseAuditArmatureLocal": {},
+  "runtimeBones": [],
+  "socketParents": {},
+  "sourceWeightAudit": {},
+  "fpsCrop": {},
+  "derivedOutput": "soultape_cassette.fbx",
+  "derivedFbxSizeBytes": 3114572,
+  "validation": {
+    "passed": true,
+    "errors": [],
+    "warnings": []
+  }
+}

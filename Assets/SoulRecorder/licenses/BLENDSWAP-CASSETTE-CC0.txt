@@ -1,0 +1,21 @@
+SoulPlayer cassette source provenance
+=====================================
+
+Asset: Cassette Tape
+Author: comeinandburn
+Source: https://blendswap.com/blend/10633
+License recorded by the SoulPlayer source audit: CC0 / public-domain dedication
+Immutable source archive: Cassette Tape.zip
+Source archive SHA-256:
+4E1CA41FFE39921B7B10B4CB0CD8BCC43FECB79D97D2DEACC5A6439216BA6246
+
+SoulPlayer redistribution:
+- The source archive itself is not packaged.
+- The derived cassette is unbranded and has no external texture dependency.
+- The derived geometry is normalized to 0.110 x 0.070 x 0.0182 metres.
+- The runtime soultape_world.bundle contains only the derived cassette prefab and
+  its Unity dependencies; it contains no EFT/Battlestate asset and no collider.
+
+CC0 permits copying, modification, and redistribution without attribution. SoulPlayer
+retains the author and source information in its notices and machine-readable manifest
+for provenance transparency.

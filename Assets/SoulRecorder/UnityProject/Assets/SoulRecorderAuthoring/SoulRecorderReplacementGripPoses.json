@@ -1,0 +1,4014 @@
+{
+  "schemaVersion": 1,
+  "poseName": "StaticMaster_v1",
+  "transformCount": 38,
+  "poseSha256": "2EA27472ACBEBF323D9C2502AF7FDFCE1FC3FB8ACDD72D56629C8E8ECEC20AA2",
+  "transforms": [
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm",
+      "localPosition": {
+        "x": -0.16380353,
+        "y": -0.053691898,
+        "z": 0.04271649
+      },
+      "localRotation": {
+        "x": -0.24459457,
+        "y": 0.93795186,
+        "z": 0.14814599,
+        "w": 0.1961443
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BE27BC1D",
+        "BD5BEC09",
+        "3D2EF77C"
+      ],
+      "localRotationBits": [
+        "BE7A7700",
+        "3F701D9D",
+        "3E17B395",
+        "3E48DA0D"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow",
+      "localPosition": {
+        "x": 0.0174,
+        "y": -0.1268,
+        "z": -0.3079
+      },
+      "localRotation": {
+        "x": -0.014801495,
+        "y": 0.2331364,
+        "z": -0.177615,
+        "w": 0.95597136
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3C8E8A72",
+        "BE01D7DC",
+        "BE9DA512"
+      ],
+      "localRotationBits": [
+        "BC7281F8",
+        "3E6EBB4F",
+        "BE35E0B5",
+        "3F74BA8A"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist",
+      "localPosition": {
+        "x": -0.025,
+        "y": -0.023,
+        "z": -0.28
+      },
+      "localRotation": {
+        "x": -0.07945635,
+        "y": 0.44867295,
+        "z": 0.06809717,
+        "w": 0.8875483
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BCCCCCCD",
+        "BCBC6A7F",
+        "BE8F5C29"
+      ],
+      "localRotationBits": [
+        "BDA2BA03",
+        "3EE5B876",
+        "3D8B7687",
+        "3F63365E"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm",
+      "localPosition": {
+        "x": 0.1722,
+        "y": -0.0628,
+        "z": 0.0884
+      },
+      "localRotation": {
+        "x": 0.15152898,
+        "y": 0.95732725,
+        "z": 0.14765397,
+        "w": -0.19688034
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3E305532",
+        "BD809D49",
+        "3DB50B0F"
+      ],
+      "localRotationBits": [
+        "3E1B2A6A",
+        "3F751366",
+        "3E17329A",
+        "BE499B00"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow",
+      "localPosition": {
+        "x": -0.1395,
+        "y": -0.1055,
+        "z": -0.2973
+      },
+      "localRotation": {
+        "x": -0.027501436,
+        "y": -0.25943443,
+        "z": 0.21623448,
+        "w": 0.9408401
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BE0ED917",
+        "BDD81062",
+        "BE9837B5"
+      ],
+      "localRotationBits": [
+        "BCE14AB1",
+        "BE84D497",
+        "3E5D6C92",
+        "3F70DAE6"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist",
+      "localPosition": {
+        "x": 0.0043,
+        "y": 0.0215,
+        "z": -0.2227
+      },
+      "localRotation": {
+        "x": -0.14077708,
+        "y": -0.40073353,
+        "z": 0.43463355,
+        "w": 0.7941587
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3B8CE704",
+        "3CB020C5",
+        "BE640B78"
+      ],
+      "localRotationBits": [
+        "BE1027DE",
+        "BECD2CF2",
+        "3EDE884A",
+        "3F4B4DFC"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1",
+      "localPosition": {
+        "x": 0.008199995,
+        "y": -0.0026999982,
+        "z": -0.027800001
+      },
+      "localRotation": {
+        "x": -0.045276627,
+        "y": -0.034872375,
+        "z": 0.5743276,
+        "w": 0.8166283
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3C065946",
+        "BB30F274",
+        "BCE3BCD4"
+      ],
+      "localRotationBits": [
+        "BD3973FC",
+        "BD0ED656",
+        "3F130722",
+        "3F510E8D"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1/L_thumb2",
+      "localPosition": {
+        "x": 0.00022268765,
+        "y": -0.0011121568,
+        "z": -0.04140967
+      },
+      "localRotation": {
+        "x": -0.06813102,
+        "y": -0.03344391,
+        "z": 0.041608803,
+        "w": 0.9962472
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "39698143",
+        "BA91C5CA",
+        "BD299D30"
+      ],
+      "localRotationBits": [
+        "BD8B8847",
+        "BD08FC7B",
+        "3D2A6DFE",
+        "3F7F0A0E"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1/L_thumb2/L_thumb3",
+      "localPosition": {
+        "x": 1.0658141E-16,
+        "y": -3.5527136E-17,
+        "z": -0.031484846
+      },
+      "localRotation": {
+        "x": -0.06252908,
+        "y": 0.020218875,
+        "z": -0.015477754,
+        "w": 0.9977183
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "24F5C28F",
+        "A423D70A",
+        "BD00F641"
+      ],
+      "localRotationBits": [
+        "BD800F3F",
+        "3CA5A20E",
+        "BC7D9668",
+        "3F7F6A77"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1",
+      "localPosition": {
+        "x": 0.05515398,
+        "y": 0.03357241,
+        "z": -0.08602354
+      },
+      "localRotation": {
+        "x": 0.032430295,
+        "y": -0.39574498,
+        "z": -0.11497856,
+        "w": 0.9105571
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3D61E924",
+        "3D098339",
+        "BDB02D1C"
+      ],
+      "localRotationBits": [
+        "3D04D5A1",
+        "BECA9F16",
+        "BDEB79E1",
+        "3F691A45"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1/L_point2",
+      "localPosition": {
+        "x": 0.001429502,
+        "y": -0.00036834567,
+        "z": -0.040517084
+      },
+      "localRotation": {
+        "x": -0.08921524,
+        "y": -0.015777469,
+        "z": 0.027394017,
+        "w": 0.9955106
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3ABB5E21",
+        "B9C11E85",
+        "BD25F53E"
+      ],
+      "localRotationBits": [
+        "BDB6B67B",
+        "BC813FC0",
+        "3CE0696B",
+        "3F7ED9C8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1/L_point2/L_point3",
+      "localPosition": {
+        "x": 5.3290704E-17,
+        "y": -7.105427E-17,
+        "z": -0.027195958
+      },
+      "localRotation": {
+        "x": -0.09555748,
+        "y": -0.010501953,
+        "z": -0.0324284,
+        "w": 0.99484015
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "2475C28F",
+        "A4A3D70A",
+        "BCDECA0F"
+      ],
+      "localRotationBits": [
+        "BDC3B3A4",
+        "BC2C1062",
+        "BD04D3A4",
+        "3F7EADD8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1",
+      "localPosition": {
+        "x": 0.0615,
+        "y": 0.0032,
+        "z": -0.0664
+      },
+      "localRotation": {
+        "x": -0.019086957,
+        "y": -0.39961773,
+        "z": -0.16458929,
+        "w": 0.9015829
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3D7BE76D",
+        "3B51B717",
+        "BD87FCB9"
+      ],
+      "localRotationBits": [
+        "BC9C5C40",
+        "BECC9AB2",
+        "BE288A18",
+        "3F66CE23"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1/L_middle2",
+      "localPosition": {
+        "x": 5.3290704E-17,
+        "y": -7.105427E-17,
+        "z": -0.043983787
+      },
+      "localRotation": {
+        "x": -0.11661239,
+        "y": -0.018954124,
+        "z": 0.028587,
+        "w": 0.99258506
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "2475C28F",
+        "A4A3D70A",
+        "BD342858"
+      ],
+      "localRotationBits": [
+        "BDEED27A",
+        "BC9B45AE",
+        "3CEA2F49",
+        "3F7E1A0E"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1/L_middle2/L_middle3",
+      "localPosition": {
+        "x": 7.105427E-17,
+        "y": 0.0,
+        "z": -0.03714711
+      },
+      "localRotation": {
+        "x": -0.057343986,
+        "y": -0.029490821,
+        "z": -0.040909994,
+        "w": 0.9970799
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "24A3D70A",
+        "00000000",
+        "BD182791"
+      ],
+      "localRotationBits": [
+        "BD6AE187",
+        "BCF196BC",
+        "BD27913D",
+        "3F7F40A1"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1",
+      "localPosition": {
+        "x": 3.5527136E-17,
+        "y": 1.2434498E-16,
+        "z": -0.038119394
+      },
+      "localRotation": {
+        "x": -0.25051844,
+        "y": -0.015882496,
+        "z": -0.24118797,
+        "w": 0.93745226
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "2423D70A",
+        "250F5C29",
+        "BD1C2315"
+      ],
+      "localRotationBits": [
+        "BE8043F4",
+        "BC821C02",
+        "BE76F9FB",
+        "3F6FFCDF"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1/L_ring2",
+      "localPosition": {
+        "x": 7.260839E-05,
+        "y": 0.0005611814,
+        "z": -0.037844747
+      },
+      "localRotation": {
+        "x": -0.10605573,
+        "y": -0.031333838,
+        "z": 0.024778448,
+        "w": 0.99355745
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "38984555",
+        "3A131C3F",
+        "BD1B0318"
+      ],
+      "localRotationBits": [
+        "BDD933BF",
+        "BD0057E9",
+        "3CCAFC2C",
+        "3F7E59C8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1/L_ring2/L_ring3",
+      "localPosition": {
+        "x": -0.001642252,
+        "y": 9.022422E-05,
+        "z": -0.030439189
+      },
+      "localRotation": {
+        "x": -0.1801184,
+        "y": 0.0420179,
+        "z": 0.048472974,
+        "w": 0.981551
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BAD740D5",
+        "38BD36C2",
+        "BCF95B9B"
+      ],
+      "localRotationBits": [
+        "BE3870F5",
+        "3D2C1AF6",
+        "3D468B99",
+        "3F7B46ED"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1",
+      "localPosition": {
+        "x": 0.018161856,
+        "y": -0.016944628,
+        "z": -0.026353935
+      },
+      "localRotation": {
+        "x": -0.16009812,
+        "y": -0.03380129,
+        "z": -0.22537442,
+        "w": 0.9604335
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3C94C82C",
+        "BC8ACF76",
+        "BCD7E435"
+      ],
+      "localRotationBits": [
+        "BE23F0C3",
+        "BD0A7339",
+        "BE66C88D",
+        "3F75DEF8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1/L_pink2",
+      "localPosition": {
+        "x": 7.105427E-17,
+        "y": 0.0,
+        "z": -0.027310275
+      },
+      "localRotation": {
+        "x": -0.25433764,
+        "y": 0.009684386,
+        "z": -0.030355103,
+        "w": 0.96659046
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "24A3D70A",
+        "00000000",
+        "BCDFB9CC"
+      ],
+      "localRotationBits": [
+        "BE82388B",
+        "3C1EAB42",
+        "BCF8AB44",
+        "3F777279"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1/L_pink2/L_pink3",
+      "localPosition": {
+        "x": -3.5527136E-17,
+        "y": 1.4210854E-16,
+        "z": -0.021979034
+      },
+      "localRotation": {
+        "x": -0.17439426,
+        "y": -0.038347114,
+        "z": -0.011224153,
+        "w": 0.9838649
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "A423D70A",
+        "2523D70A",
+        "BCB40D60"
+      ],
+      "localRotationBits": [
+        "BE329469",
+        "BD1D11DD",
+        "BC37E583",
+        "3F7BDE92"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1",
+      "localPosition": {
+        "x": -0.0314,
+        "y": 0.0141,
+        "z": -0.0441
+      },
+      "localRotation": {
+        "x": -0.362927,
+        "y": -0.02950454,
+        "z": -0.8262247,
+        "w": 0.4298446
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BD009D49",
+        "3C6703B0",
+        "BD34A234"
+      ],
+      "localRotationBits": [
+        "BEB9D191",
+        "BCF1B381",
+        "BF538376",
+        "3EDC1497"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1/R_thumb2",
+      "localPosition": {
+        "x": -0.00022268765,
+        "y": -0.0011121568,
+        "z": -0.04140967
+      },
+      "localRotation": {
+        "x": -0.06813102,
+        "y": 0.03344391,
+        "z": -0.041608803,
+        "w": 0.9962472
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "B9698143",
+        "BA91C5CA",
+        "BD299D30"
+      ],
+      "localRotationBits": [
+        "BD8B8847",
+        "3D08FC7B",
+        "BD2A6DFE",
+        "3F7F0A0E"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1/R_thumb2/R_thumb3",
+      "localPosition": {
+        "x": -1.4210854E-16,
+        "y": -1.0658141E-16,
+        "z": -0.031484846
+      },
+      "localRotation": {
+        "x": -0.06252908,
+        "y": -0.020218875,
+        "z": 0.015477754,
+        "w": 0.9977183
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "A523D70A",
+        "A4F5C28F",
+        "BD00F641"
+      ],
+      "localRotationBits": [
+        "BD800F3F",
+        "BCA5A20E",
+        "3C7D9668",
+        "3F7F6A77"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1",
+      "localPosition": {
+        "x": -0.0467,
+        "y": 0.0501,
+        "z": -0.0855
+      },
+      "localRotation": {
+        "x": -0.013752177,
+        "y": 0.43069053,
+        "z": -0.15316187,
+        "w": 0.889302
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BD3F4880",
+        "3D4D35A8",
+        "BDAF1AA0"
+      ],
+      "localRotationBits": [
+        "BC6150D0",
+        "3EDC8378",
+        "BE1CD677",
+        "3F63A94C"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1/R_point2",
+      "localPosition": {
+        "x": -0.001429502,
+        "y": -0.00036834567,
+        "z": -0.040517084
+      },
+      "localRotation": {
+        "x": -0.08921524,
+        "y": 0.015777469,
+        "z": -0.027394017,
+        "w": 0.9955106
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BABB5E21",
+        "B9C11E85",
+        "BD25F53E"
+      ],
+      "localRotationBits": [
+        "BDB6B67B",
+        "3C813FC0",
+        "BCE0696B",
+        "3F7ED9C8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1/R_point2/R_point3",
+      "localPosition": {
+        "x": -1.4210854E-16,
+        "y": 0.0,
+        "z": -0.027195958
+      },
+      "localRotation": {
+        "x": -0.09555748,
+        "y": 0.010501953,
+        "z": 0.0324284,
+        "w": 0.99484015
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "A523D70A",
+        "00000000",
+        "BCDECA0F"
+      ],
+      "localRotationBits": [
+        "BDC3B3A4",
+        "3C2C1062",
+        "3D04D3A4",
+        "3F7EADD8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1",
+      "localPosition": {
+        "x": -0.051,
+        "y": 0.074,
+        "z": -0.0425
+      },
+      "localRotation": {
+        "x": 0.097214736,
+        "y": 0.4255658,
+        "z": 0.05791263,
+        "w": 0.89782476
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BD50E560",
+        "3D978D50",
+        "BD2E147B"
+      ],
+      "localRotationBits": [
+        "3DC71885",
+        "3ED9E3C3",
+        "3D6D35CB",
+        "3F65D7D8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1/R_middle2",
+      "localPosition": {
+        "x": -1.4210854E-16,
+        "y": -3.5527136E-17,
+        "z": -0.043983787
+      },
+      "localRotation": {
+        "x": -0.11661239,
+        "y": 0.018954124,
+        "z": -0.028587,
+        "w": 0.99258506
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "A523D70A",
+        "A423D70A",
+        "BD342858"
+      ],
+      "localRotationBits": [
+        "BDEED27A",
+        "3C9B45AE",
+        "BCEA2F49",
+        "3F7E1A0E"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1/R_middle2/R_middle3",
+      "localPosition": {
+        "x": -5.3290704E-17,
+        "y": -7.105427E-17,
+        "z": -0.03714711
+      },
+      "localRotation": {
+        "x": -0.057343986,
+        "y": 0.029490821,
+        "z": 0.040909994,
+        "w": 0.9970799
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "A475C28F",
+        "A4A3D70A",
+        "BD182791"
+      ],
+      "localRotationBits": [
+        "BD6AE187",
+        "3CF196BC",
+        "3D27913D",
+        "3F7F40A1"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1",
+      "localPosition": {
+        "x": 1.0658141E-16,
+        "y": 4.4408918E-17,
+        "z": -0.038119394
+      },
+      "localRotation": {
+        "x": -0.25051844,
+        "y": 0.015882496,
+        "z": 0.24118797,
+        "w": 0.93745226
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "24F5C28F",
+        "244CCCCC",
+        "BD1C2315"
+      ],
+      "localRotationBits": [
+        "BE8043F4",
+        "3C821C02",
+        "3E76F9FB",
+        "3F6FFCDF"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1/R_ring2",
+      "localPosition": {
+        "x": -7.260839E-05,
+        "y": 0.0005611814,
+        "z": -0.037844747
+      },
+      "localRotation": {
+        "x": -0.10605573,
+        "y": 0.031333838,
+        "z": -0.024778448,
+        "w": 0.99355745
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "B8984555",
+        "3A131C3F",
+        "BD1B0318"
+      ],
+      "localRotationBits": [
+        "BDD933BF",
+        "3D0057E9",
+        "BCCAFC2C",
+        "3F7E59C8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1/R_ring2/R_ring3",
+      "localPosition": {
+        "x": 0.001642252,
+        "y": 9.022422E-05,
+        "z": -0.030439189
+      },
+      "localRotation": {
+        "x": -0.1801184,
+        "y": -0.0420179,
+        "z": -0.048472974,
+        "w": 0.981551
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3AD740D5",
+        "38BD36C2",
+        "BCF95B9B"
+      ],
+      "localRotationBits": [
+        "BE3870F5",
+        "BD2C1AF6",
+        "BD468B99",
+        "3F7B46ED"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1",
+      "localPosition": {
+        "x": -0.018161856,
+        "y": -0.016944628,
+        "z": -0.026353935
+      },
+      "localRotation": {
+        "x": -0.16009812,
+        "y": 0.03380129,
+        "z": 0.22537442,
+        "w": 0.9604335
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "BC94C82C",
+        "BC8ACF76",
+        "BCD7E435"
+      ],
+      "localRotationBits": [
+        "BE23F0C3",
+        "3D0A7339",
+        "3E66C88D",
+        "3F75DEF8"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1/R_pink2",
+      "localPosition": {
+        "x": -0.0,
+        "y": 3.5527136E-17,
+        "z": -0.027310275
+      },
+      "localRotation": {
+        "x": -0.25433764,
+        "y": -0.009684386,
+        "z": 0.030355103,
+        "w": 0.96659046
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "80000000",
+        "2423D70A",
+        "BCDFB9CC"
+      ],
+      "localRotationBits": [
+        "BE82388B",
+        "BC1EAB42",
+        "3CF8AB44",
+        "3F777279"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1/R_pink2/R_pink3",
+      "localPosition": {
+        "x": 5.3290704E-17,
+        "y": -1.4210854E-16,
+        "z": -0.021979034
+      },
+      "localRotation": {
+        "x": -0.17439426,
+        "y": 0.038347114,
+        "z": 0.011224153,
+        "w": 0.9838649
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "2475C28F",
+        "A523D70A",
+        "BCB40D60"
+      ],
+      "localRotationBits": [
+        "BE329469",
+        "3D1D11DD",
+        "3C37E583",
+        "3F7BDE92"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "AuthoringProps/RecorderGrip",
+      "localPosition": {
+        "x": 0.06237918,
+        "y": -0.24236949,
+        "z": 0.41638228
+      },
+      "localRotation": {
+        "x": 0.07259522,
+        "y": -0.4239309,
+        "z": -0.8395697,
+        "w": 0.33186626
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3D7F8150",
+        "BE782FB5",
+        "3ED5300F"
+      ],
+      "localRotationBits": [
+        "3D94ACCD",
+        "BED90D79",
+        "BF56EE0A",
+        "3EA9EA60"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    },
+    {
+      "path": "AuthoringProps/CassetteGrip",
+      "localPosition": {
+        "x": 0.24107677,
+        "y": -0.23750974,
+        "z": 0.38797843
+      },
+      "localRotation": {
+        "x": -0.7086615,
+        "y": -0.5697945,
+        "z": 0.16791955,
+        "w": 0.38070485
+      },
+      "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "localPositionBits": [
+        "3E76DCD4",
+        "BE7335C1",
+        "3EC6A51C"
+      ],
+      "localRotationBits": [
+        "BF356AD7",
+        "BF11DE0D",
+        "3E2BF31A",
+        "3EC2EBBF"
+      ],
+      "localScaleBits": [
+        "3F800000",
+        "3F800000",
+        "3F800000"
+      ]
+    }
+  ],
+    "keyPoses": [
+        {
+            "poseName": "CassetteAlign",
+            "transformCount": 38,
+            "poseSha256": "D3F7119615F060CF9869CD4A860E1D4795FCAD7701C6BF235141D70D79AD3EB2",
+            "transforms": [
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm",
+                    "localPosition": {
+                        "x": -0.16380353271961213,
+                        "y": -0.05369189754128456,
+                        "z": 0.04271648824214935
+                    },
+                    "localRotation": {
+                        "x": -0.24459457397460938,
+                        "y": 0.9379518628120422,
+                        "z": 0.14814598858356477,
+                        "w": 0.19614429771900178
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BE27BC1D",
+                        "BD5BEC09",
+                        "3D2EF77C"
+                    ],
+                    "localRotationBits": [
+                        "BE7A7700",
+                        "3F701D9D",
+                        "3E17B395",
+                        "3E48DA0D"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow",
+                    "localPosition": {
+                        "x": 0.017400000244379045,
+                        "y": -0.12680000066757203,
+                        "z": -0.30790001153945925
+                    },
+                    "localRotation": {
+                        "x": -0.014801494777202607,
+                        "y": 0.2331364005804062,
+                        "z": -0.1776150017976761,
+                        "w": 0.955971360206604
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3C8E8A72",
+                        "BE01D7DC",
+                        "BE9DA512"
+                    ],
+                    "localRotationBits": [
+                        "BC7281F8",
+                        "3E6EBB4F",
+                        "BE35E0B5",
+                        "3F74BA8A"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist",
+                    "localPosition": {
+                        "x": -0.02500000037252903,
+                        "y": -0.023000000044703485,
+                        "z": -0.2800000011920929
+                    },
+                    "localRotation": {
+                        "x": -0.07945635169744492,
+                        "y": 0.44867295026779177,
+                        "z": 0.06809716671705246,
+                        "w": 0.8875483274459839
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BCCCCCCD",
+                        "BCBC6A7F",
+                        "BE8F5C29"
+                    ],
+                    "localRotationBits": [
+                        "BDA2BA03",
+                        "3EE5B876",
+                        "3D8B7687",
+                        "3F63365E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm",
+                    "localPosition": {
+                        "x": 0.17219999432563783,
+                        "y": -0.06279999762773514,
+                        "z": 0.08839999884366989
+                    },
+                    "localRotation": {
+                        "x": 0.1515289843082428,
+                        "y": 0.9573272466659546,
+                        "z": 0.1476539671421051,
+                        "w": -0.19688034057617188
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3E305532",
+                        "BD809D49",
+                        "3DB50B0F"
+                    ],
+                    "localRotationBits": [
+                        "3E1B2A6A",
+                        "3F751366",
+                        "3E17329A",
+                        "BE499B00"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow",
+                    "localPosition": {
+                        "x": 0.0013000000035390258,
+                        "y": -0.1339000016450882,
+                        "z": -0.2775999903678894
+                    },
+                    "localRotation": {
+                        "x": -0.027501435950398446,
+                        "y": -0.25943443179130556,
+                        "z": 0.2162344753742218,
+                        "w": 0.9408401250839233
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3AAA64C3",
+                        "BE091D15",
+                        "BE8E2196"
+                    ],
+                    "localRotationBits": [
+                        "BCE14AB1",
+                        "BE84D497",
+                        "3E5D6C92",
+                        "3F70DAE6"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist",
+                    "localPosition": {
+                        "x": 0.02710000053048134,
+                        "y": 0.004699999932199717,
+                        "z": -0.20980000495910645
+                    },
+                    "localRotation": {
+                        "x": -0.1407770961523056,
+                        "y": -0.4007335603237152,
+                        "z": 0.4346335828304291,
+                        "w": 0.7941587567329407
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3CDE00D2",
+                        "3B9A0275",
+                        "BE56D5D0"
+                    ],
+                    "localRotationBits": [
+                        "BE1027DF",
+                        "BECD2CF3",
+                        "3EDE884B",
+                        "3F4B4DFD"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1",
+                    "localPosition": {
+                        "x": 0.008199995383620263,
+                        "y": -0.0026999982073903085,
+                        "z": -0.027800001204013826
+                    },
+                    "localRotation": {
+                        "x": -0.04527663066983223,
+                        "y": -0.034872375428676608,
+                        "z": 0.5743276476860046,
+                        "w": 0.8166282773017883
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3C065946",
+                        "BB30F274",
+                        "BCE3BCD4"
+                    ],
+                    "localRotationBits": [
+                        "BD3973FD",
+                        "BD0ED656",
+                        "3F130723",
+                        "3F510E8D"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1/L_thumb2",
+                    "localPosition": {
+                        "x": 0.00022268765314947814,
+                        "y": -0.001112156780436635,
+                        "z": -0.04140967130661011
+                    },
+                    "localRotation": {
+                        "x": -0.06813102215528488,
+                        "y": -0.033443909138441089,
+                        "z": 0.04160880297422409,
+                        "w": 0.9962471723556519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "39698143",
+                        "BA91C5CA",
+                        "BD299D30"
+                    ],
+                    "localRotationBits": [
+                        "BD8B8847",
+                        "BD08FC7B",
+                        "3D2A6DFE",
+                        "3F7F0A0E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1/L_thumb2/L_thumb3",
+                    "localPosition": {
+                        "x": 1.0658140798173486e-16,
+                        "y": -3.552713599391162e-17,
+                        "z": -0.03148484602570534
+                    },
+                    "localRotation": {
+                        "x": -0.0625290796160698,
+                        "y": 0.020218875259160997,
+                        "z": -0.015477754175662995,
+                        "w": 0.9977182745933533
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "24F5C28F",
+                        "A423D70A",
+                        "BD00F641"
+                    ],
+                    "localRotationBits": [
+                        "BD800F3F",
+                        "3CA5A20E",
+                        "BC7D9668",
+                        "3F7F6A77"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1",
+                    "localPosition": {
+                        "x": 0.0551539808511734,
+                        "y": 0.03357240930199623,
+                        "z": -0.08602353930473328
+                    },
+                    "localRotation": {
+                        "x": 0.032430294901132587,
+                        "y": -0.3957449793815613,
+                        "z": -0.11497855931520462,
+                        "w": 0.9105570912361145
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3D61E924",
+                        "3D098339",
+                        "BDB02D1C"
+                    ],
+                    "localRotationBits": [
+                        "3D04D5A1",
+                        "BECA9F16",
+                        "BDEB79E1",
+                        "3F691A45"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1/L_point2",
+                    "localPosition": {
+                        "x": 0.0014295020373538137,
+                        "y": -0.00036834567436017096,
+                        "z": -0.040517084300518039
+                    },
+                    "localRotation": {
+                        "x": -0.0892152413725853,
+                        "y": -0.01577746868133545,
+                        "z": 0.027394017204642297,
+                        "w": 0.9955105781555176
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3ABB5E21",
+                        "B9C11E85",
+                        "BD25F53E"
+                    ],
+                    "localRotationBits": [
+                        "BDB6B67B",
+                        "BC813FC0",
+                        "3CE0696B",
+                        "3F7ED9C8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1/L_point2/L_point3",
+                    "localPosition": {
+                        "x": 5.329070399086743e-17,
+                        "y": -7.105427198782324e-17,
+                        "z": -0.02719595842063427
+                    },
+                    "localRotation": {
+                        "x": -0.09555748105049133,
+                        "y": -0.010501952841877938,
+                        "z": -0.032428398728370669,
+                        "w": 0.994840145111084
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "2475C28F",
+                        "A4A3D70A",
+                        "BCDECA0F"
+                    ],
+                    "localRotationBits": [
+                        "BDC3B3A4",
+                        "BC2C1062",
+                        "BD04D3A4",
+                        "3F7EADD8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1",
+                    "localPosition": {
+                        "x": 0.061500001698732379,
+                        "y": 0.0031999999191612007,
+                        "z": -0.06639999896287918
+                    },
+                    "localRotation": {
+                        "x": -0.01908695697784424,
+                        "y": -0.3996177315711975,
+                        "z": -0.1645892858505249,
+                        "w": 0.9015828967094421
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3D7BE76D",
+                        "3B51B717",
+                        "BD87FCB9"
+                    ],
+                    "localRotationBits": [
+                        "BC9C5C40",
+                        "BECC9AB2",
+                        "BE288A18",
+                        "3F66CE23"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1/L_middle2",
+                    "localPosition": {
+                        "x": 5.329070399086743e-17,
+                        "y": -7.105427198782324e-17,
+                        "z": -0.043983787298202518
+                    },
+                    "localRotation": {
+                        "x": -0.11661238968372345,
+                        "y": -0.018954124301671983,
+                        "z": 0.02858700044453144,
+                        "w": 0.9925850629806519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "2475C28F",
+                        "A4A3D70A",
+                        "BD342858"
+                    ],
+                    "localRotationBits": [
+                        "BDEED27A",
+                        "BC9B45AE",
+                        "3CEA2F49",
+                        "3F7E1A0E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1/L_middle2/L_middle3",
+                    "localPosition": {
+                        "x": 7.105427198782324e-17,
+                        "y": 0.0,
+                        "z": -0.03714710846543312
+                    },
+                    "localRotation": {
+                        "x": -0.0573439858853817,
+                        "y": -0.029490821063518525,
+                        "z": -0.04090999439358711,
+                        "w": 0.9970799088478088
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "24A3D70A",
+                        "00000000",
+                        "BD182791"
+                    ],
+                    "localRotationBits": [
+                        "BD6AE187",
+                        "BCF196BC",
+                        "BD27913D",
+                        "3F7F40A1"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1",
+                    "localPosition": {
+                        "x": 3.552713599391162e-17,
+                        "y": 1.2434497928741313e-16,
+                        "z": -0.038119394332170489
+                    },
+                    "localRotation": {
+                        "x": -0.25051844120025637,
+                        "y": -0.015882495790719987,
+                        "z": -0.24118797481060029,
+                        "w": 0.9374522566795349
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "2423D70A",
+                        "250F5C29",
+                        "BD1C2315"
+                    ],
+                    "localRotationBits": [
+                        "BE8043F4",
+                        "BC821C02",
+                        "BE76F9FB",
+                        "3F6FFCDF"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1/L_ring2",
+                    "localPosition": {
+                        "x": 0.00007260838901856914,
+                        "y": 0.0005611813976429403,
+                        "z": -0.03784474730491638
+                    },
+                    "localRotation": {
+                        "x": -0.10605572909116745,
+                        "y": -0.031333837658166888,
+                        "z": 0.024778448045253755,
+                        "w": 0.9935574531555176
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "38984555",
+                        "3A131C3F",
+                        "BD1B0318"
+                    ],
+                    "localRotationBits": [
+                        "BDD933BF",
+                        "BD0057E9",
+                        "3CCAFC2C",
+                        "3F7E59C8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1/L_ring2/L_ring3",
+                    "localPosition": {
+                        "x": -0.0016422519693151117,
+                        "y": 0.00009022421727422625,
+                        "z": -0.030439188703894616
+                    },
+                    "localRotation": {
+                        "x": -0.1801183968782425,
+                        "y": 0.042017899453639987,
+                        "z": 0.04847297444939613,
+                        "w": 0.9815509915351868
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BAD740D5",
+                        "38BD36C2",
+                        "BCF95B9B"
+                    ],
+                    "localRotationBits": [
+                        "BE3870F5",
+                        "3D2C1AF6",
+                        "3D468B99",
+                        "3F7B46ED"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1",
+                    "localPosition": {
+                        "x": 0.01816185563802719,
+                        "y": -0.016944628208875657,
+                        "z": -0.026353934779763223
+                    },
+                    "localRotation": {
+                        "x": -0.1600981205701828,
+                        "y": -0.03380129113793373,
+                        "z": -0.22537441551685334,
+                        "w": 0.9604334831237793
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3C94C82C",
+                        "BC8ACF76",
+                        "BCD7E435"
+                    ],
+                    "localRotationBits": [
+                        "BE23F0C3",
+                        "BD0A7339",
+                        "BE66C88D",
+                        "3F75DEF8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1/L_pink2",
+                    "localPosition": {
+                        "x": 7.105427198782324e-17,
+                        "y": 0.0,
+                        "z": -0.02731027454137802
+                    },
+                    "localRotation": {
+                        "x": -0.2543376386165619,
+                        "y": 0.009684385731816292,
+                        "z": -0.030355103313922883,
+                        "w": 0.9665904641151428
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "24A3D70A",
+                        "00000000",
+                        "BCDFB9CC"
+                    ],
+                    "localRotationBits": [
+                        "BE82388B",
+                        "3C1EAB42",
+                        "BCF8AB44",
+                        "3F777279"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1/L_pink2/L_pink3",
+                    "localPosition": {
+                        "x": -3.552713599391162e-17,
+                        "y": 1.4210854397564649e-16,
+                        "z": -0.021979033946990968
+                    },
+                    "localRotation": {
+                        "x": -0.17439426481723786,
+                        "y": -0.038347113877534869,
+                        "z": -0.011224153451621533,
+                        "w": 0.9838649034500122
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A423D70A",
+                        "2523D70A",
+                        "BCB40D60"
+                    ],
+                    "localRotationBits": [
+                        "BE329469",
+                        "BD1D11DD",
+                        "BC37E583",
+                        "3F7BDE92"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1",
+                    "localPosition": {
+                        "x": -0.03139999881386757,
+                        "y": 0.014100000262260437,
+                        "z": -0.04410000145435333
+                    },
+                    "localRotation": {
+                        "x": -0.36292698979377749,
+                        "y": -0.02950453944504261,
+                        "z": -0.826224684715271,
+                        "w": 0.42984458804130556
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BD009D49",
+                        "3C6703B0",
+                        "BD34A234"
+                    ],
+                    "localRotationBits": [
+                        "BEB9D191",
+                        "BCF1B381",
+                        "BF538376",
+                        "3EDC1497"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1/R_thumb2",
+                    "localPosition": {
+                        "x": -0.00022268765314947814,
+                        "y": -0.001112156780436635,
+                        "z": -0.04140967130661011
+                    },
+                    "localRotation": {
+                        "x": -0.06813102215528488,
+                        "y": 0.033443909138441089,
+                        "z": -0.04160880297422409,
+                        "w": 0.9962471723556519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "B9698143",
+                        "BA91C5CA",
+                        "BD299D30"
+                    ],
+                    "localRotationBits": [
+                        "BD8B8847",
+                        "3D08FC7B",
+                        "BD2A6DFE",
+                        "3F7F0A0E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1/R_thumb2/R_thumb3",
+                    "localPosition": {
+                        "x": -1.4210854397564649e-16,
+                        "y": -1.0658140798173486e-16,
+                        "z": -0.03148484602570534
+                    },
+                    "localRotation": {
+                        "x": -0.0625290796160698,
+                        "y": -0.020218875259160997,
+                        "z": 0.015477754175662995,
+                        "w": 0.9977182745933533
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A523D70A",
+                        "A4F5C28F",
+                        "BD00F641"
+                    ],
+                    "localRotationBits": [
+                        "BD800F3F",
+                        "BCA5A20E",
+                        "3C7D9668",
+                        "3F7F6A77"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1",
+                    "localPosition": {
+                        "x": -0.04670000076293945,
+                        "y": 0.05009999871253967,
+                        "z": -0.08550000190734863
+                    },
+                    "localRotation": {
+                        "x": -0.013752177357673645,
+                        "y": 0.4306905269622803,
+                        "z": -0.15316186845302583,
+                        "w": 0.8893020153045654
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BD3F4880",
+                        "3D4D35A8",
+                        "BDAF1AA0"
+                    ],
+                    "localRotationBits": [
+                        "BC6150D0",
+                        "3EDC8378",
+                        "BE1CD677",
+                        "3F63A94C"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1/R_point2",
+                    "localPosition": {
+                        "x": -0.0014295020373538137,
+                        "y": -0.00036834567436017096,
+                        "z": -0.040517084300518039
+                    },
+                    "localRotation": {
+                        "x": -0.0892152413725853,
+                        "y": 0.01577746868133545,
+                        "z": -0.027394017204642297,
+                        "w": 0.9955105781555176
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BABB5E21",
+                        "B9C11E85",
+                        "BD25F53E"
+                    ],
+                    "localRotationBits": [
+                        "BDB6B67B",
+                        "3C813FC0",
+                        "BCE0696B",
+                        "3F7ED9C8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1/R_point2/R_point3",
+                    "localPosition": {
+                        "x": -1.4210854397564649e-16,
+                        "y": 0.0,
+                        "z": -0.02719595842063427
+                    },
+                    "localRotation": {
+                        "x": -0.09555748105049133,
+                        "y": 0.010501952841877938,
+                        "z": 0.032428398728370669,
+                        "w": 0.994840145111084
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A523D70A",
+                        "00000000",
+                        "BCDECA0F"
+                    ],
+                    "localRotationBits": [
+                        "BDC3B3A4",
+                        "3C2C1062",
+                        "3D04D3A4",
+                        "3F7EADD8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1",
+                    "localPosition": {
+                        "x": -0.050999999046325687,
+                        "y": 0.07400000095367432,
+                        "z": -0.042500000447034839
+                    },
+                    "localRotation": {
+                        "x": 0.09721473604440689,
+                        "y": 0.42556580901145937,
+                        "z": 0.05791262909770012,
+                        "w": 0.897824764251709
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BD50E560",
+                        "3D978D50",
+                        "BD2E147B"
+                    ],
+                    "localRotationBits": [
+                        "3DC71885",
+                        "3ED9E3C3",
+                        "3D6D35CB",
+                        "3F65D7D8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1/R_middle2",
+                    "localPosition": {
+                        "x": -1.4210854397564649e-16,
+                        "y": -3.552713599391162e-17,
+                        "z": -0.043983787298202518
+                    },
+                    "localRotation": {
+                        "x": -0.11661238968372345,
+                        "y": 0.018954124301671983,
+                        "z": -0.02858700044453144,
+                        "w": 0.9925850629806519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A523D70A",
+                        "A423D70A",
+                        "BD342858"
+                    ],
+                    "localRotationBits": [
+                        "BDEED27A",
+                        "3C9B45AE",
+                        "BCEA2F49",
+                        "3F7E1A0E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1/R_middle2/R_middle3",
+                    "localPosition": {
+                        "x": -5.329070399086743e-17,
+                        "y": -7.105427198782324e-17,
+                        "z": -0.03714710846543312
+                    },
+                    "localRotation": {
+                        "x": -0.0573439858853817,
+                        "y": 0.029490821063518525,
+                        "z": 0.04090999439358711,
+                        "w": 0.9970799088478088
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A475C28F",
+                        "A4A3D70A",
+                        "BD182791"
+                    ],
+                    "localRotationBits": [
+                        "BD6AE187",
+                        "3CF196BC",
+                        "3D27913D",
+                        "3F7F40A1"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1",
+                    "localPosition": {
+                        "x": 1.0658140798173486e-16,
+                        "y": 4.44089183380283e-17,
+                        "z": -0.038119394332170489
+                    },
+                    "localRotation": {
+                        "x": -0.25051844120025637,
+                        "y": 0.015882495790719987,
+                        "z": 0.24118797481060029,
+                        "w": 0.9374522566795349
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "24F5C28F",
+                        "244CCCCC",
+                        "BD1C2315"
+                    ],
+                    "localRotationBits": [
+                        "BE8043F4",
+                        "3C821C02",
+                        "3E76F9FB",
+                        "3F6FFCDF"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1/R_ring2",
+                    "localPosition": {
+                        "x": -0.00007260838901856914,
+                        "y": 0.0005611813976429403,
+                        "z": -0.03784474730491638
+                    },
+                    "localRotation": {
+                        "x": -0.10605572909116745,
+                        "y": 0.031333837658166888,
+                        "z": -0.024778448045253755,
+                        "w": 0.9935574531555176
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "B8984555",
+                        "3A131C3F",
+                        "BD1B0318"
+                    ],
+                    "localRotationBits": [
+                        "BDD933BF",
+                        "3D0057E9",
+                        "BCCAFC2C",
+                        "3F7E59C8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1/R_ring2/R_ring3",
+                    "localPosition": {
+                        "x": 0.0016422519693151117,
+                        "y": 0.00009022421727422625,
+                        "z": -0.030439188703894616
+                    },
+                    "localRotation": {
+                        "x": -0.1801183968782425,
+                        "y": -0.042017899453639987,
+                        "z": -0.04847297444939613,
+                        "w": 0.9815509915351868
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3AD740D5",
+                        "38BD36C2",
+                        "BCF95B9B"
+                    ],
+                    "localRotationBits": [
+                        "BE3870F5",
+                        "BD2C1AF6",
+                        "BD468B99",
+                        "3F7B46ED"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1",
+                    "localPosition": {
+                        "x": -0.01816185563802719,
+                        "y": -0.016944628208875657,
+                        "z": -0.026353934779763223
+                    },
+                    "localRotation": {
+                        "x": -0.1600981205701828,
+                        "y": 0.03380129113793373,
+                        "z": 0.22537441551685334,
+                        "w": 0.9604334831237793
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BC94C82C",
+                        "BC8ACF76",
+                        "BCD7E435"
+                    ],
+                    "localRotationBits": [
+                        "BE23F0C3",
+                        "3D0A7339",
+                        "3E66C88D",
+                        "3F75DEF8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1/R_pink2",
+                    "localPosition": {
+                        "x": 0.0,
+                        "y": 3.552713599391162e-17,
+                        "z": -0.02731027454137802
+                    },
+                    "localRotation": {
+                        "x": -0.2543376386165619,
+                        "y": -0.009684385731816292,
+                        "z": 0.030355103313922883,
+                        "w": 0.9665904641151428
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "80000000",
+                        "2423D70A",
+                        "BCDFB9CC"
+                    ],
+                    "localRotationBits": [
+                        "BE82388B",
+                        "BC1EAB42",
+                        "3CF8AB44",
+                        "3F777279"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1/R_pink2/R_pink3",
+                    "localPosition": {
+                        "x": 5.329070399086743e-17,
+                        "y": -1.4210854397564649e-16,
+                        "z": -0.021979033946990968
+                    },
+                    "localRotation": {
+                        "x": -0.17439426481723786,
+                        "y": 0.038347113877534869,
+                        "z": 0.011224153451621533,
+                        "w": 0.9838649034500122
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "2475C28F",
+                        "A523D70A",
+                        "BCB40D60"
+                    ],
+                    "localRotationBits": [
+                        "BE329469",
+                        "3D1D11DD",
+                        "3C37E583",
+                        "3F7BDE92"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "AuthoringProps/RecorderGrip",
+                    "localPosition": {
+                        "x": 0.06237918138504028,
+                        "y": -0.24236948788166047,
+                        "z": 0.4163822829723358
+                    },
+                    "localRotation": {
+                        "x": 0.07259522378444672,
+                        "y": -0.42393094301223757,
+                        "z": -0.8395697474479675,
+                        "w": 0.3318662941455841
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3D7F8150",
+                        "BE782FB5",
+                        "3ED5300F"
+                    ],
+                    "localRotationBits": [
+                        "3D94ACCE",
+                        "BED90D7A",
+                        "BF56EE0B",
+                        "3EA9EA61"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "AuthoringProps/CassetteGrip",
+                    "localPosition": {
+                        "x": 0.2440948188304901,
+                        "y": -0.185377836227417,
+                        "z": 0.3797478675842285
+                    },
+                    "localRotation": {
+                        "x": -0.3280845284461975,
+                        "y": 0.15755930542945863,
+                        "z": 0.6350798010826111,
+                        "w": -0.6813291311264038
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3E79F3FE",
+                        "BE3DD3B0",
+                        "3EC26E50"
+                    ],
+                    "localRotationBits": [
+                        "BEA7FAB2",
+                        "3E21573A",
+                        "3F229497",
+                        "BF2E6B96"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                }
+            ]
+        },
+        {
+            "poseName": "CassetteContact",
+            "transformCount": 38,
+            "poseSha256": "059A1E668FEC27EEEDDA25500BB9AC3DE1178815A087D6924A0803C5AFD274AA",
+            "transforms": [
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm",
+                    "localPosition": {
+                        "x": -0.16380353271961213,
+                        "y": -0.05369189754128456,
+                        "z": 0.04271648824214935
+                    },
+                    "localRotation": {
+                        "x": -0.24459457397460938,
+                        "y": 0.9379518628120422,
+                        "z": 0.14814598858356477,
+                        "w": 0.19614429771900178
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BE27BC1D",
+                        "BD5BEC09",
+                        "3D2EF77C"
+                    ],
+                    "localRotationBits": [
+                        "BE7A7700",
+                        "3F701D9D",
+                        "3E17B395",
+                        "3E48DA0D"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow",
+                    "localPosition": {
+                        "x": 0.017400000244379045,
+                        "y": -0.12680000066757203,
+                        "z": -0.30790001153945925
+                    },
+                    "localRotation": {
+                        "x": -0.014801494777202607,
+                        "y": 0.2331364005804062,
+                        "z": -0.1776150017976761,
+                        "w": 0.955971360206604
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3C8E8A72",
+                        "BE01D7DC",
+                        "BE9DA512"
+                    ],
+                    "localRotationBits": [
+                        "BC7281F8",
+                        "3E6EBB4F",
+                        "BE35E0B5",
+                        "3F74BA8A"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist",
+                    "localPosition": {
+                        "x": -0.02500000037252903,
+                        "y": -0.023000000044703485,
+                        "z": -0.2800000011920929
+                    },
+                    "localRotation": {
+                        "x": -0.07945635169744492,
+                        "y": 0.44867295026779177,
+                        "z": 0.06809716671705246,
+                        "w": 0.8875483274459839
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BCCCCCCD",
+                        "BCBC6A7F",
+                        "BE8F5C29"
+                    ],
+                    "localRotationBits": [
+                        "BDA2BA03",
+                        "3EE5B876",
+                        "3D8B7687",
+                        "3F63365E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm",
+                    "localPosition": {
+                        "x": 0.17219999432563783,
+                        "y": -0.06279999762773514,
+                        "z": 0.08839999884366989
+                    },
+                    "localRotation": {
+                        "x": 0.1515289843082428,
+                        "y": 0.9573272466659546,
+                        "z": 0.1476539671421051,
+                        "w": -0.19688034057617188
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3E305532",
+                        "BD809D49",
+                        "3DB50B0F"
+                    ],
+                    "localRotationBits": [
+                        "3E1B2A6A",
+                        "3F751366",
+                        "3E17329A",
+                        "BE499B00"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow",
+                    "localPosition": {
+                        "x": 0.01940000057220459,
+                        "y": -0.09969999641180039,
+                        "z": -0.36239999532699587
+                    },
+                    "localRotation": {
+                        "x": -0.06745775043964386,
+                        "y": -0.43760228157043459,
+                        "z": 0.14670877158641816,
+                        "w": 0.884550929069519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3C9EECC0",
+                        "BDCC2F83",
+                        "BEB98C7E"
+                    ],
+                    "localRotationBits": [
+                        "BD8A274A",
+                        "BEE00D68",
+                        "3E163AD3",
+                        "3F6271EE"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist",
+                    "localPosition": {
+                        "x": 0.017797574400901796,
+                        "y": -0.020204313099384309,
+                        "z": -0.2789241671562195
+                    },
+                    "localRotation": {
+                        "x": -0.1737298220396042,
+                        "y": -0.401062935590744,
+                        "z": 0.5377248525619507,
+                        "w": 0.7209843993186951
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3C91CC38",
+                        "BCA58384",
+                        "BE8ECF26"
+                    ],
+                    "localRotationBits": [
+                        "BE31E63B",
+                        "BECD581F",
+                        "3F09A856",
+                        "3F38926F"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1",
+                    "localPosition": {
+                        "x": 0.008199995383620263,
+                        "y": -0.0026999982073903085,
+                        "z": -0.027800001204013826
+                    },
+                    "localRotation": {
+                        "x": -0.04527663066983223,
+                        "y": -0.034872375428676608,
+                        "z": 0.5743276476860046,
+                        "w": 0.8166282773017883
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3C065946",
+                        "BB30F274",
+                        "BCE3BCD4"
+                    ],
+                    "localRotationBits": [
+                        "BD3973FD",
+                        "BD0ED656",
+                        "3F130723",
+                        "3F510E8D"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1/L_thumb2",
+                    "localPosition": {
+                        "x": 0.00022268765314947814,
+                        "y": -0.001112156780436635,
+                        "z": -0.04140967130661011
+                    },
+                    "localRotation": {
+                        "x": -0.06813102215528488,
+                        "y": -0.033443909138441089,
+                        "z": 0.04160880297422409,
+                        "w": 0.9962471723556519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "39698143",
+                        "BA91C5CA",
+                        "BD299D30"
+                    ],
+                    "localRotationBits": [
+                        "BD8B8847",
+                        "BD08FC7B",
+                        "3D2A6DFE",
+                        "3F7F0A0E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_thumb1/L_thumb2/L_thumb3",
+                    "localPosition": {
+                        "x": 1.0658140798173486e-16,
+                        "y": -3.552713599391162e-17,
+                        "z": -0.03148484602570534
+                    },
+                    "localRotation": {
+                        "x": -0.0625290796160698,
+                        "y": 0.020218875259160997,
+                        "z": -0.015477754175662995,
+                        "w": 0.9977182745933533
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "24F5C28F",
+                        "A423D70A",
+                        "BD00F641"
+                    ],
+                    "localRotationBits": [
+                        "BD800F3F",
+                        "3CA5A20E",
+                        "BC7D9668",
+                        "3F7F6A77"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1",
+                    "localPosition": {
+                        "x": 0.0551539808511734,
+                        "y": 0.03357240930199623,
+                        "z": -0.08602353930473328
+                    },
+                    "localRotation": {
+                        "x": 0.032430294901132587,
+                        "y": -0.3957449793815613,
+                        "z": -0.11497855931520462,
+                        "w": 0.9105570912361145
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3D61E924",
+                        "3D098339",
+                        "BDB02D1C"
+                    ],
+                    "localRotationBits": [
+                        "3D04D5A1",
+                        "BECA9F16",
+                        "BDEB79E1",
+                        "3F691A45"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1/L_point2",
+                    "localPosition": {
+                        "x": 0.0014295020373538137,
+                        "y": -0.00036834567436017096,
+                        "z": -0.040517084300518039
+                    },
+                    "localRotation": {
+                        "x": -0.0892152413725853,
+                        "y": -0.01577746868133545,
+                        "z": 0.027394017204642297,
+                        "w": 0.9955105781555176
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3ABB5E21",
+                        "B9C11E85",
+                        "BD25F53E"
+                    ],
+                    "localRotationBits": [
+                        "BDB6B67B",
+                        "BC813FC0",
+                        "3CE0696B",
+                        "3F7ED9C8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_point1/L_point2/L_point3",
+                    "localPosition": {
+                        "x": 5.329070399086743e-17,
+                        "y": -7.105427198782324e-17,
+                        "z": -0.02719595842063427
+                    },
+                    "localRotation": {
+                        "x": -0.09555748105049133,
+                        "y": -0.010501952841877938,
+                        "z": -0.032428398728370669,
+                        "w": 0.994840145111084
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "2475C28F",
+                        "A4A3D70A",
+                        "BCDECA0F"
+                    ],
+                    "localRotationBits": [
+                        "BDC3B3A4",
+                        "BC2C1062",
+                        "BD04D3A4",
+                        "3F7EADD8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1",
+                    "localPosition": {
+                        "x": 0.061500001698732379,
+                        "y": 0.0031999999191612007,
+                        "z": -0.06639999896287918
+                    },
+                    "localRotation": {
+                        "x": -0.01908695697784424,
+                        "y": -0.3996177315711975,
+                        "z": -0.1645892858505249,
+                        "w": 0.9015828967094421
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3D7BE76D",
+                        "3B51B717",
+                        "BD87FCB9"
+                    ],
+                    "localRotationBits": [
+                        "BC9C5C40",
+                        "BECC9AB2",
+                        "BE288A18",
+                        "3F66CE23"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1/L_middle2",
+                    "localPosition": {
+                        "x": 5.329070399086743e-17,
+                        "y": -7.105427198782324e-17,
+                        "z": -0.043983787298202518
+                    },
+                    "localRotation": {
+                        "x": -0.11661238968372345,
+                        "y": -0.018954124301671983,
+                        "z": 0.02858700044453144,
+                        "w": 0.9925850629806519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "2475C28F",
+                        "A4A3D70A",
+                        "BD342858"
+                    ],
+                    "localRotationBits": [
+                        "BDEED27A",
+                        "BC9B45AE",
+                        "3CEA2F49",
+                        "3F7E1A0E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_middle1/L_middle2/L_middle3",
+                    "localPosition": {
+                        "x": 7.105427198782324e-17,
+                        "y": 0.0,
+                        "z": -0.03714710846543312
+                    },
+                    "localRotation": {
+                        "x": -0.0573439858853817,
+                        "y": -0.029490821063518525,
+                        "z": -0.04090999439358711,
+                        "w": 0.9970799088478088
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "24A3D70A",
+                        "00000000",
+                        "BD182791"
+                    ],
+                    "localRotationBits": [
+                        "BD6AE187",
+                        "BCF196BC",
+                        "BD27913D",
+                        "3F7F40A1"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1",
+                    "localPosition": {
+                        "x": 3.552713599391162e-17,
+                        "y": 1.2434497928741313e-16,
+                        "z": -0.038119394332170489
+                    },
+                    "localRotation": {
+                        "x": -0.25051844120025637,
+                        "y": -0.015882495790719987,
+                        "z": -0.24118797481060029,
+                        "w": 0.9374522566795349
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "2423D70A",
+                        "250F5C29",
+                        "BD1C2315"
+                    ],
+                    "localRotationBits": [
+                        "BE8043F4",
+                        "BC821C02",
+                        "BE76F9FB",
+                        "3F6FFCDF"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1/L_ring2",
+                    "localPosition": {
+                        "x": 0.00007260838901856914,
+                        "y": 0.0005611813976429403,
+                        "z": -0.03784474730491638
+                    },
+                    "localRotation": {
+                        "x": -0.10605572909116745,
+                        "y": -0.031333837658166888,
+                        "z": 0.024778448045253755,
+                        "w": 0.9935574531555176
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "38984555",
+                        "3A131C3F",
+                        "BD1B0318"
+                    ],
+                    "localRotationBits": [
+                        "BDD933BF",
+                        "BD0057E9",
+                        "3CCAFC2C",
+                        "3F7E59C8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_ring1/L_ring2/L_ring3",
+                    "localPosition": {
+                        "x": -0.0016422519693151117,
+                        "y": 0.00009022421727422625,
+                        "z": -0.030439188703894616
+                    },
+                    "localRotation": {
+                        "x": -0.1801183968782425,
+                        "y": 0.042017899453639987,
+                        "z": 0.04847297444939613,
+                        "w": 0.9815509915351868
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BAD740D5",
+                        "38BD36C2",
+                        "BCF95B9B"
+                    ],
+                    "localRotationBits": [
+                        "BE3870F5",
+                        "3D2C1AF6",
+                        "3D468B99",
+                        "3F7B46ED"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1",
+                    "localPosition": {
+                        "x": 0.01816185563802719,
+                        "y": -0.016944628208875657,
+                        "z": -0.026353934779763223
+                    },
+                    "localRotation": {
+                        "x": -0.1600981205701828,
+                        "y": -0.03380129113793373,
+                        "z": -0.22537441551685334,
+                        "w": 0.9604334831237793
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3C94C82C",
+                        "BC8ACF76",
+                        "BCD7E435"
+                    ],
+                    "localRotationBits": [
+                        "BE23F0C3",
+                        "BD0A7339",
+                        "BE66C88D",
+                        "3F75DEF8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1/L_pink2",
+                    "localPosition": {
+                        "x": 7.105427198782324e-17,
+                        "y": 0.0,
+                        "z": -0.02731027454137802
+                    },
+                    "localRotation": {
+                        "x": -0.2543376386165619,
+                        "y": 0.009684385731816292,
+                        "z": -0.030355103313922883,
+                        "w": 0.9665904641151428
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "24A3D70A",
+                        "00000000",
+                        "BCDFB9CC"
+                    ],
+                    "localRotationBits": [
+                        "BE82388B",
+                        "3C1EAB42",
+                        "BCF8AB44",
+                        "3F777279"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/L_arm/L_elbow/L_wrist/L_palm/L_pink1/L_pink2/L_pink3",
+                    "localPosition": {
+                        "x": -3.552713599391162e-17,
+                        "y": 1.4210854397564649e-16,
+                        "z": -0.021979033946990968
+                    },
+                    "localRotation": {
+                        "x": -0.17439426481723786,
+                        "y": -0.038347113877534869,
+                        "z": -0.011224153451621533,
+                        "w": 0.9838649034500122
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A423D70A",
+                        "2523D70A",
+                        "BCB40D60"
+                    ],
+                    "localRotationBits": [
+                        "BE329469",
+                        "BD1D11DD",
+                        "BC37E583",
+                        "3F7BDE92"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1",
+                    "localPosition": {
+                        "x": -0.02759999968111515,
+                        "y": 0.017000000923871995,
+                        "z": -0.024800000712275506
+                    },
+                    "localRotation": {
+                        "x": -0.3521829843521118,
+                        "y": -0.13809674978256226,
+                        "z": -0.8274237513542175,
+                        "w": 0.4150497615337372
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BCE21965",
+                        "3C8B4396",
+                        "BCCB295F"
+                    ],
+                    "localRotationBits": [
+                        "BEB45154",
+                        "BE0D693C",
+                        "BF53D20B",
+                        "3ED48167"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1/R_thumb2",
+                    "localPosition": {
+                        "x": -0.00022268765314947814,
+                        "y": -0.001112156780436635,
+                        "z": -0.04140967130661011
+                    },
+                    "localRotation": {
+                        "x": -0.06813102215528488,
+                        "y": 0.033443909138441089,
+                        "z": -0.04160880297422409,
+                        "w": 0.9962471723556519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "B9698143",
+                        "BA91C5CA",
+                        "BD299D30"
+                    ],
+                    "localRotationBits": [
+                        "BD8B8847",
+                        "3D08FC7B",
+                        "BD2A6DFE",
+                        "3F7F0A0E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_thumb1/R_thumb2/R_thumb3",
+                    "localPosition": {
+                        "x": -1.4210854397564649e-16,
+                        "y": -1.0658140798173486e-16,
+                        "z": -0.03148484602570534
+                    },
+                    "localRotation": {
+                        "x": -0.0625290796160698,
+                        "y": -0.020218875259160997,
+                        "z": 0.015477754175662995,
+                        "w": 0.9977182745933533
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A523D70A",
+                        "A4F5C28F",
+                        "BD00F641"
+                    ],
+                    "localRotationBits": [
+                        "BD800F3F",
+                        "BCA5A20E",
+                        "3C7D9668",
+                        "3F7F6A77"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1",
+                    "localPosition": {
+                        "x": -0.04670000076293945,
+                        "y": 0.05009999871253967,
+                        "z": -0.08550000190734863
+                    },
+                    "localRotation": {
+                        "x": -0.013752177357673645,
+                        "y": 0.4306905269622803,
+                        "z": -0.15316186845302583,
+                        "w": 0.8893020153045654
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BD3F4880",
+                        "3D4D35A8",
+                        "BDAF1AA0"
+                    ],
+                    "localRotationBits": [
+                        "BC6150D0",
+                        "3EDC8378",
+                        "BE1CD677",
+                        "3F63A94C"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1/R_point2",
+                    "localPosition": {
+                        "x": -0.0014295020373538137,
+                        "y": -0.00036834567436017096,
+                        "z": -0.040517084300518039
+                    },
+                    "localRotation": {
+                        "x": -0.0892152413725853,
+                        "y": 0.01577746868133545,
+                        "z": -0.027394017204642297,
+                        "w": 0.9955105781555176
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BABB5E21",
+                        "B9C11E85",
+                        "BD25F53E"
+                    ],
+                    "localRotationBits": [
+                        "BDB6B67B",
+                        "3C813FC0",
+                        "BCE0696B",
+                        "3F7ED9C8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_point1/R_point2/R_point3",
+                    "localPosition": {
+                        "x": -1.4210854397564649e-16,
+                        "y": 0.0,
+                        "z": -0.02719595842063427
+                    },
+                    "localRotation": {
+                        "x": -0.09555748105049133,
+                        "y": 0.010501952841877938,
+                        "z": 0.032428398728370669,
+                        "w": 0.994840145111084
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A523D70A",
+                        "00000000",
+                        "BCDECA0F"
+                    ],
+                    "localRotationBits": [
+                        "BDC3B3A4",
+                        "3C2C1062",
+                        "3D04D3A4",
+                        "3F7EADD8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1",
+                    "localPosition": {
+                        "x": -0.051017098128795627,
+                        "y": 0.07402417063713074,
+                        "z": -0.042513407766819
+                    },
+                    "localRotation": {
+                        "x": 0.025776172056794168,
+                        "y": 0.4178459942340851,
+                        "z": 0.06237097457051277,
+                        "w": 0.9060078263282776
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BD50F74E",
+                        "3D9799FC",
+                        "BD2E228A"
+                    ],
+                    "localRotationBits": [
+                        "3CD3288D",
+                        "3ED5EFE9",
+                        "3D7F78B5",
+                        "3F67F021"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1/R_middle2",
+                    "localPosition": {
+                        "x": -1.4210854397564649e-16,
+                        "y": -3.552713599391162e-17,
+                        "z": -0.043983787298202518
+                    },
+                    "localRotation": {
+                        "x": -0.11661238968372345,
+                        "y": 0.018954124301671983,
+                        "z": -0.02858700044453144,
+                        "w": 0.9925850629806519
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A523D70A",
+                        "A423D70A",
+                        "BD342858"
+                    ],
+                    "localRotationBits": [
+                        "BDEED27A",
+                        "3C9B45AE",
+                        "BCEA2F49",
+                        "3F7E1A0E"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_middle1/R_middle2/R_middle3",
+                    "localPosition": {
+                        "x": -5.329070399086743e-17,
+                        "y": -7.105427198782324e-17,
+                        "z": -0.03714710846543312
+                    },
+                    "localRotation": {
+                        "x": -0.0573439858853817,
+                        "y": 0.029490821063518525,
+                        "z": 0.04090999439358711,
+                        "w": 0.9970799088478088
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "A475C28F",
+                        "A4A3D70A",
+                        "BD182791"
+                    ],
+                    "localRotationBits": [
+                        "BD6AE187",
+                        "3CF196BC",
+                        "3D27913D",
+                        "3F7F40A1"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1",
+                    "localPosition": {
+                        "x": 1.0658140798173486e-16,
+                        "y": 4.44089183380283e-17,
+                        "z": -0.038119394332170489
+                    },
+                    "localRotation": {
+                        "x": -0.25051844120025637,
+                        "y": 0.015882495790719987,
+                        "z": 0.24118797481060029,
+                        "w": 0.9374522566795349
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "24F5C28F",
+                        "244CCCCC",
+                        "BD1C2315"
+                    ],
+                    "localRotationBits": [
+                        "BE8043F4",
+                        "3C821C02",
+                        "3E76F9FB",
+                        "3F6FFCDF"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1/R_ring2",
+                    "localPosition": {
+                        "x": -0.00007260838901856914,
+                        "y": 0.0005611813976429403,
+                        "z": -0.03784474730491638
+                    },
+                    "localRotation": {
+                        "x": -0.10605572909116745,
+                        "y": 0.031333837658166888,
+                        "z": -0.024778448045253755,
+                        "w": 0.9935574531555176
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "B8984555",
+                        "3A131C3F",
+                        "BD1B0318"
+                    ],
+                    "localRotationBits": [
+                        "BDD933BF",
+                        "3D0057E9",
+                        "BCCAFC2C",
+                        "3F7E59C8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_ring1/R_ring2/R_ring3",
+                    "localPosition": {
+                        "x": 0.0016422519693151117,
+                        "y": 0.00009022421727422625,
+                        "z": -0.030439188703894616
+                    },
+                    "localRotation": {
+                        "x": -0.1801183968782425,
+                        "y": -0.042017899453639987,
+                        "z": -0.04847297444939613,
+                        "w": 0.9815509915351868
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3AD740D5",
+                        "38BD36C2",
+                        "BCF95B9B"
+                    ],
+                    "localRotationBits": [
+                        "BE3870F5",
+                        "BD2C1AF6",
+                        "BD468B99",
+                        "3F7B46ED"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1",
+                    "localPosition": {
+                        "x": -0.01816185563802719,
+                        "y": -0.016944628208875657,
+                        "z": -0.026353934779763223
+                    },
+                    "localRotation": {
+                        "x": -0.1600981205701828,
+                        "y": 0.03380129113793373,
+                        "z": 0.22537441551685334,
+                        "w": 0.9604334831237793
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "BC94C82C",
+                        "BC8ACF76",
+                        "BCD7E435"
+                    ],
+                    "localRotationBits": [
+                        "BE23F0C3",
+                        "3D0A7339",
+                        "3E66C88D",
+                        "3F75DEF8"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1/R_pink2",
+                    "localPosition": {
+                        "x": 0.0,
+                        "y": 3.552713599391162e-17,
+                        "z": -0.02731027454137802
+                    },
+                    "localRotation": {
+                        "x": -0.2543376386165619,
+                        "y": -0.009684385731816292,
+                        "z": 0.030355103313922883,
+                        "w": 0.9665904641151428
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "80000000",
+                        "2423D70A",
+                        "BCDFB9CC"
+                    ],
+                    "localRotationBits": [
+                        "BE82388B",
+                        "BC1EAB42",
+                        "3CF8AB44",
+                        "3F777279"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "SoulRecorderReplacementArms/chest/R_arm/R_elbow/R_wrist/R_palm/R_pink1/R_pink2/R_pink3",
+                    "localPosition": {
+                        "x": 5.329070399086743e-17,
+                        "y": -1.4210854397564649e-16,
+                        "z": -0.021979033946990968
+                    },
+                    "localRotation": {
+                        "x": -0.17439426481723786,
+                        "y": 0.038347113877534869,
+                        "z": 0.011224153451621533,
+                        "w": 0.9838649034500122
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "2475C28F",
+                        "A523D70A",
+                        "BCB40D60"
+                    ],
+                    "localRotationBits": [
+                        "BE329469",
+                        "3D1D11DD",
+                        "3C37E583",
+                        "3F7BDE92"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "AuthoringProps/RecorderGrip",
+                    "localPosition": {
+                        "x": 0.06237918138504028,
+                        "y": -0.24236948788166047,
+                        "z": 0.4163822829723358
+                    },
+                    "localRotation": {
+                        "x": 0.07259522378444672,
+                        "y": -0.42393094301223757,
+                        "z": -0.8395697474479675,
+                        "w": 0.3318662941455841
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3D7F8150",
+                        "BE782FB5",
+                        "3ED5300F"
+                    ],
+                    "localRotationBits": [
+                        "3D94ACCE",
+                        "BED90D7A",
+                        "BF56EE0B",
+                        "3EA9EA61"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                },
+                {
+                    "path": "AuthoringProps/CassetteGrip",
+                    "localPosition": {
+                        "x": 0.2410767674446106,
+                        "y": -0.23750974237918855,
+                        "z": 0.3879784345626831
+                    },
+                    "localRotation": {
+                        "x": -0.7086614966392517,
+                        "y": -0.5697944760322571,
+                        "z": 0.16791954636573792,
+                        "w": 0.3807048499584198
+                    },
+                    "localScale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "localPositionBits": [
+                        "3E76DCD4",
+                        "BE7335C1",
+                        "3EC6A51C"
+                    ],
+                    "localRotationBits": [
+                        "BF356AD7",
+                        "BF11DE0D",
+                        "3E2BF31A",
+                        "3EC2EBBF"
+                    ],
+                    "localScaleBits": [
+                        "3F800000",
+                        "3F800000",
+                        "3F800000"
+                    ]
+                }
+            ]
+        }
+    ]
+}

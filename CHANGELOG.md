@@ -2,6 +2,50 @@
 
 All notable SoulPlayer changes are documented here.
 
+## [0.9.1] - 2026-08-31
+
+### UX, performance, and stability
+
+- Made the in-raid SoulRecorder start/stop hotkey configurable (default **M**).
+- Added configurable mini-player corner placement and collision-aware overlay stacking.
+- Corrected post-raid playback: loading stays silent, a configured Extract or Death cue plays when ready, then the exact pre-raid Main track and position resume.
+- Preserved the saved Main resume snapshot through SoulRecorder playback and next-cassette use.
+- Optimized raid performance by eliminating unnecessary per-frame readiness inspection, F12 lookups, layout work, library copies, and repeated searches through cached and event-driven updates.
+- Improved world-cassette targeting with cached camera references, throttled proximity checks, and reusable raycast buffers while retaining occlusion checks.
+- Fixed readiness, lifecycle, and library-rescan/remapping edge cases. Existing cassette, collection, routing, and volume features are preserved.
+- Restricted the developer recorder-discovery probe to PlacementTools builds; normal Release excludes performance-profiler call sites.
+
+The user confirmed that the optimized pre-release build restored normal/much better raid performance in real EFT and that the UX and post-raid features work. This is qualitative runtime acceptance, not a measured FPS benchmark. Windows remains the officially tested OS; Linux/Wine/Proton runtime verification is limited and Fika is unverified.
+
+## [0.9.0] - 2026-08-29
+
+### Added
+
+- Added the SoulTape collectible system across 108 hand-authored locations on ten curated SPT maps.
+- Added per-raid randomized cassette and song selection, prioritizing undiscovered music and selecting distinct anchors and tracks without replacement.
+- Added dynamic SoulTape entries for tracks in the user's local library, with profile-specific discoveries that persist across game and SPT restarts.
+- Added `FavoritesOnly`, `FavoritesFirst`, and `Discovered` raid cassette shuffle modes.
+- Added SoulRecorder raid controls: **M** starts or stops playback and **N** advances to the next discovered cassette.
+- Added polished two-dimensional SoulRecorder and SoulTape discovery overlays embedded directly in `Soulplayer.dll`.
+- Added live F12 volume updates, NumPad0–4 volume presets, and a compact in-raid volume HUD.
+- Added per-track **Main**, **Extract**, and **Death** routing with exact routed playback after each raid outcome.
+- Added **ESC** handling to close the SoulPlayer interface.
+- Added a redistribution-safe CC0 world cassette visual derived from the BlendSwap cassette by comeinandburn.
+- Added Linux-friendly path normalization and case-sensitivity groundwork; Windows remains the only officially tested runtime platform.
+
+### Changed
+
+- Expanded the cassette collection and favorites interfaces with discovered/undiscovered state, unavailable-track history, and improved recorder selection.
+- Replaced the previous first-person 3D recorder/hand presentation with a polished 2D recorder overlay; the release package now carries only the visual-only world cassette bundle.
+- Updated SoulPlayer assembly, plugin, package, documentation, and in-game version metadata to 0.9.0.
+
+### Fixed
+
+- Fixed post-raid routing so the exact selected Extract or Death track is preserved through delayed result-screen transitions.
+- Fixed stale, missing, and rescanned library entries reconnecting incorrectly with persistent discoveries and routing metadata.
+- Improved raid lifecycle cleanup, cassette interaction stability, path handling, playback selection, and volume synchronization.
+- Prevented obsolete recorder/hand bundles, preview artifacts, authoring files, and unverified music candidates from entering release packages.
+
 ## [0.8.0] - 2026-08-21
 
 ### Added
