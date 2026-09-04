@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using SoulPlayer.Library;
 using SPT.Reflection.Patching;
 using TMPro;
 using UnityEngine;
@@ -243,6 +244,11 @@ namespace SoulPlayer.UI
 
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.Window);
+            try
+            {
+#endif
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Close();
@@ -251,6 +257,10 @@ namespace SoulPlayer.UI
             {
                 NavigateBack();
             }
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Window); }
+#endif
         }
 
         private void RefreshQuickAccess()
@@ -293,7 +303,7 @@ namespace SoulPlayer.UI
         private void NavigateTo(string path, bool pushHistory)
         {
             string normalized = NormalizeBrowserPath(path);
-            if (pushHistory && !string.Equals(_currentPath, normalized, StringComparison.OrdinalIgnoreCase))
+            if (pushHistory && !string.Equals(_currentPath, normalized, SoulPath.Comparison))
             {
                 _history.Push(_currentPath ?? ComputerPath);
             }
@@ -365,7 +375,12 @@ namespace SoulPlayer.UI
                 string root = Path.GetPathRoot(_currentPath) ?? string.Empty;
                 if (!string.IsNullOrWhiteSpace(root))
                 {
-                    crumbs.Add(new KeyValuePair<string, string>(root.TrimEnd('\\'), root));
+                    string rootCaption = root.TrimEnd(
+                        Path.DirectorySeparatorChar,
+                        Path.AltDirectorySeparatorChar);
+                    crumbs.Add(new KeyValuePair<string, string>(
+                        string.IsNullOrEmpty(rootCaption) ? root : rootCaption,
+                        root));
                     string remainder = _currentPath.Substring(Math.Min(root.Length, _currentPath.Length));
                     string current = root;
                     foreach (string segment in remainder.Split(new[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries))
@@ -635,7 +650,7 @@ namespace SoulPlayer.UI
                 return char.ToUpperInvariant(root[0]) + ":";
             }
 
-            return "DRIVE";
+            return string.IsNullOrWhiteSpace(root) ? "ROOT" : root;
         }
 
         private static IEnumerable<DriveInfo> GetReadyDrives()
@@ -699,7 +714,9 @@ namespace SoulPlayer.UI
 
             try
             {
-                string full = Path.GetFullPath(path);
+                string full = SoulPath.NormalizeConfiguredPath(
+                    path,
+                    BepInEx.Paths.GameRootPath);
                 return Directory.Exists(full) ? full : ComputerPath;
             }
             catch
@@ -721,7 +738,9 @@ namespace SoulPlayer.UI
                 {
                     if (Directory.Exists(path))
                     {
-                        return Path.GetFullPath(path);
+                        return SoulPath.NormalizeConfiguredPath(
+                            path,
+                            BepInEx.Paths.GameRootPath);
                     }
                 }
                 catch

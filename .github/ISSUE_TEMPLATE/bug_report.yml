@@ -14,7 +14,7 @@ body:
     attributes:
       label: SoulPlayer version
       description: Shown in `BepInEx/LogOutput.log` when the game starts.
-      placeholder: 0.8.0
+      placeholder: 0.9.1
     validations:
       required: true
 

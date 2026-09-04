@@ -12,3 +12,86 @@ Project: https://github.com/VPKSoft/NAudio.Flac
 The bundled NAudio.Flac assembly has only its NAudio.Core reference version
 updated from 2.2.1 to 2.3.0 so it can use the bundled compatible NAudio.Core
 runtime already validated with SPT's .NET Framework target.
+
+SoulPlayer default music pack
+=============================
+
+SoulRecorder and SoulTape visual assets
+=======================================
+
+ManimalIcebreaker controller architecture reference
+Source: https://github.com/danauraborealis/ManimalIcebreaker
+Copyright (c) 2026 danauraborealis
+License: MIT
+Reference commit: b5799b192d18ea2f80ef2bccdc1e46fad08dce94
+Use: SoulRecorder's native usable-item equip/holster controller follows the MIT-licensed
+BlowtorchController/BlowtorchPatches architecture pattern. No ManimalIcebreaker models,
+textures, audio, AssetBundles, or other content assets are copied or redistributed.
+
+Cassette Player by Oday Abuzaeed / Poly Haven
+Source: https://polyhaven.com/a/cassette_player
+License: CC0
+Use: modified SoulPlayer first-person recorder derivative
+
+Cassette Tape by comeinandburn / BlendSwap
+Source: https://blendswap.com/blend/10633
+License: CC0
+Use: modified SoulPlayer world cassette derivative with source branding removed, packaged
+in the visual-only soultape_world.bundle
+
+First Person arms by DJMaesen
+Source: https://sketchfab.com/3d-models/first-person-arms-e3c42c05b22944e5839deb8e003f0987
+License: Creative Commons Attribution (CC BY; license version was not included in
+the downloaded archive)
+Use: unmodified source staged as a candidate replacement first-person arm/hand
+skeleton. SoulPlayer adds separate validation and manual-authoring scenes; no
+recorder, cassette, or SoulPlayer animation data is part of the source asset.
+
+FREE [FPS Arms] GameReady - RIGGED by BAMEN (Sketchfab user bamenwo05)
+Source: https://sketchfab.com/3d-models/free-fps-arms-gameready-rigged-296d30fc705b4dff85c2c8a2d2724e7f
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+License: https://creativecommons.org/licenses/by/4.0/
+Use: modified SoulPlayer first-person arms derivative. SoulPlayer preserves the articulated
+arm/hand/finger rig, adds recorder/cassette sockets, rewires the supplied PBR textures, and
+adds original SoulRecorder poses and animations. Its runtime renderer uses a derived
+first-person mesh with the proximal shoulder-side sleeve geometry cropped and capped; the
+complete source skeleton and the remaining vertex weights are retained. Changes were made
+by the SoulPlayer project.
+
+Only derived model/material data is packaged. The external master archives are not
+redistributed with SoulPlayer. See Assets/SoulRecorder/source-manifest.json for immutable
+source SHA-256 values and the transformation record.
+
+The audio files in DefaultMusic are NOT licensed under SoulPlayer's MIT license.
+They remain under the licenses granted by their creators.
+
+Scott Buckley tracks - Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+https://www.scottbuckley.com.au/
+
+- Electric Dreams
+  Attribution: 'Electric Dreams' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+- Resonance
+  Attribution: 'Resonance' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+- Signal to Noise
+  Attribution: 'Signal to Noise' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+- The Long Dark
+  Attribution: 'The Long Dark' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+
+Anders / Anttu Janhunen tracks
+Official catalog: https://soundcloud.com/anttu-janhunen
+
+- Frostbite
+- False Awakenings
+- Into World Unknown
+- Ex Nihilo
+
+These tracks are distributed only as part of SoulPlayer's free/non-commercial music pack.
+False Awakenings is marked CC BY-NC-SA on SoundCloud; Into World Unknown and
+Ex Nihilo have been published with CC BY-NC-SA 3.0 attribution in projects that
+use the creator's royalty-free catalog. Preserve creator attribution and the
+non-commercial/share-alike terms. Frostbite must not be shipped from an
+unofficial mirror; release packaging should retain documented proof of the
+creator-authorized download/source used for the file.
+
+See DefaultMusic/SOURCES.md for per-track source pages and release notes.

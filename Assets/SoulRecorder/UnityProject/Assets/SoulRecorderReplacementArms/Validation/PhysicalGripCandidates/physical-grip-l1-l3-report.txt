@@ -1,0 +1,50 @@
+SoulRecorder PhysicalGrip L1-L3 marker solve
+InteractionMaster_L is arm-layout seed only.
+Cassette is fixed at mechanical Contact before finger solving.
+StaticMaster_v1 and human-authored poses remain untouched.
+
+CASSETTE AXIS AUDIT
+Entry->Seated vs CassetteInsertionAxis dot: 1.000000
+Entry->Seated vs CassetteSlotTravelAxis dot: 1.000000
+CassetteFront/CassetteTop orthogonality abs(dot): 0.000000
+Carry -> direct Contact rotation: 165.371 deg
+Carry -> 180-roll-equivalent Contact rotation: 168.079 deg
+Selected equivalent orientation: direct; rotation=165.371 deg
+Axis sign correct: YES
+Physical 180-degree flip required: YES
+
+PhysicalGrip_L1:
+cassette contacts thumb/index/middle: 0.855 / 0.594 / 1.061 mm
+support palm/thumb/index/middle/ring/pinky: 1.527 / 0.356 / 0.688 / 0.566 / 0.933 / 0.600 mm
+cassette/recorder maximum sampled penetration: 0.606 / 0.000 mm
+slot contact position/rotation error: 0.000 mm / 0.0000 deg
+right-arm extension: 52.26%
+right-wrist roll: 2.56 deg
+InteractionGrip delta from Carry: 38.005 mm / 169.66 deg
+cassette rotation from Carry: 165.37 deg
+hand -> cassette -> slot readable: YES
+PASS/FAIL: PASS
+
+PhysicalGrip_L2:
+cassette contacts thumb/index/middle: 0.959 / 0.522 / 1.546 mm
+support palm/thumb/index/middle/ring/pinky: 1.527 / 0.356 / 0.688 / 0.566 / 0.933 / 0.600 mm
+cassette/recorder maximum sampled penetration: 0.799 / 0.000 mm
+slot contact position/rotation error: 0.000 mm / 0.0000 deg
+right-arm extension: 52.71%
+right-wrist roll: 2.63 deg
+InteractionGrip delta from Carry: 33.249 mm / 166.01 deg
+cassette rotation from Carry: 165.37 deg
+hand -> cassette -> slot readable: YES
+PASS/FAIL: PASS
+
+PhysicalGrip_L3:
+cassette contacts thumb/index/middle: 1.325 / 0.673 / 0.556 mm
+support palm/thumb/index/middle/ring/pinky: 1.527 / 0.356 / 0.688 / 0.566 / 0.933 / 0.600 mm
+cassette/recorder maximum sampled penetration: 0.063 / 0.000 mm
+slot contact position/rotation error: 0.000 mm / 0.0000 deg
+right-arm extension: 52.10%
+right-wrist roll: 2.69 deg
+InteractionGrip delta from Carry: 44.162 mm / 173.43 deg
+cassette rotation from Carry: 165.37 deg
+hand -> cassette -> slot readable: YES
+PASS/FAIL: PASS

@@ -30,6 +30,10 @@ namespace SoulPlayer.UI
         private float _marqueeOverflow;
         private float _marqueePauseUntil;
         private int _marqueeDirection = 1;
+        private Canvas _canvas;
+        private readonly SoulOverlayLayoutRevision _layoutRevision = new SoulOverlayLayoutRevision();
+        private readonly Vector3[] _screenCorners = new Vector3[4];
+        private SoulPlayerVolumeHudRect _screenRect;
 
         internal static SoulMiniPlayer Create(Transform parent, TMP_Text styleSource)
         {
@@ -77,6 +81,29 @@ namespace SoulPlayer.UI
             }
         }
 
+        internal static bool TryGetScreenRect(
+            out SoulPlayerVolumeHudRect screenRect)
+        {
+            Instances.RemoveAll(instance => instance == null);
+            foreach (SoulMiniPlayer instance in Instances)
+            {
+                if (!instance.gameObject.activeInHierarchy ||
+                    instance._canvas == null || !instance._canvas.isActiveAndEnabled ||
+                    instance._canvasGroup == null ||
+                    instance._canvasGroup.alpha <= 0.001f)
+                {
+                    continue;
+                }
+
+                instance.ApplyLayout();
+                screenRect = instance._screenRect;
+                return screenRect.Width > 0f && screenRect.Height > 0f;
+            }
+
+            screenRect = new SoulPlayerVolumeHudRect();
+            return false;
+        }
+
         private void Awake()
         {
             Instances.Add(this);
@@ -84,12 +111,9 @@ namespace SoulPlayer.UI
 
         private void Build()
         {
-            UIUtils.SetRect(
-                (RectTransform)transform,
-                new Vector2(1f, 0f),
-                new Vector2(1f, 0f),
-                new Vector2(380f, 44f),
-                new Vector2(-12f, 36f));
+            _canvas = GetComponentInParent<Canvas>();
+            Plugin.Settings.MiniPlayerChanged += OnMiniPlayerChanged;
+            ApplyLayout();
 
             Image background = gameObject.AddComponent<Image>();
             background.color = new Color(0.008f, 0.010f, 0.012f, 0.52f);
@@ -202,8 +226,58 @@ namespace SoulPlayer.UI
             RefreshContent();
         }
 
+        private void OnMiniPlayerChanged()
+        {
+            ApplyVisibility();
+            ApplyLayout();
+        }
+
+        private void LateUpdate()
+        {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.MiniPlayer);
+            try
+            {
+#endif
+            ApplyLayout();
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.MiniPlayer); }
+#endif
+        }
+
+        private void ApplyLayout()
+        {
+            if (_canvas == null || Plugin.Settings == null || !gameObject.activeInHierarchy ||
+                !_canvas.isActiveAndEnabled) return;
+            float scale = Mathf.Max(0.01f, _canvas.scaleFactor);
+            SoulPlayerVolumeHudPlacementContext context =
+                SoulPlayerVolumeHud.BuildPlacementContext(Plugin.Settings, Time.unscaledTime, false);
+            if (!_layoutRevision.ShouldRebuild(true, Screen.width, Screen.height, scale,
+                (int)Plugin.Settings.MiniPlayerPosition, context)) return;
+            SoulPlayerVolumeHudRect panel = SoulMiniPlayerLayout.Calculate(
+                Screen.width, Screen.height, scale, Plugin.Settings.MiniPlayerPosition,
+                context);
+            UIUtils.SetRect((RectTransform)transform,
+                new Vector2(0f, 1f), new Vector2(0f, 1f),
+                new Vector2(panel.Width / scale, panel.Height / scale),
+                new Vector2(panel.X / scale, -panel.Y / scale));
+            ((RectTransform)transform).GetWorldCorners(_screenCorners);
+            _screenRect = new SoulPlayerVolumeHudRect
+            {
+                X = _screenCorners[0].x, Y = Screen.height - _screenCorners[2].y,
+                Width = _screenCorners[2].x - _screenCorners[0].x,
+                Height = _screenCorners[2].y - _screenCorners[0].y
+            };
+        }
+
         private void Update()
         {
+#if SOULPLAYER_PERF
+            SoulPlayer.Utils.RecurringWorkProfiler.Begin(SoulPlayer.Utils.RecurringWorkArea.MiniPlayer);
+            try
+            {
+#endif
             if (_dirty || Time.unscaledTime >= _nextRefresh)
             {
                 _nextRefresh = Time.unscaledTime + 0.2f;
@@ -212,11 +286,15 @@ namespace SoulPlayer.UI
             }
 
             UpdateMarquee();
+        #if SOULPLAYER_PERF
+            }
+            finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.MiniPlayer); }
+#endif
         }
 
         private void RefreshContent()
         {
-            MusicTrack track = Plugin.AudioPlayer.CurrentTrack;
+            MusicTrack track = Plugin.AudioPlayer.DisplayTrack;
             string marquee;
             if (track == null)
             {
@@ -295,6 +373,7 @@ namespace SoulPlayer.UI
 
         private void ApplyVisibility()
         {
+            _layoutRevision.Invalidate();
             bool visible = !_inRaid && Plugin.Settings != null && Plugin.Settings.ShowMiniPlayer;
             gameObject.SetActive(visible);
             _canvasGroup.alpha = visible ? 1f : 0f;
@@ -333,6 +412,8 @@ namespace SoulPlayer.UI
         private void OnDestroy()
         {
             Instances.Remove(this);
+            if (Plugin.Settings != null)
+                Plugin.Settings.MiniPlayerChanged -= OnMiniPlayerChanged;
             if (Plugin.AudioPlayer != null)
             {
                 Plugin.AudioPlayer.Changed -= OnAudioChanged;

@@ -29,7 +29,26 @@
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(RecorderDevelopmentProxy)' == 'true' ">
+    <DefineConstants>$(DefineConstants);SOULPLAYER_RECORDER_DEV_PROXY</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(SoulPlayerPlacementTools)' == 'true' ">
+    <DefineConstants>$(DefineConstants);SOULPLAYER_PLACEMENT_TOOLS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(SoulPlayerPerformanceDiagnostics)' == 'true' ">
+    <DefineConstants>$(DefineConstants);SOULPLAYER_PERF</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Utils\RecurringWorkProfiler.cs" />
+    <Compile Include="UI\SoulOverlayLayoutRevision.cs" />
+    <Compile Include="Audio\RaidReadinessPollGate.cs" />
+    <Compile Include="Recorder\SoulRecorderInput.cs" />
+    <Compile Include="UI\SoulMiniPlayerLayout.cs" />
+    <Compile Include="Audio\PostRaidHandoff.cs" />
+    <Compile Include="Audio\RaidPlaybackSession.cs" />
+    <Compile Include="Audio\RaidPlaybackReadiness.cs" />
+    <Compile Include="Audio\StableRaidMenuContext.cs" />
+    <Compile Include="Patches\RaidDeploymentPatch.cs" />
     <Reference Include="0Harmony"><HintPath>$(SptRoot)\BepInEx\core\0Harmony.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="Assembly-CSharp"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="BepInEx"><HintPath>$(SptRoot)\BepInEx\core\BepInEx.dll</HintPath><Private>False</Private></Reference>
@@ -38,9 +57,15 @@
     <Reference Include="spt-reflection"><HintPath>$(SptRoot)\BepInEx\plugins\spt\spt-reflection.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="Unity.TextMeshPro"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\Unity.TextMeshPro.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.AnimationModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.AnimationModule.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.AssetBundleModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.AudioModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.AudioModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.CoreModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.PhysicsModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.InputLegacyModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.IMGUIModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.ImageConversionModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="UnityEngine.TextRenderingModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.UIModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.UIModule.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.UI"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath><Private>False</Private></Reference>
@@ -48,20 +73,36 @@
     <Reference Include="netstandard"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\netstandard.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="NAudio.Core"><HintPath>lib\NAudio.Core.dll</HintPath><Private>True</Private></Reference>
     <Reference Include="NAudio.Flac"><HintPath>lib\NAudio.Flac.dll</HintPath><Private>True</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\Newtonsoft.Json.dll</HintPath><Private>False</Private></Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Sirenix.Serialization"><HintPath>$(SptRoot)\EscapeFromTarkov_Data\Managed\Sirenix.Serialization.dll</HintPath><Private>False</Private></Reference>
   </ItemGroup>
   <ItemGroup><PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" /></ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\DecodedAudio.cs" /><Compile Include="Audio\FlacDecoder.cs" /><Compile Include="Audio\PostRaidCoordinator.cs" /><Compile Include="Audio\SoulAudioPlayer.cs" /><Compile Include="Audio\TarkovMusicMuter.cs" />
-    <Compile Include="Configuration\SoulPlayerSettings.cs" /><Compile Include="Library\MusicLibrary.cs" /><Compile Include="Library\MusicTrack.cs" />
+    <Compile Include="Audio\DecodedAudio.cs" /><Compile Include="Audio\FlacDecoder.cs" /><Compile Include="Audio\PostRaidAutoplayPlan.cs" /><Compile Include="Audio\PostRaidCoordinator.cs" /><Compile Include="Audio\SoulAudioPlayer.cs" /><Compile Include="Audio\SoulPlayerVolumePresetController.cs" /><Compile Include="Audio\SoulPlayerVolumeState.cs" /><Compile Include="Audio\TarkovMusicMuter.cs" />
+    <Compile Include="Cassettes\IProfileIdProvider.cs" /><Compile Include="Cassettes\ISoulTapeLog.cs" /><Compile Include="Cassettes\SoulTapeAssignment.cs" /><Compile Include="Cassettes\SoulTapeAssignmentStore.cs" /><Compile Include="Cassettes\SoulTapeAuthoringSafety.cs" /><Compile Include="Cassettes\SoulTapeCatalog.cs" /><Compile Include="Cassettes\SoulTapeCatalogEntry.cs" /><Compile Include="Cassettes\SoulTapeCollection.cs" /><Compile Include="Cassettes\SoulTapeCollectionController.cs" /><Compile Include="Cassettes\SoulTapeCollectionHost.cs" /><Compile Include="Cassettes\SoulTapeCollectionProjection.cs" /><Compile Include="Cassettes\SoulTapeCollectionStore.cs" /><Compile Include="Cassettes\SoulTapeDiscoveryService.cs" /><Compile Include="Cassettes\SoulTapeEligibility.cs" /><Compile Include="Cassettes\SoulTapePlacementSolver.cs" /><Compile Include="Cassettes\SoulTapeRaidPlaybackPool.cs" /><Compile Include="Cassettes\SoulTapeRecorderSelector.cs" /><Compile Include="Cassettes\SoulTapeSpawnAnchor.cs" /><Compile Include="Cassettes\SoulTapeSpawnAnchorCatalog.cs" /><Compile Include="Cassettes\SoulTapeSpawnAnchorStore.cs" /><Compile Include="Cassettes\SoulTapeSpawnPlanner.cs" /><Compile Include="Cassettes\SoulTapeWorldEligibility.cs" />
+    <Compile Include="Configuration\SoulPlayerSettings.cs" /><Compile Include="Library\MusicLibrary.cs" /><Compile Include="Library\MusicTrack.cs" /><Compile Include="Library\SoulPath.cs" /><Compile Include="Library\TrackFingerprint.cs" /><Compile Include="Library\TrackRouting.cs" />
     <Compile Include="Patches\MenuScreenPatch.cs" /><Compile Include="Patches\PostRaidResultPatch.cs" /><Compile Include="Patches\TarkovMusicVolumePatch.cs" /><Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" /><Compile Include="UI\SoulFolderBrowser.cs" /><Compile Include="UI\SoulPlayerWindow.cs" /><Compile Include="UI\SoulMiniPlayer.cs" />
-    <Compile Include="UI\UIUtils.cs" /><Compile Include="UI\SoulPlayerOverlayHost.cs" /><Compile Include="Utils\GameState.cs" /><Compile Include="Utils\MediaKeyInput.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" /><Compile Include="Recorder\Assets\SoulPlayerAssetBundle.cs" /><Compile Include="Recorder\Assets\SoulPlayerAssetContracts.cs" /><Compile Include="Recorder\Assets\SoulRecorderAssetProvider.cs" /><Compile Include="Recorder\DevelopmentRecorderHandsProxy.cs" /><Compile Include="Recorder\DevelopmentSoulRecorderPresentationTuner.cs" /><Compile Include="Recorder\EftNativeSoulRecorderHandsView.cs" /><Compile Include="Recorder\ISoulRecorderHandsView.cs" /><Compile Include="Recorder\Native\EftNativeHandsRuntime.cs" /><Compile Include="Recorder\Native\SoulRecorderNativeBoneRoles.cs" /><Compile Include="Recorder\Native\SoulRecorderNativeStateGuard.cs" /><Compile Include="Recorder\ProceduralSoulRecorderHandsView.cs" /><Compile Include="Recorder\SoulRecorderAudioPlayer.cs" /><Compile Include="Recorder\SoulRecorderCassetteTransformAuthority.cs" /><Compile Include="Recorder\SoulRecorderController.cs" /><Compile Include="Recorder\SoulRecorderHandsControllerTransition.cs" /><Compile Include="Recorder\SoulRecorderHandsOwnershipState.cs" /><Compile Include="Recorder\SoulRecorderInteractionLifecycle.cs" /><Compile Include="Recorder\SoulRecorderNativePresentationPatch.cs" /><Compile Include="Recorder\SoulRecorderNativeUsableItemController.cs" /><Compile Include="Recorder\SoulRecorderOverlayView.cs" /><Compile Include="Recorder\SoulRecorderPresentationState.cs" /><Compile Include="Recorder\SoulRecorderPresentationTuning.cs" /><Compile Include="Recorder\SoulRecorderRaidNextCoordinator.cs" /><Compile Include="Recorder\SoulRecorderScreenOverlayTransition.cs" /><Compile Include="Recorder\SoulRecorderState.cs" /><Compile Include="Recorder\SoulRecorderUsableItemController.cs" /><Compile Include="Assets\SoulRecorder\UnityProject\Assets\SoulPlayer\Shared\SoulRecorderOverlayTimeline.cs" /><Compile Include="Assets\SoulRecorder\UnityProject\Assets\SoulPlayer\Shared\SoulRecorderStatusOverlayLayout.cs" />
+    <Compile Include="UI\SoulFolderBrowser.cs" /><Compile Include="UI\SoulPlayerLibraryViewState.cs" /><Compile Include="UI\SoulPlayerWindow.cs" /><Compile Include="UI\SoulPlayerWindowCloseController.cs" /><Compile Include="UI\SoulMiniPlayer.cs" /><Compile Include="UI\SoulPlayerVolumeHud.cs" /><Compile Include="UI\SoulPlayerVolumeHudModel.cs" /><Compile Include="UI\SoulTapeCollectionPage.cs" /><Compile Include="UI\SoulTapeRarityPresentation.cs" />
+    <Compile Include="UI\UIUtils.cs" /><Compile Include="UI\SoulPlayerOverlayHost.cs" /><Compile Include="Utils\GameState.cs" /><Compile Include="Utils\MediaKeyInput.cs" /><Compile Include="Utils\RecorderDiagnostics.cs" />
+    <Compile Include="World\DevelopmentSoulTapeSpawnMarker.cs" /><Compile Include="World\SoulTapeCassetteVisual.cs" /><Compile Include="World\SoulTapeInteractionTargeting.cs" /><Compile Include="World\SoulTapeWorldDiscoveryController.cs" /><Compile Include="World\SoulTapeWorldPickup.cs" /><Compile Include="World\SoulTapeWorldVisualAssetProvider.cs" />
+    <EmbeddedResource Include="Data\SoulTape\SpawnAnchors\all-maps.json">
+      <LogicalName>SoulPlayer.Data.SoulTape.SpawnAnchors.all-maps.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\SoulRecorder\source-manifest.json">
+      <LogicalName>SoulPlayer.Assets.SoulRecorder.source-manifest.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\SoulRecorder\Overlay\soulrecorder-overlay-recorder.png">
+      <LogicalName>SoulPlayer.Assets.SoulRecorder.Overlay.recorder.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\SoulRecorder\Overlay\soulrecorder-overlay-cassette.png">
+      <LogicalName>SoulPlayer.Assets.SoulRecorder.Overlay.cassette.png</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <Target Name="ValidateSptRoot" BeforeTargets="ResolveAssemblyReferences">
-    <Error Condition="'$(SptRoot)' == ''" Text="Set SptRoot to an SPT 4.1.3 installation, for example: -p:SptRoot=&quot;C:\SPT&quot;" />
+    <Error Condition="'$(SptRoot)' == ''" Text="Set SptRoot to an SPT 4.1.x installation, for example: -p:SptRoot=&quot;D:\SPT_4.1.2&quot;" />
     <Error Condition="'$(SptRoot)' != '' and !Exists('$(SptRoot)\\SPT_Runtime\\SPT.Server.exe')" Text="SPT.Runtime server executable was not found under SptRoot: $(SptRoot)" />
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

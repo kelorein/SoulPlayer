@@ -1,0 +1,329 @@
+SoulRecorder InteractionMaster G-L rotation-only candidate search
+StaticMaster_v1 remains the locked Carry pose.
+All skeletal local positions/scales are bit-exact locked.
+Recorder grip is rigid; each candidate has one frozen InteractionGrip_RightHandToCassette.
+No candidate is selected automatically.
+
+Candidate G:
+right-arm extension: 55.30%
+contact error: 0.0002 mm / 0.0000 deg
+forearm screen angle: 43.32 deg from horizontal
+forearm screen length: 0.259
+left twist deltas upper/forearm/wrist: 0.00 / 0.00 / 2.88 deg
+right twist deltas upper/forearm/wrist: 0.00 / 0.00 / 11.30 deg
+elbow bend left/right: 97.91 / 117.02 deg; flipped=NO
+elbow viewport: (1.947, -0.627, 0.137) low/right=YES
+wrist/cassette/recorder viewport: (1.006, 0.259, 0.236) / (0.627, 0.283, 0.391) / (0.664, 0.246, 0.397)
+recorder grip drift: 0.0002 mm / 0.0000 deg
+cassette grip drift: 0.0002 mm / 0.0000 deg
+InteractionGrip_RightHandToCassette delta from Carry: 50.090 mm / 168.65 deg
+cassette projected visibility: 100.0% area=0.02799
+recorder projected visibility: 99.2% area=0.11776
+PASS/FAIL: PASS
+skeletal localPosition/localScale drift by bone:
+  L_arm position=EXACT scale=EXACT
+  L_elbow position=EXACT scale=EXACT
+  L_wrist position=EXACT scale=EXACT
+  R_arm position=EXACT scale=EXACT
+  R_elbow position=EXACT scale=EXACT
+  R_wrist position=EXACT scale=EXACT
+  L_thumb1 position=EXACT scale=EXACT
+  L_thumb2 position=EXACT scale=EXACT
+  L_thumb3 position=EXACT scale=EXACT
+  L_point1 position=EXACT scale=EXACT
+  L_point2 position=EXACT scale=EXACT
+  L_point3 position=EXACT scale=EXACT
+  L_middle1 position=EXACT scale=EXACT
+  L_middle2 position=EXACT scale=EXACT
+  L_middle3 position=EXACT scale=EXACT
+  L_ring1 position=EXACT scale=EXACT
+  L_ring2 position=EXACT scale=EXACT
+  L_ring3 position=EXACT scale=EXACT
+  L_pink1 position=EXACT scale=EXACT
+  L_pink2 position=EXACT scale=EXACT
+  L_pink3 position=EXACT scale=EXACT
+  R_thumb1 position=EXACT scale=EXACT
+  R_thumb2 position=EXACT scale=EXACT
+  R_thumb3 position=EXACT scale=EXACT
+  R_point1 position=EXACT scale=EXACT
+  R_point2 position=EXACT scale=EXACT
+  R_point3 position=EXACT scale=EXACT
+  R_middle1 position=EXACT scale=EXACT
+  R_middle2 position=EXACT scale=EXACT
+  R_middle3 position=EXACT scale=EXACT
+  R_ring1 position=EXACT scale=EXACT
+  R_ring2 position=EXACT scale=EXACT
+  R_ring3 position=EXACT scale=EXACT
+  R_pink1 position=EXACT scale=EXACT
+  R_pink2 position=EXACT scale=EXACT
+  R_pink3 position=EXACT scale=EXACT
+
+Candidate H:
+right-arm extension: 49.25%
+contact error: 0.0001 mm / 0.0000 deg
+forearm screen angle: 36.59 deg from horizontal
+forearm screen length: 0.292
+left twist deltas upper/forearm/wrist: 0.00 / 0.00 / 6.69 deg
+right twist deltas upper/forearm/wrist: 0.00 / 0.00 / 6.12 deg
+elbow bend left/right: 100.30 / 125.94 deg; flipped=NO
+elbow viewport: (2.017, -0.408, 0.141) low/right=YES
+wrist/cassette/recorder viewport: (1.074, 0.292, 0.205) / (0.658, 0.238, 0.376) / (0.696, 0.212, 0.387)
+recorder grip drift: 0.0001 mm / 0.0000 deg
+cassette grip drift: 0.0002 mm / 0.0000 deg
+InteractionGrip_RightHandToCassette delta from Carry: 60.605 mm / 169.85 deg
+cassette projected visibility: 100.0% area=0.03332
+recorder projected visibility: 92.0% area=0.13332
+PASS/FAIL: PASS
+skeletal localPosition/localScale drift by bone:
+  L_arm position=EXACT scale=EXACT
+  L_elbow position=EXACT scale=EXACT
+  L_wrist position=EXACT scale=EXACT
+  R_arm position=EXACT scale=EXACT
+  R_elbow position=EXACT scale=EXACT
+  R_wrist position=EXACT scale=EXACT
+  L_thumb1 position=EXACT scale=EXACT
+  L_thumb2 position=EXACT scale=EXACT
+  L_thumb3 position=EXACT scale=EXACT
+  L_point1 position=EXACT scale=EXACT
+  L_point2 position=EXACT scale=EXACT
+  L_point3 position=EXACT scale=EXACT
+  L_middle1 position=EXACT scale=EXACT
+  L_middle2 position=EXACT scale=EXACT
+  L_middle3 position=EXACT scale=EXACT
+  L_ring1 position=EXACT scale=EXACT
+  L_ring2 position=EXACT scale=EXACT
+  L_ring3 position=EXACT scale=EXACT
+  L_pink1 position=EXACT scale=EXACT
+  L_pink2 position=EXACT scale=EXACT
+  L_pink3 position=EXACT scale=EXACT
+  R_thumb1 position=EXACT scale=EXACT
+  R_thumb2 position=EXACT scale=EXACT
+  R_thumb3 position=EXACT scale=EXACT
+  R_point1 position=EXACT scale=EXACT
+  R_point2 position=EXACT scale=EXACT
+  R_point3 position=EXACT scale=EXACT
+  R_middle1 position=EXACT scale=EXACT
+  R_middle2 position=EXACT scale=EXACT
+  R_middle3 position=EXACT scale=EXACT
+  R_ring1 position=EXACT scale=EXACT
+  R_ring2 position=EXACT scale=EXACT
+  R_ring3 position=EXACT scale=EXACT
+  R_pink1 position=EXACT scale=EXACT
+  R_pink2 position=EXACT scale=EXACT
+  R_pink3 position=EXACT scale=EXACT
+
+Candidate I:
+right-arm extension: 56.33%
+contact error: 0.0001 mm / 0.0000 deg
+forearm screen angle: 49.86 deg from horizontal
+forearm screen length: 0.323
+left twist deltas upper/forearm/wrist: 0.00 / 0.00 / 0.40 deg
+right twist deltas upper/forearm/wrist: 0.00 / 0.00 / 9.67 deg
+elbow bend left/right: 95.38 / 115.49 deg; flipped=NO
+elbow viewport: (1.674, -0.518, 0.156) low/right=YES
+wrist/cassette/recorder viewport: (0.967, 0.321, 0.246) / (0.608, 0.333, 0.390) / (0.646, 0.288, 0.392)
+recorder grip drift: 0.0003 mm / 0.0000 deg
+cassette grip drift: 0.0001 mm / 0.0000 deg
+InteractionGrip_RightHandToCassette delta from Carry: 45.089 mm / 173.60 deg
+cassette projected visibility: 100.0% area=0.02964
+recorder projected visibility: 100.0% area=0.12257
+PASS/FAIL: PASS
+skeletal localPosition/localScale drift by bone:
+  L_arm position=EXACT scale=EXACT
+  L_elbow position=EXACT scale=EXACT
+  L_wrist position=EXACT scale=EXACT
+  R_arm position=EXACT scale=EXACT
+  R_elbow position=EXACT scale=EXACT
+  R_wrist position=EXACT scale=EXACT
+  L_thumb1 position=EXACT scale=EXACT
+  L_thumb2 position=EXACT scale=EXACT
+  L_thumb3 position=EXACT scale=EXACT
+  L_point1 position=EXACT scale=EXACT
+  L_point2 position=EXACT scale=EXACT
+  L_point3 position=EXACT scale=EXACT
+  L_middle1 position=EXACT scale=EXACT
+  L_middle2 position=EXACT scale=EXACT
+  L_middle3 position=EXACT scale=EXACT
+  L_ring1 position=EXACT scale=EXACT
+  L_ring2 position=EXACT scale=EXACT
+  L_ring3 position=EXACT scale=EXACT
+  L_pink1 position=EXACT scale=EXACT
+  L_pink2 position=EXACT scale=EXACT
+  L_pink3 position=EXACT scale=EXACT
+  R_thumb1 position=EXACT scale=EXACT
+  R_thumb2 position=EXACT scale=EXACT
+  R_thumb3 position=EXACT scale=EXACT
+  R_point1 position=EXACT scale=EXACT
+  R_point2 position=EXACT scale=EXACT
+  R_point3 position=EXACT scale=EXACT
+  R_middle1 position=EXACT scale=EXACT
+  R_middle2 position=EXACT scale=EXACT
+  R_middle3 position=EXACT scale=EXACT
+  R_ring1 position=EXACT scale=EXACT
+  R_ring2 position=EXACT scale=EXACT
+  R_ring3 position=EXACT scale=EXACT
+  R_pink1 position=EXACT scale=EXACT
+  R_pink2 position=EXACT scale=EXACT
+  R_pink3 position=EXACT scale=EXACT
+
+Candidate J:
+right-arm extension: 47.10%
+contact error: 0.0002 mm / 0.0000 deg
+forearm screen angle: 29.35 deg from horizontal
+forearm screen length: 0.424
+left twist deltas upper/forearm/wrist: 0.00 / 0.00 / 0.00 deg
+right twist deltas upper/forearm/wrist: 0.00 / 0.00 / 13.26 deg
+elbow bend left/right: 104.25 / 129.07 deg; flipped=NO
+elbow viewport: (2.130, -0.123, 0.141) low/right=YES
+wrist/cassette/recorder viewport: (1.158, 0.424, 0.192) / (0.684, 0.275, 0.365) / (0.723, 0.251, 0.377)
+recorder grip drift: 0.0001 mm / 0.0000 deg
+cassette grip drift: 0.0002 mm / 0.0000 deg
+InteractionGrip_RightHandToCassette delta from Carry: 70.114 mm / 165.40 deg
+cassette projected visibility: 100.0% area=0.04447
+recorder projected visibility: 96.0% area=0.17734
+PASS/FAIL: PASS
+skeletal localPosition/localScale drift by bone:
+  L_arm position=EXACT scale=EXACT
+  L_elbow position=EXACT scale=EXACT
+  L_wrist position=EXACT scale=EXACT
+  R_arm position=EXACT scale=EXACT
+  R_elbow position=EXACT scale=EXACT
+  R_wrist position=EXACT scale=EXACT
+  L_thumb1 position=EXACT scale=EXACT
+  L_thumb2 position=EXACT scale=EXACT
+  L_thumb3 position=EXACT scale=EXACT
+  L_point1 position=EXACT scale=EXACT
+  L_point2 position=EXACT scale=EXACT
+  L_point3 position=EXACT scale=EXACT
+  L_middle1 position=EXACT scale=EXACT
+  L_middle2 position=EXACT scale=EXACT
+  L_middle3 position=EXACT scale=EXACT
+  L_ring1 position=EXACT scale=EXACT
+  L_ring2 position=EXACT scale=EXACT
+  L_ring3 position=EXACT scale=EXACT
+  L_pink1 position=EXACT scale=EXACT
+  L_pink2 position=EXACT scale=EXACT
+  L_pink3 position=EXACT scale=EXACT
+  R_thumb1 position=EXACT scale=EXACT
+  R_thumb2 position=EXACT scale=EXACT
+  R_thumb3 position=EXACT scale=EXACT
+  R_point1 position=EXACT scale=EXACT
+  R_point2 position=EXACT scale=EXACT
+  R_point3 position=EXACT scale=EXACT
+  R_middle1 position=EXACT scale=EXACT
+  R_middle2 position=EXACT scale=EXACT
+  R_middle3 position=EXACT scale=EXACT
+  R_ring1 position=EXACT scale=EXACT
+  R_ring2 position=EXACT scale=EXACT
+  R_ring3 position=EXACT scale=EXACT
+  R_pink1 position=EXACT scale=EXACT
+  R_pink2 position=EXACT scale=EXACT
+  R_pink3 position=EXACT scale=EXACT
+
+Candidate K:
+right-arm extension: 52.20%
+contact error: 0.0001 mm / 0.0000 deg
+forearm screen angle: 46.18 deg from horizontal
+forearm screen length: 0.414
+left twist deltas upper/forearm/wrist: 0.00 / 0.00 / 3.19 deg
+right twist deltas upper/forearm/wrist: 0.00 / 0.00 / 19.66 deg
+elbow bend left/right: 103.18 / 121.62 deg; flipped=NO
+elbow viewport: (1.752, -0.320, 0.160) low/right=YES
+wrist/cassette/recorder viewport: (1.047, 0.414, 0.223) / (0.635, 0.345, 0.376) / (0.678, 0.311, 0.382)
+recorder grip drift: 0.0001 mm / 0.0000 deg
+cassette grip drift: 0.0003 mm / 0.0000 deg
+InteractionGrip_RightHandToCassette delta from Carry: 55.982 mm / 161.46 deg
+cassette projected visibility: 100.0% area=0.03464
+recorder projected visibility: 100.0% area=0.15896
+PASS/FAIL: PASS
+skeletal localPosition/localScale drift by bone:
+  L_arm position=EXACT scale=EXACT
+  L_elbow position=EXACT scale=EXACT
+  L_wrist position=EXACT scale=EXACT
+  R_arm position=EXACT scale=EXACT
+  R_elbow position=EXACT scale=EXACT
+  R_wrist position=EXACT scale=EXACT
+  L_thumb1 position=EXACT scale=EXACT
+  L_thumb2 position=EXACT scale=EXACT
+  L_thumb3 position=EXACT scale=EXACT
+  L_point1 position=EXACT scale=EXACT
+  L_point2 position=EXACT scale=EXACT
+  L_point3 position=EXACT scale=EXACT
+  L_middle1 position=EXACT scale=EXACT
+  L_middle2 position=EXACT scale=EXACT
+  L_middle3 position=EXACT scale=EXACT
+  L_ring1 position=EXACT scale=EXACT
+  L_ring2 position=EXACT scale=EXACT
+  L_ring3 position=EXACT scale=EXACT
+  L_pink1 position=EXACT scale=EXACT
+  L_pink2 position=EXACT scale=EXACT
+  L_pink3 position=EXACT scale=EXACT
+  R_thumb1 position=EXACT scale=EXACT
+  R_thumb2 position=EXACT scale=EXACT
+  R_thumb3 position=EXACT scale=EXACT
+  R_point1 position=EXACT scale=EXACT
+  R_point2 position=EXACT scale=EXACT
+  R_point3 position=EXACT scale=EXACT
+  R_middle1 position=EXACT scale=EXACT
+  R_middle2 position=EXACT scale=EXACT
+  R_middle3 position=EXACT scale=EXACT
+  R_ring1 position=EXACT scale=EXACT
+  R_ring2 position=EXACT scale=EXACT
+  R_ring3 position=EXACT scale=EXACT
+  R_pink1 position=EXACT scale=EXACT
+  R_pink2 position=EXACT scale=EXACT
+  R_pink3 position=EXACT scale=EXACT
+
+Candidate L:
+right-arm extension: 45.01%
+contact error: 0.0000 mm / 0.0000 deg
+forearm screen angle: 40.52 deg from horizontal
+forearm screen length: 0.417
+left twist deltas upper/forearm/wrist: 0.00 / 0.00 / 21.40 deg
+right twist deltas upper/forearm/wrist: 0.00 / 0.00 / 2.27 deg
+elbow bend left/right: 107.43 / 132.12 deg; flipped=NO
+elbow viewport: (1.932, -0.234, 0.151) low/right=YES
+wrist/cassette/recorder viewport: (1.170, 0.417, 0.181) / (0.684, 0.324, 0.362) / (0.716, 0.289, 0.377)
+recorder grip drift: 0.0003 mm / 0.0000 deg
+cassette grip drift: 0.0001 mm / 0.0000 deg
+InteractionGrip_RightHandToCassette delta from Carry: 65.223 mm / 169.66 deg
+cassette projected visibility: 100.0% area=0.03098
+recorder projected visibility: 100.0% area=0.12670
+PASS/FAIL: PASS
+skeletal localPosition/localScale drift by bone:
+  L_arm position=EXACT scale=EXACT
+  L_elbow position=EXACT scale=EXACT
+  L_wrist position=EXACT scale=EXACT
+  R_arm position=EXACT scale=EXACT
+  R_elbow position=EXACT scale=EXACT
+  R_wrist position=EXACT scale=EXACT
+  L_thumb1 position=EXACT scale=EXACT
+  L_thumb2 position=EXACT scale=EXACT
+  L_thumb3 position=EXACT scale=EXACT
+  L_point1 position=EXACT scale=EXACT
+  L_point2 position=EXACT scale=EXACT
+  L_point3 position=EXACT scale=EXACT
+  L_middle1 position=EXACT scale=EXACT
+  L_middle2 position=EXACT scale=EXACT
+  L_middle3 position=EXACT scale=EXACT
+  L_ring1 position=EXACT scale=EXACT
+  L_ring2 position=EXACT scale=EXACT
+  L_ring3 position=EXACT scale=EXACT
+  L_pink1 position=EXACT scale=EXACT
+  L_pink2 position=EXACT scale=EXACT
+  L_pink3 position=EXACT scale=EXACT
+  R_thumb1 position=EXACT scale=EXACT
+  R_thumb2 position=EXACT scale=EXACT
+  R_thumb3 position=EXACT scale=EXACT
+  R_point1 position=EXACT scale=EXACT
+  R_point2 position=EXACT scale=EXACT
+  R_point3 position=EXACT scale=EXACT
+  R_middle1 position=EXACT scale=EXACT
+  R_middle2 position=EXACT scale=EXACT
+  R_middle3 position=EXACT scale=EXACT
+  R_ring1 position=EXACT scale=EXACT
+  R_ring2 position=EXACT scale=EXACT
+  R_ring3 position=EXACT scale=EXACT
+  R_pink1 position=EXACT scale=EXACT
+  R_pink2 position=EXACT scale=EXACT
+  R_pink3 position=EXACT scale=EXACT
