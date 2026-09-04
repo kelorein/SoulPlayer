@@ -38,19 +38,22 @@ namespace SoulPlayer.Audio
             try
             {
 #endif
+            bool continuity = Plugin.Settings != null && Plugin.Settings.KeepMusicPlayingAcrossMenus;
             RaidMenuEvidence evidence = new RaidMenuEvidence
             {
                 ReturnScreenShown = returnScreenShown, Screen = "Unavailable",
-                PlayerPresent = GameState.HasLiveRaidPlayer(),
+                PlayerPresent = GameState.HasLiveRaidPlayer(continuity),
                 PlayerAlive = GameState.HasAliveRaidPlayer(), ResultModel = "NotApplicable"
             };
             EftScreenManager manager = EftScreenManager.Instance;
+            evidence.MenuControllerTransition = manager != null && manager.CurrentScreenController == null;
             if (manager != null && manager.CurrentScreenController != null)
             {
                 EEftScreenType type = manager.CurrentScreenController.ScreenType;
                 if (_lastScreen != type) { _lastScreen = type; _screenName = type.ToString(); }
                 evidence.Screen = _screenName;
-                evidence.RecognizedScreen = IsReturnScreen(type);
+                evidence.NormalMenuScreen = MenuPlaybackContinuity.IsNormalMenuScreen(type);
+                evidence.RecognizedScreen = IsReturnScreen(type, continuity);
                 UIScreen screen;
                 if (manager.TryGetScreen(type, out screen) && screen != null)
                 {
@@ -94,6 +97,11 @@ namespace SoulPlayer.Audio
             }
             finally { SoulPlayer.Utils.RecurringWorkProfiler.End(SoulPlayer.Utils.RecurringWorkArea.Readiness); }
 #endif
+        }
+
+        internal static bool IsReturnScreen(EEftScreenType type, bool continuity)
+        {
+            return IsReturnScreen(type) || (continuity && MenuPlaybackContinuity.IsNormalMenuScreen(type));
         }
 
         internal static bool IsReturnScreen(EEftScreenType type)

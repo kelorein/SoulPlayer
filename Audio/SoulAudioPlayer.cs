@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using BepInEx.Configuration;
@@ -21,6 +22,8 @@ namespace SoulPlayer.Audio
         private readonly System.Random _outcomeRandom = new System.Random();
         private readonly RaidPlaybackSession _raidPlayback = new RaidPlaybackSession();
         private readonly PlaybackCompletionTracker _completionTracker = new PlaybackCompletionTracker();
+        private readonly MenuPlaybackContinuity _menuContinuity = new MenuPlaybackContinuity();
+        private readonly PostRaidPlaybackContinuity _postRaidContinuity = new PostRaidPlaybackContinuity();
         private SoulPlayerSettings _settings;
         private TrackRoutingService _routing;
         private SoulPlayerVolumeState _volumeState;
@@ -56,6 +59,10 @@ namespace SoulPlayer.Audio
         private readonly RaidReadinessPollGate _readinessPoll = new RaidReadinessPollGate();
         internal bool NeedsRaidReadinessInspection { get { return _raidPlayback.MainSuspended && _raidPlayback.Outcome.HasValue; } }
         internal bool RaidMenuReady { get { return _raidPlayback.MenuReady; } }
+        internal bool RaidAudioMayContinue { get { return RaidMenuReady ||
+            _postRaidContinuity.CanContinue(_settings.KeepMusicPlayingAcrossMenus, _raidPlayback.Outcome.HasValue); } }
+        internal bool RaidOverlayAllowed { get { return _postRaidContinuity.CanDisplay(
+            _settings.KeepMusicPlayingAcrossMenus, _raidPlayback.Outcome.HasValue, RaidMenuReady); } }
         private bool QueueShuffle { get { return _restoredQueueSnapshot == null ? _settings.Shuffle : _restoredQueueSnapshot.Shuffle; } }
         private int QueueRepeat { get { return _restoredQueueSnapshot == null ? _settings.RepeatMode : _restoredQueueSnapshot.RepeatMode; } }
 
@@ -68,7 +75,7 @@ namespace SoulPlayer.Audio
         }
         internal bool IsLoading { get { return _loading; } }
         internal bool IsPlaying { get { return _source != null && _source.isPlaying; } }
-        internal bool IsPaused { get { return _paused || _pausedForContext || (_raidPlayback.MainSuspended && !_raidPlayback.MenuReady); } }
+        internal bool IsPaused { get { return _paused || _pausedForContext || (_raidPlayback.MainSuspended && !RaidAudioMayContinue); } }
         internal string LastError { get { return _lastError; } }
         internal float CurrentTime { get { return _source != null && _source.clip != null ? _source.time : 0f; } }
         internal float Duration { get { return _source != null && _source.clip != null ? _source.clip.length : 0f; } }
@@ -78,6 +85,7 @@ namespace SoulPlayer.Audio
             if (_settings != null)
             {
                 _settings.VolumeChanged -= OnVolumeChanged;
+                _settings.MenuContinuityChanged -= OnMenuContinuityChanged;
             }
             _settings = settings;
             _routing = routing;
@@ -95,6 +103,7 @@ namespace SoulPlayer.Audio
             }
             _volumeState = new SoulPlayerVolumeState(settings.Volume);
             _settings.VolumeChanged += OnVolumeChanged;
+            _settings.MenuContinuityChanged += OnMenuContinuityChanged;
             _source = gameObject.AddComponent<AudioSource>();
             _source.playOnAwake = false;
             _source.loop = false;
@@ -122,6 +131,30 @@ namespace SoulPlayer.Audio
             if (_raidPlayback.MainSuspended) { _reevaluationTrigger = trigger; _readinessPoll.Invalidate(); }
         }
 
+        private void OnMenuContinuityChanged()
+        {
+            _menuContinuity.Reset();
+            StableRaidMenuContext.Invalidate();
+            RequestRaidReevaluation("MenuContinuitySettingChanged");
+        }
+
+        internal void LogMenuTransition(EFT.UI.Screens.EEftScreenType? from,
+            EFT.UI.Screens.EEftScreenType to)
+        {
+            // Called only by screen events, never by Update or readiness polls.
+            string action = IsPlaying ? "KeepPlaying" : IsPaused ? "Pause" : "Stop";
+            string reason = _raidPlayback.MainSuspended ? "RaidLifecycle/" + _readiness :
+                _stopped ? "StoppedOrIdle" : _paused ? "UserPause" :
+                _loading ? "PendingPlayback" :
+                _settings.KeepMusicPlayingAcrossMenus ? "ContinuousMainContext" : "LegacyMenuBehavior";
+            Plugin.Log.LogInfo("SoulPlayer menu playback: from=" + (from.HasValue ? from.Value.ToString() : "Unknown") +
+                " to=" + to + " track=" + (CurrentTrack == null ? "none" : TrackRoutingService.GetTrackId(CurrentTrack) + "/" + CurrentTrack.Title) +
+                " time=" + CurrentTime.ToString("0.000", CultureInfo.InvariantCulture) +
+                " action=" + action + " reason=" + reason +
+                " startReady=" + (_readiness == RaidReadinessReason.Ready) +
+                " continueAudio=" + RaidAudioMayContinue + " overlayAllowed=" + RaidOverlayAllowed + ".");
+        }
+
         private void OnLibraryChanged()
         {
             _raidLibraryTracks = _library.Tracks;
@@ -143,10 +176,12 @@ namespace SoulPlayer.Audio
 #endif
             _menuEvidence = Plugin.PostRaidCoordinator == null ? new RaidMenuEvidence() :
                 Plugin.PostRaidCoordinator.ReadEvidence();
-            _readiness = _menuEvidence.Evaluate(_raidPlayback.Outcome.HasValue, _library != null && _library.IsReady);
-            // A library rescan gates new dispatch, not an already playing outcome
-            // cue. Only real scene readiness loss can context-pause that cue.
-            SetRaidMenuReady(_menuEvidence.Evaluate(_raidPlayback.Outcome.HasValue, true) == RaidReadinessReason.Ready);
+            _readiness = _menuContinuity.Evaluate(_menuEvidence, _settings.KeepMusicPlayingAcrossMenus,
+                _raidPlayback.Outcome.HasValue, _library != null && _library.IsReady);
+            // START readiness still gates dispatch/deferred decoders. A rescan or
+            // transient result-screen teardown must not revoke an actual start.
+            SetRaidMenuReady(_menuContinuity.Evaluate(_menuEvidence, _settings.KeepMusicPlayingAcrossMenus,
+                _raidPlayback.Outcome.HasValue, true) == RaidReadinessReason.Ready);
             LogRaidState(_reevaluationTrigger ?? "LifecycleEvidence");
             _reevaluationTrigger = null;
         #if SOULPLAYER_PERF
@@ -160,7 +195,7 @@ namespace SoulPlayer.Audio
             if (_raidPlayback.Phase == RaidPlaybackPhase.Idle || _library == null) return;
             string line = _raidStateDiagnostics.Observe(_raidPlayback, _menuEvidence,
                 _library.IsReady, _library.Revision, _settings.AutoPlayAfterRaid,
-                _raidLibraryTracks, _routing, trigger);
+                _raidLibraryTracks, _routing, trigger, _readiness);
             if (line != null) Plugin.Log.LogInfo(line);
         }
 
@@ -181,7 +216,7 @@ namespace SoulPlayer.Audio
         {
             // Pause never invalidates the saved Main candidate or the routed lifetime.
             if (_loading || (_raidPlayback.MainSuspended &&
-                (!_raidPlayback.MenuReady || _raidPlayback.Phase != RaidPlaybackPhase.Routed))) return;
+                (!RaidAudioMayContinue || _raidPlayback.Phase != RaidPlaybackPhase.Routed))) return;
             if (_source.clip == null)
             {
                 if (_queue.Count == 0)
@@ -205,7 +240,9 @@ namespace SoulPlayer.Audio
             else
             {
                 PlaybackIntent intent = _raidPlayback.MainSuspended ? PlaybackIntent.Routed : PlaybackIntent.Manual;
-                if (!CanStart(intent)) return;
+                // Resuming an existing paused clip is continuation, not a new
+                // post-raid dispatch. Never bypass readiness for an unstarted clip.
+                if (!(_raidPlayback.MainSuspended && _hasStarted && RaidAudioMayContinue) && !CanStart(intent)) return;
                 if (!_hasStarted)
                 {
                     // A restored paused clip already has its saved position applied.
@@ -215,6 +252,7 @@ namespace SoulPlayer.Audio
                 }
                 else _source.UnPause();
                 _paused = false;
+                _pausedForContext = false;
                 _stopped = false;
                 _volumeState.MarkPlaying();
             }
@@ -357,6 +395,8 @@ namespace SoulPlayer.Audio
         internal void BeginRaidSuspension()
         {
             if (_source == null || (_raidPlayback.MainSuspended && !_raidPlayback.HasReturnedToMenu)) return;
+            _menuContinuity.Reset();
+            _postRaidContinuity.Reset();
             bool carryPendingMain = _raidPlayback.MainSuspended;
             MainPlaybackSnapshot snapshot = carryPendingMain || _source.clip == null || _stopped ||
                 (_queueRoute != TrackRoute.None && _queueRoute != TrackRoute.Main) ? null :
@@ -396,13 +436,14 @@ namespace SoulPlayer.Audio
         {
             _raidPlayback.SetMenuReady(ready);
             if (!_raidPlayback.MainSuspended) return;
-            if (!ready && _source.isPlaying)
+            if (!RaidAudioMayContinue && _source.isPlaying)
             {
                 _source.Pause();
                 _pausedForContext = true;
                 _volumeState.MarkPaused();
             }
-            else if (ready && _pausedForContext && !_paused &&
+            else if (RaidAudioMayContinue && _pausedForContext && !_paused && !_stopped &&
+                _hasStarted && _source.clip != null &&
                 _raidPlayback.Phase == RaidPlaybackPhase.Routed)
             {
                 _source.UnPause();
@@ -619,7 +660,7 @@ namespace SoulPlayer.Audio
             }
 
             bool mayComplete = !_raidPlayback.MainSuspended ||
-                (_raidPlayback.MenuReady && _raidPlayback.Phase == RaidPlaybackPhase.Routed);
+                (RaidAudioMayContinue && _raidPlayback.Phase == RaidPlaybackPhase.Routed);
             if (mayComplete && _hasStarted && _completionTracker.Poll(
                 _source.clip != null, _source.isPlaying, _loading, _paused, _pausedForContext, false))
             {
@@ -706,6 +747,7 @@ namespace SoulPlayer.Audio
             {
                 _source.Play();
                 _completionTracker.Started(_source.isPlaying);
+                _postRaidContinuity.PlaybackStarted(_raidPlayback.MainSuspended, _source.isPlaying);
                 _volumeState.MarkPlaying();
             }
             else _volumeState.MarkPaused();
@@ -860,6 +902,7 @@ namespace SoulPlayer.Audio
             if (_settings != null)
             {
                 _settings.VolumeChanged -= OnVolumeChanged;
+                _settings.MenuContinuityChanged -= OnMenuContinuityChanged;
             }
             InvalidateLoad();
             ReleaseClip();

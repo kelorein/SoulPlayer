@@ -45,15 +45,22 @@ namespace SoulPlayer.Utils
         internal static bool ShouldSuspendMenuMusic()
         {
             if (Plugin.AudioPlayer != null && Plugin.AudioPlayer.IsRaidPlaybackActive)
-                return !Plugin.AudioPlayer.RaidMenuReady;
+                return !Plugin.AudioPlayer.RaidOverlayAllowed;
             return IsDeploymentOrLiveRaid();
         }
 
         internal static bool HasLiveRaidPlayer()
         {
+            return HasLiveRaidPlayer(false);
+        }
+
+        internal static bool HasLiveRaidPlayer(bool excludeHideoutPlayer)
+        {
             GameWorld world = Singleton<GameWorld>.Instance;
             Player player = world == null ? null : world.MainPlayer;
-            return player != null && player.gameObject.activeInHierarchy;
+            return MenuPlaybackContinuity.IsBlockingPlayer(
+                player != null && player.gameObject.activeInHierarchy,
+                player is HideoutPlayer, excludeHideoutPlayer);
         }
 
         internal static bool HasAliveRaidPlayer()
