@@ -22,6 +22,8 @@ namespace SoulPlayer.Audio
         internal string Screen;
         internal bool ReturnScreenShown;
         internal bool RecognizedScreen;
+        internal bool NormalMenuScreen;
+        internal bool MenuControllerTransition;
         internal bool ScreenActive;
         internal bool PlayerPresent;
         internal bool PlayerAlive;
@@ -46,6 +48,8 @@ namespace SoulPlayer.Audio
         public bool Equals(RaidMenuEvidence other)
         {
             return Screen == other.Screen && ReturnScreenShown == other.ReturnScreenShown &&
+                NormalMenuScreen == other.NormalMenuScreen &&
+                MenuControllerTransition == other.MenuControllerTransition &&
                 RecognizedScreen == other.RecognizedScreen && ScreenActive == other.ScreenActive &&
                 PlayerPresent == other.PlayerPresent && PlayerAlive == other.PlayerAlive &&
                 Preloader == other.Preloader && BlackOverlay == other.BlackOverlay && ResultModel == other.ResultModel;
@@ -62,7 +66,8 @@ namespace SoulPlayer.Audio
 
         internal string Observe(RaidPlaybackSession session, RaidMenuEvidence evidence,
             bool libraryReady, int libraryRevision, bool raidAuto,
-            IReadOnlyList<MusicTrack> tracks, TrackRoutingService routing, string trigger)
+            IReadOnlyList<MusicTrack> tracks, TrackRoutingService routing, string trigger,
+            RaidReadinessReason? effectiveReadiness = null)
         {
             if (_sessionRevision == session.Revision && _libraryRevision == libraryRevision &&
                 _libraryReady == libraryReady && _raidAuto == raidAuto && _evidence.Equals(evidence)) return null;
@@ -98,7 +103,7 @@ namespace SoulPlayer.Audio
                 " resultModel=" + (evidence.ResultModel ?? "Unavailable") +
                 " libraryReady=" + libraryReady + " libraryRevision=" + libraryRevision +
                 " remappedTrack=" + Describe(remapped) +
-                " readiness=" + evidence.Evaluate(session.Outcome.HasValue, libraryReady) +
+                " readiness=" + (effectiveReadiness ?? evidence.Evaluate(session.Outcome.HasValue, libraryReady)) +
                 " raidAuto=" + raidAuto + " extractEligible=" + routing.SelectEligible(tracks, TrackRoute.Extract).Count +
                 " deathEligible=" + routing.SelectEligible(tracks, TrackRoute.Death).Count +
                 " routedTrack=" + Describe(session.RoutedTrack) + " resumeTrack=" + Describe(session.ResumeTrack) +

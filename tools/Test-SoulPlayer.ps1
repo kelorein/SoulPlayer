@@ -192,6 +192,7 @@ if ($unitPassed) {
     $groups += Invoke-ValidationGroup 'PlaybackSelection' 'Exact playback selection'
     $groups += Invoke-ValidationGroup 'LibraryPaths' 'Library/path compatibility'
     $groups += Invoke-ValidationGroup 'LibraryUi' 'Library UI'
+    $groups += Invoke-ValidationGroup 'MenuContinuity' 'Menu playback continuity'
 }
 else {
     foreach ($label in @(
@@ -220,7 +221,8 @@ else {
         'Library rescan/remapping',
         'Exact playback selection',
         'Library/path compatibility',
-        'Library UI')) {
+        'Library UI',
+        'Menu playback continuity')) {
         Write-ValidationLine $false $label 'NOT RUN'
     }
 }

@@ -39,6 +39,7 @@ namespace SoulPlayer.Configuration
         private readonly ConfigEntry<bool> _showMiniPlayer;
         private readonly ConfigEntry<SoulPlayer.UI.SoulMiniPlayerCorner> _miniPlayerPosition;
         private readonly ConfigEntry<bool> _muteTarkovMusic;
+        private readonly ConfigEntry<bool> _keepMusicPlayingAcrossMenus;
         private readonly ConfigEntry<bool> _autoPlayAfterRaid;
         private readonly ConfigEntry<string> _survivedMusicFolder;
         private readonly ConfigEntry<string> _deathMusicFolder;
@@ -70,6 +71,7 @@ namespace SoulPlayer.Configuration
 
         internal event Action<float> VolumeChanged;
         internal event Action MiniPlayerChanged;
+        internal event Action MenuContinuityChanged;
         internal event Action<SoulPlayer.Cassettes.SoulTapeMusicMode>
             CassetteMusicModeChanged;
         internal event Action<SoulPlayer.Cassettes.SoulTapeRaidPlaybackMode>
@@ -114,6 +116,10 @@ namespace SoulPlayer.Configuration
 
             _shuffle = config.Bind("Player", "Shuffle", true, "Shuffle the current library queue.");
             _repeatMode = config.Bind("Player", "Repeat mode", 0, "0 = off, 1 = repeat queue, 2 = repeat one.");
+            _keepMusicPlayingAcrossMenus = config.Bind(
+                "Player", "Keep music playing across menus", true,
+                "Keep the current song playing through normal out-of-raid menus, including Hideout. Raid deployment and post-raid loading still suspend playback. Disable to use legacy screen-transition behavior.");
+            _keepMusicPlayingAcrossMenus.SettingChanged += OnMenuContinuitySettingChanged;
             _muteTarkovMusic = config.Bind(
                 "Player",
                 "Mute Tushonka music",
@@ -351,6 +357,14 @@ namespace SoulPlayer.Configuration
                 _repeatMode.Value = Math.Max(0, Math.Min(2, value));
                 _config.Save();
             }
+        }
+
+        internal bool KeepMusicPlayingAcrossMenus { get { return _keepMusicPlayingAcrossMenus.Value; } }
+
+        private void OnMenuContinuitySettingChanged(object sender, EventArgs args)
+        {
+            Action handler = MenuContinuityChanged;
+            if (handler != null) handler();
         }
 
         internal bool MuteTarkovMusic

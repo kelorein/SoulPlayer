@@ -11,6 +11,7 @@ namespace SoulPlayer.Audio
         private bool _returnScreenShown;
         private bool _readinessWarningLogged;
         private EftScreenManager _screens;
+        private EEftScreenType? _lastScreen;
         internal event Action<ExitStatus> RaidResultQueued;
 
         internal void BeginRaid()
@@ -24,6 +25,7 @@ namespace SoulPlayer.Audio
         {
             StableRaidMenuContext.Invalidate();
             _returnScreenShown = true;
+            BindScreens();
             Plugin.AudioPlayer?.RequestRaidReevaluation("MenuScreenShown");
         }
 
@@ -59,7 +61,7 @@ namespace SoulPlayer.Audio
                 if (!_readinessWarningLogged)
                 {
                     _readinessWarningLogged = true;
-                    Plugin.Log.LogWarning("SoulPlayer stable-menu evidence unavailable; playback stays suspended: " + ex.Message);
+                    Plugin.Log.LogWarning("SoulPlayer stable-menu evidence unavailable; new playback waits for readiness: " + ex.Message);
                 }
                 return new RaidMenuEvidence { Screen = "Unavailable", ResultModel = "Unavailable" };
             }
@@ -67,9 +69,30 @@ namespace SoulPlayer.Audio
 
         private void OnScreenChanged(EEftScreenType screen)
         {
+            if (_lastScreen == screen) return;
+            EEftScreenType? previous = _lastScreen;
+            _lastScreen = screen;
             StableRaidMenuContext.Invalidate();
-            if (StableRaidMenuContext.IsReturnScreen(screen)) _returnScreenShown = true;
+            if (StableRaidMenuContext.IsReturnScreen(screen,
+                Plugin.Settings != null && Plugin.Settings.KeepMusicPlayingAcrossMenus)) _returnScreenShown = true;
             Plugin.AudioPlayer?.RequestRaidReevaluation("ScreenChanged");
+            Plugin.AudioPlayer?.RefreshRaidReadiness();
+            Plugin.AudioPlayer?.LogMenuTransition(previous, screen);
+        }
+
+        private void BindScreens()
+        {
+            EftScreenManager current = EftScreenManager.Instance;
+            if (_screens == current) return;
+            if (_screens != null) _screens.OnScreenChanged -= OnScreenChanged;
+            _screens = current;
+            _lastScreen = null;
+            if (_screens != null)
+            {
+                _screens.OnScreenChanged += OnScreenChanged;
+                if (_screens.CurrentScreenController != null)
+                    OnScreenChanged(_screens.CurrentScreenController.ScreenType);
+            }
         }
 
         private void LateUpdate()
@@ -83,9 +106,7 @@ namespace SoulPlayer.Audio
             EftScreenManager current = EftScreenManager.Instance;
             if (_screens != current)
             {
-                if (_screens != null) _screens.OnScreenChanged -= OnScreenChanged;
-                _screens = current;
-                if (_screens != null) _screens.OnScreenChanged += OnScreenChanged;
+                BindScreens();
             }
             // Screen events request reevaluation; this also observes loader/black
             // overlay changes that occur without a screen-controller change.
